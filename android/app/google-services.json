@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "820430476481",
+    "project_id": "ezeepak",
+    "storage_bucket": "ezeepak.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820430476481:android:a1b89aadf01bcc8aa5f040",
+        "android_client_info": {
+          "package_name": "com.example.mobihub_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820430476481-d76btpacq3g0j9oc70mg528anb00c7l9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8GmfDpjGK90TaXC7LzJxl1I9s7i-HuHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820430476481-d76btpacq3g0j9oc70mg528anb00c7l9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
