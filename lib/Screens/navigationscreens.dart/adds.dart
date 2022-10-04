@@ -12,6 +12,7 @@ class _YouraddsState extends State<Youradds> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFFFFDC3D),
         
         elevation: 1,

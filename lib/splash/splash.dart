@@ -1,10 +1,12 @@
 
 
-import 'dart:async';
+
 
 import 'package:flutter/material.dart';
 
-import '../Screens/home_page.dart';
+
+
+import 'firebase_splash.dart';
 
 
 class Splash extends StatefulWidget {
@@ -15,18 +17,12 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-   @override
-  void initState() {
-
+  SplashServices splashScreen = SplashServices();
+    @override
+      void initState() {
+   
     super.initState();
-    Timer(const Duration(seconds: 3),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) =>
-                    const Home()
-            )
-        )
-    );
+    splashScreen.isLogin(context);
   }
   
   @override

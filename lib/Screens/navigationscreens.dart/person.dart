@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:mobihub_2/Screens/main_login.dart';
 
 
@@ -85,8 +88,13 @@ class _AccountState extends State<Account> {
            const SizedBox(height: 40,),
                Center(
                 child: TextButton(
-                  onPressed: (){
-                    
+                  onPressed: ()async{
+                     await FirebaseAuth.instance.signOut();
+              //userEmail = "";
+              await GoogleSignIn().signOut();
+              setState(() {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => const MainLogin()));
+              });
                   },
                    child: const Text('Logout')
                   ),

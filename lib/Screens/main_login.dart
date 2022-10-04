@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/login_page.dart';
 import 'package:mobihub_2/Screens/otp.dart';
@@ -18,7 +20,7 @@ class _MainLoginState extends State<MainLogin> {
     bool loading = false;
     bool validate = false;
 
-     final AuthMethods _authMethods = AuthMethods();
+    
     final TextEditingController _phonecontroller = TextEditingController();
 
   @override
@@ -36,7 +38,8 @@ class _MainLoginState extends State<MainLogin> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+             Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Home()));
             },
           ),
         ],
@@ -144,11 +147,12 @@ class _MainLoginState extends State<MainLogin> {
                         const SizedBox(height: 50,),
                GestureDetector(
                 onTap: () async {
-                  bool result = await _authMethods.signInWithGoogle();
-                    if(result){
-                   // ignore: use_build_context_synchronously
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
-                  }
+                 await signInWithGoogle();
+                  
+              setState(() {
+                //const Center(child: CircularProgressIndicator(color: Colors.blue,));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+              });
                 },
                  child: Container(
                  height: 45,
@@ -263,4 +267,5 @@ class _MainLoginState extends State<MainLogin> {
       ),
     );
   }
+   
 }
