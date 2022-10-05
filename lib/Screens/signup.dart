@@ -289,6 +289,9 @@ class _SignupState extends State<Signup> {
 
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        loading = true;
+      });
       try {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
@@ -297,6 +300,9 @@ class _SignupState extends State<Signup> {
           Fluttertoast.showToast(msg: e!.message);
         });
       } on FirebaseAuthException catch (error) {
+        setState(() {
+        loading = false;
+      });
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";

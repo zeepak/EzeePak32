@@ -7,7 +7,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 User get user => _auth.currentUser!;
 Future<bool> signInWithGoogle() async {
   bool result = false;
- 
+  
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
    
@@ -18,11 +18,14 @@ Future<bool> signInWithGoogle() async {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    
 UserCredential userCredential =
+           
           await _auth.signInWithCredential(credential);
       User? user = userCredential.user;
 
       if (user != null) {
+        
         if (userCredential.additionalUserInfo!.isNewUser) {
           // add the data to fire base
           await _firestore.collection('Gusers').doc(user.uid).set(

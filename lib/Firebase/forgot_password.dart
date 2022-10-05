@@ -71,10 +71,16 @@ String? errorMessage;
         ),
         onPressed: () {
            if (_formKey.currentState!.validate()){
+            setState(() {
+        loading = true;
+      });
           auth.sendPasswordResetEmail(email: emailController.text.toString()).then((value){
              Fluttertoast.showToast(msg: "We have sent you email to recover password, please check email");
                 //Utils().toastMessage('We have sent you email to recover password, please check email');
               }).onError((error, stackTrace){
+                setState(() {
+        loading = false;
+      });
                 Fluttertoast.showToast(msg: errorMessage!);
                 //Utils().toastMessage(error.toString());
               });

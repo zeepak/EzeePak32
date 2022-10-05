@@ -18,6 +18,7 @@ class MainLogin extends StatefulWidget {
 
 class _MainLoginState extends State<MainLogin> {
     bool loading = false;
+   
     bool validate = false;
 
     
@@ -150,7 +151,7 @@ class _MainLoginState extends State<MainLogin> {
                GestureDetector(
                 onTap: () async {
                  await signInWithGoogle();
-                  
+                 
               setState(() {
                 //const Center(child: CircularProgressIndicator(color: Colors.blue,));
                 Navigator.pushAndRemoveUntil(
@@ -158,6 +159,7 @@ class _MainLoginState extends State<MainLogin> {
         MaterialPageRoute(builder: (context) => const Home()),
         (route) => false);
               });
+              
                 },
                  child: Container(
                  height: 45,

@@ -36,55 +36,7 @@ class _AccountState extends State<Account> {
             const SizedBox(height: 5,),
             const Text('Sign in to start selling or buying vehicles',style: TextStyle(fontFamily: 'Lato1'),),
             const SizedBox(height: 20,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               SizedBox(
-                height: 45,
-                width: 300,
-                 child: ElevatedButton(
-                                    onPressed: () {
-                                       Navigator.push(context, MaterialPageRoute(builder: (context) => const MainLogin()));
-                                    },
-                                    
-                                    style: ButtonStyle(
-                                      backgroundColor:  MaterialStateProperty.all(
-                                              const Color(0xFFFFDC3D)),
-                                              
-                                         
-                                          
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                            
-                                        RoundedRectangleBorder(
-                                          
-                                            borderRadius: BorderRadius.circular(10),
-                                            
-                                            side: const BorderSide(
-                                              color: Colors.transparent,
-                                              width: 2,
-                                            ),
-                                            
-                                            ),
-                                            
-                                      ),
-                                    ),
-                                    child: const Text(
-                                            "Sign in oR Sign up",
-                                            style: TextStyle(
-                                              fontFamily: 'Lato1',
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                  ),
-
-               ),
-               
-              ],
-            ),
+            
            const SizedBox(height: 40,),
                Center(
                 child: TextButton(

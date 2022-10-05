@@ -93,14 +93,7 @@ class _Login extends State<Login> {
             style: TextStyle(fontFamily: 'Lato', color: Colors.black),
 //signIn(emailController.text, passwordController.text);
           ),
-          //  suffix: InkWell(
-          //             onTap: _togglePasswordView,
-          //             child: Icon(
-          //               _isHidden 
-          //               ? Icons.visibility 
-          //               : Icons.visibility_off,
-          //           ),
-          //             ),
+          
         ),
         );
 
@@ -252,6 +245,9 @@ class _Login extends State<Login> {
   // login function
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        loading = true;
+      });
       try {
         await _auth
             .signInWithEmailAndPassword(email: email, password: password)
@@ -263,6 +259,9 @@ class _Login extends State<Login> {
                       (route) => false),
                 });
       } on FirebaseAuthException catch (error) {
+         setState(() {
+        loading = false;
+      });
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";
