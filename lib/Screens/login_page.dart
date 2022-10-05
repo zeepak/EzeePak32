@@ -1,30 +1,146 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobihub_2/Firebase/forgot_password.dart';
+import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/signup.dart';
-
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  // ignore: library_private_types_in_public_api
+  _Login createState() => _Login();
 }
 
-class _LoginState extends State<Login> {
-  final TextEditingController _emailcontroller = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
-  
-  
- 
- 
-  bool validate = false;
+class _Login extends State<Login> {
+  // form key
+  final _formKey = GlobalKey<FormState>();
+//bool _isHidden = true;
+  // editing controller
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool loading = false;
-  bool _isHidden = true;
+  // firebase
+  final _auth = FirebaseAuth.instance;
+
+  // string for displaying the error Message
+  String? errorMessage;
+
   @override
   Widget build(BuildContext context) {
+    //email field
+    final emailField = TextFormField(
+        cursorColor: Colors.black,
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please Enter Your Email");
+          }
+          // reg expression for email validation
+          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+              .hasMatch(value)) {
+            return ("Please Enter a valid email");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          emailController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: const InputDecoration(
+            hintText: 'username@gmail.com',
+            hintStyle: TextStyle(
+              fontFamily: 'Lato1',
+            ),
+            label: Text(
+              'Email',
+              style: TextStyle(fontFamily: 'Lato', color: Colors.black),
+            )));
+
+    //password field
+    final passwordField = TextFormField(
+        cursorColor: Colors.black,
+        controller: passwordController,
+        obscureText: true,
+        validator: (value) {
+          RegExp regex = RegExp(r'^.{6,}$');
+          if (value!.isEmpty) {
+            return ("Password is required for login");
+          }
+          if (!regex.hasMatch(value)) {
+            return ("Enter Valid Password(Min. 6 Character)");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          passwordController.text = value!;
+        },
+        textInputAction: TextInputAction.done,
+        
+        decoration: const InputDecoration(
+          
+         
+          hintText: 'Enter password',
+          
+          hintStyle: TextStyle(
+            fontFamily: 'Lato1',
+          ),
+          label: Text(
+            'Password',
+            style: TextStyle(fontFamily: 'Lato', color: Colors.black),
+//signIn(emailController.text, passwordController.text);
+          ),
+          //  suffix: InkWell(
+          //             onTap: _togglePasswordView,
+          //             child: Icon(
+          //               _isHidden 
+          //               ? Icons.visibility 
+          //               : Icons.visibility_off,
+          //           ),
+          //             ),
+        ),
+        );
+
+    final loginButton = SizedBox(
+      width: double.infinity,
+      height: 45,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(const Color(0xFFFFCD3D)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Colors.transparent,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
+        onPressed: () {
+          signIn(emailController.text, passwordController.text);
+        },
+        child: loading
+            ? const CircularProgressIndicator(
+                color: Colors.black,
+              )
+            : const Text(
+                "Sign In",
+                style: TextStyle(
+                  fontFamily: 'Lato',
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+      ),
+    );
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -55,153 +171,70 @@ class _LoginState extends State<Login> {
                   width: 200,
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Sign in to MobiHub',
-                style: TextStyle(fontFamily: 'Lato', fontSize: 20),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextField(
-                
-                 
-                 cursorColor: Colors.black,
-                decoration:   const InputDecoration(
-                  
-                    hintText: 'username@gmail.com',
-                    hintStyle:  TextStyle(
-                      fontFamily: 'Lato1',
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 10,
                     ),
-                    label: Text(
-                      'Email',
-                      style: TextStyle(fontFamily: 'Lato', color: Colors.black),
-                    )),
-                controller: _emailcontroller,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                onChanged: (value) {
-                  if (value.length == 8) {
-                    setState(() {
-                      validate = true;
-                    });
-                  }
-                  if (value.length < 8) {
-                    setState(() {
-                      validate = false;
-                    });
-                  }
-                },
-                cursorColor: Colors.black,
-                decoration:  InputDecoration(
-                    hintText: 'Enter password',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Lato1',
+                    const Text(
+                      'Sign in to EzeePak',
+                      style: TextStyle(fontFamily: 'Lato', fontSize: 20),
                     ),
-                    suffix: InkWell(
-                      onTap: _togglePasswordView,
-                      child: Icon(
-                        _isHidden 
-                        ? Icons.visibility 
-                        : Icons.visibility_off,
-                    ),
-                      ),
-                     
-      
-                    label: const Text(
-                      'Password',
-                      style: TextStyle(fontFamily: 'Lato', color: Colors.black),
-
-                    ),
-                    
-                    ),
-                controller: _passwordcontroller,
-                maxLength: 8,
-                obscureText: _isHidden,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                      fontFamily: 'Lato',
-                      color: Colors.black,
-                      decoration: TextDecoration.underline),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontFamily: 'Lato1'),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
+                    const SizedBox(height: 15),
+                    emailField,
+                    const SizedBox(height: 20),
+                    passwordField,
+                    const SizedBox(height: 35),
+                    GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Signup()));
+                        Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ForgotPasswordScreen()));
                       },
                       child: const Text(
-                        'Sign Up',
+                        'Forgot Password?',
                         style: TextStyle(
                             fontFamily: 'Lato',
                             color: Colors.black,
                             decoration: TextDecoration.underline),
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: AbsorbPointer(
-                  absorbing: validate ? false : true,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: validate
-                          ? MaterialStateProperty.all(const Color(0xFFFFDC3D))
-                          : MaterialStateProperty.all(Colors.grey.shade400),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: Colors.transparent,
-                            width: 1,
-                          ),
-                        ),
                       ),
                     ),
-                    onPressed: () {},
-                    child: loading
-                        ? const CircularProgressIndicator(
-                            color: Colors.black,
-                          )
-                        : Text(
-                            "Sign in",
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              color: validate ? Colors.black : Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                  ),
+                    const SizedBox(height: 35),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Already have an account?",
+                          style: TextStyle(fontFamily: 'Lato1'),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Signup()));
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline),
+                            )),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    loginButton,
+                    const SizedBox(height: 15),
+                  ],
                 ),
               ),
             ],
@@ -210,10 +243,52 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
+// void _togglePasswordView() {
+//     setState(() {
+//       _isHidden = !_isHidden;
+//     });
    
-}
+// }
+  // login function
+  void signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  Fluttertoast.showToast(msg: "Login Successful"),
+                  Navigator.pushAndRemoveUntil(
+                      (context),
+                      MaterialPageRoute(builder: (context) => const Home()),
+                      (route) => false),
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+        Fluttertoast.showToast(msg: errorMessage!);
+      }
+    }
+  }
+   
 }

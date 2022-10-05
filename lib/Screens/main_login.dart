@@ -38,8 +38,10 @@ class _MainLoginState extends State<MainLogin> {
               color: Colors.black,
             ),
             onPressed: () {
-             Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Home()));
+             Navigator.pushAndRemoveUntil(
+                      (context),
+                      MaterialPageRoute(builder: (context) => const Home()),
+                      (route) => false);
             },
           ),
         ],
@@ -151,7 +153,10 @@ class _MainLoginState extends State<MainLogin> {
                   
               setState(() {
                 //const Center(child: CircularProgressIndicator(color: Colors.blue,));
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+                Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const Home()),
+        (route) => false);
               });
                 },
                  child: Container(
