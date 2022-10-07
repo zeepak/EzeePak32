@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
-
-
-
-
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
@@ -16,12 +11,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-
-  final emailController =TextEditingController();
-  final auth = FirebaseAuth.instance ;
-final _formKey = GlobalKey<FormState>();
-bool loading = false;
-String? errorMessage;
+  final emailController = TextEditingController();
+  final auth = FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +47,12 @@ String? errorMessage;
               'Email',
               style: TextStyle(fontFamily: 'Lato', color: Colors.black),
             )));
-            final forgotbutton = SizedBox(
+    final forgotbutton = SizedBox(
       width: double.infinity,
       height: 45,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(const Color(0xFFFFCD3D)),
+          backgroundColor: MaterialStateProperty.all(const Color(0xFFFFDC3D)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -70,21 +64,30 @@ String? errorMessage;
           ),
         ),
         onPressed: () {
-           if (_formKey.currentState!.validate()){
+          if (_formKey.currentState!.validate()) {
             setState(() {
-        loading = true;
-      });
-          auth.sendPasswordResetEmail(email: emailController.text.toString()).then((value){
-             Fluttertoast.showToast(msg: "We have sent you email to recover password, please check email");
-                //Utils().toastMessage('We have sent you email to recover password, please check email');
-              }).onError((error, stackTrace){
-                setState(() {
-        loading = false;
-      });
-                Fluttertoast.showToast(msg: errorMessage!);
-                //Utils().toastMessage(error.toString());
+              loading = true;
+            });
+            auth
+                .sendPasswordResetEmail(email: emailController.text.toString())
+                .then((value) {
+                  setState(() {
+              loading = false;
+            });
+              Fluttertoast.showToast(
+                  msg:
+                      "We have sent you email to recover password, please check email"
+                      
+                      );
+              //Utils().toastMessage('We have sent you email to recover password, please check email');
+            }).onError((error, stackTrace) {
+              setState(() {
+                loading = false;
               });
-           }
+              Fluttertoast.showToast(msg: errorMessage!);
+              //Utils().toastMessage(error.toString());
+            });
+          }
         },
         child: loading
             ? const CircularProgressIndicator(
@@ -103,9 +106,11 @@ String? errorMessage;
     );
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFCD3D),
-        title: const Text('Forgot Password',style: TextStyle(fontFamily: 'Lato',fontSize: 17),),
-        
+        backgroundColor: const Color(0xFFFFDC3D),
+        title: const Text(
+          'Forgot Password',
+          style: TextStyle(fontFamily: 'Lato', fontSize: 17),
+        ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -124,7 +129,7 @@ String? errorMessage;
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             const SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               Center(
@@ -140,19 +145,24 @@ String? errorMessage;
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const SizedBox(height: 10,),
-               const Text(
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
                       'Forgot Your Password',
                       style: TextStyle(fontFamily: 'Lato', fontSize: 20),
                     ),
-                    const SizedBox(height: 20,),
-                     emailField,
-              const SizedBox(height: 40,),
-              forgotbutton,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    emailField,
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    forgotbutton,
                   ],
                 ),
               ),
-             
             ],
           ),
         ),

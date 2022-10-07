@@ -9,22 +9,32 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFFFFDC3D),
-        
-        elevation: 1,
-  title: const Text('Chats',style: TextStyle(fontFamily: 'Lato',fontSize: 17),),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: const TabBar(tabs: [
+            Tab(text: 'All',),
+            Tab(text: 'Buying'),
+            Tab(text: 'Selling'),
+            
+          ]),
+          centerTitle: true,
+          
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFFFFDC3D),
+          
+          elevation: 1,
+      title: const Text('Chats',style: TextStyle(fontFamily: 'Lato',fontSize: 17),),
+        ),
+        backgroundColor: Colors.white,
+      body: const TabBarView(children: [
+            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+           
+        ]),
       ),
-      backgroundColor: Colors.white,
-    body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        Text('')
-      ],
-    ),
     );
   }
 }

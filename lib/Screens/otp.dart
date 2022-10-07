@@ -1,23 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
-
+import '../Models/phonemodel.dart';
 import 'home_page.dart';
-
-
 
 class MyVerify extends StatefulWidget {
   final String verificationId;
-  const MyVerify({Key? key, required this.verificationId}) : super(key: key);
+  final String phone;
+
+  const MyVerify({Key? key, required this.verificationId, required this.phone}) : super(key: key);
 
   @override
-  State<MyVerify> createState() => _MyVerifyState();
+  // ignore: no_logic_in_create_state
+  State<MyVerify> createState() => _MyVerifyState(phone);
 }
 
 class _MyVerifyState extends State<MyVerify> {
+  final String phone;
+  _MyVerifyState(this.phone);
   bool validate = false;
   bool loading = false;
   final _otpController = TextEditingController();
@@ -109,31 +113,34 @@ class _MyVerifyState extends State<MyVerify> {
                         ),
                       ),
                     ),
-                    onPressed: ()  async {
+                    onPressed: () async {
                       setState(() {
                         loading = true;
                       });
                       final crendital = PhoneAuthProvider.credential(
-                  verificationId: widget.verificationId, 
-                  smsCode: _otpController.text.toString()
-              );
-                try{
-                
-                await _auth.signInWithCredential(crendital);
-                
-                Navigator.pushAndRemoveUntil(
-                  (context),
-                  MaterialPageRoute(builder: (context) => const Home()),
-                  (route) => false);
+                          verificationId: widget.verificationId,
+                          smsCode: _otpController.text.toString());
+                      try {
+                        await _auth.signInWithCredential(crendital).then((value) => {postDetailsToFirestore()}).catchError((e){
+                          Fluttertoast.showToast(msg: e!.message);
+                        });
 
-                Fluttertoast.showToast(msg: 'Login successfully');
-              }catch(e){
-                setState(() {
-                  loading = false ;
-                });
-                
-               Fluttertoast.showToast(msg: '$e');
-              }
+                        // Navigator.pushAndRemoveUntil(
+                        //     (context),
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const Home()),
+                        //     (route) => false);
+
+                        // Fluttertoast.showToast(msg: 'Login successfully');
+                      } catch (e) {
+                        setState(() {
+                          loading = false;
+                        });
+                         if (e == 'invalid-otp') {
+                            Fluttertoast.showToast(msg: 'Invalid OTP');
+                          }
+                        //Fluttertoast.showToast(msg: '$e');
+                      }
                     },
                     child: loading
                         ? const CircularProgressIndicator(
@@ -186,5 +193,28 @@ class _MyVerifyState extends State<MyVerify> {
       ),
     );
   }
-   
+  postDetailsToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    PhoneModel userModel = PhoneModel();
+
+    // writing all the values
+    
+    userModel.uid = user?.uid;
+    userModel.phone = phone;
+
+    await firebaseFirestore
+        .collection("Pusers")
+        .doc(user?.uid)
+        .set(userModel.toMap());
+    
+                        Navigator.pushAndRemoveUntil(
+                            (context),
+                            MaterialPageRoute(
+                                builder: (context) => const Home()),
+                            (route) => false);
+
+                        Fluttertoast.showToast(msg: 'Login successfully');
+  }
 }

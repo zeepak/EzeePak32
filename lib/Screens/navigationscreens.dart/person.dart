@@ -27,30 +27,45 @@ class _AccountState extends State<Account> {
         ),
     body: SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children:  [
-            const Text('My Profile',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),
-            const SizedBox(height: 5,),
-            const Text('Sign in to start selling or buying vehicles',style: TextStyle(fontFamily: 'Lato1'),),
-            const SizedBox(height: 20,),
             
-           const SizedBox(height: 40,),
-               Center(
-                child: TextButton(
-                  onPressed: ()async{
-                     await FirebaseAuth.instance.signOut();
-              //userEmail = "";
+              ElevatedButton(
+                onPressed: (){},
+                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                 ),
+                 child:  const Text('Contect Us',style: TextStyle(color: Colors.black,fontFamily: 'Lato1',fontSize: 16),),
+                 ),
+                 
+                  
+               const SizedBox(height: 15,),
+               ElevatedButton.icon(
+                
+                onPressed: ()async{
+                  await FirebaseAuth.instance.signOut();
+               //userEmail = "";
               await GoogleSignIn().signOut();
               setState(() {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => const MainLogin()));
+              Navigator.pushAndRemoveUntil(
+                  (context),
+                  MaterialPageRoute(builder: (context) => const MainLogin()),
+                  (route) => false);
               });
-                  },
-                   child: const Text('Logout')
-                  ),
-               )
+                }, 
+                icon: const Icon(Icons.logout,color: Colors.red,size: 18,), 
+                label: const Text('Logout',style: TextStyle(color: Colors.red,fontFamily: 'Lato1',fontSize: 16),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  
+                ),
+                ),
+               
           ],
         ),
       ),
@@ -58,3 +73,9 @@ class _AccountState extends State<Account> {
     );
   }
 }
+// await FirebaseAuth.instance.signOut();
+//               //userEmail = "";
+//               await GoogleSignIn().signOut();
+//               setState(() {
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => const MainLogin()));
+//               });

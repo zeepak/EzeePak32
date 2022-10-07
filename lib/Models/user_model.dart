@@ -3,6 +3,7 @@ class UserModel {
   String? email;
   String? fullName;
   
+  
 
   UserModel({this.uid, this.email, this.fullName});
 

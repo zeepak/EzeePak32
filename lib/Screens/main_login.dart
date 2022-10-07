@@ -74,6 +74,7 @@ class _MainLoginState extends State<MainLogin> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
+              
                 cursorColor: Colors.black,
                 onChanged: (value) {
                   if (value.length == 13) {
@@ -88,7 +89,8 @@ class _MainLoginState extends State<MainLogin> {
                   }
                 },
                 decoration: const InputDecoration(
-                  hintText: 'Phone Number',
+                  counterText: '',
+                  hintText: '+923123456789',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -101,6 +103,7 @@ class _MainLoginState extends State<MainLogin> {
                   // ),
                 ),
                 maxLength: 13,
+                
                 keyboardType: TextInputType.phone,
                 controller: _phonecontroller,
               ),
@@ -135,7 +138,7 @@ class _MainLoginState extends State<MainLogin> {
                           if (e.code == 'to-many-request') {
                             Fluttertoast.showToast(msg: 'To many request');
                           }
-                          //Fluttertoast.showToast(msg: '$e');
+                          
                         },
                         codeSent: (String verificationId, int? token) {
                           Fluttertoast.showToast(msg: "Code send");
@@ -143,7 +146,8 @@ class _MainLoginState extends State<MainLogin> {
                               (context),
                               MaterialPageRoute(
                                   builder: (context) => MyVerify(
-                                        verificationId: verificationId,
+                                        verificationId: verificationId, phone: _phonecontroller.text,
+                                        
                                       )),
                               (route) => false);
 
