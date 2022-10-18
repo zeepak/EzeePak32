@@ -93,9 +93,10 @@ class _HomeState extends State<Home> {
                           color: currentTab == 0
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
+                              size: 25,
                         ),
                         Text(
-                          'Home',
+                          '',
                           style: TextStyle(
                               color: currentTab == 0
                                   ? const Color(0xFFFFDC3D)
@@ -130,9 +131,10 @@ class _HomeState extends State<Home> {
                           color: currentTab == 1
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
+                              size: 25,
                         ),
                         Text(
-                          'Chat',
+                          '',
                           style: TextStyle(
                               color: currentTab == 1
                                   ? const Color(0xFFFFDC3D)
@@ -172,9 +174,10 @@ class _HomeState extends State<Home> {
                           color: currentTab == 2
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
+                              size: 25,
                         ),
                         Text(
-                          'Ads',
+                          '',
                           style: TextStyle(
                               color: currentTab == 2
                                   ? const Color(0xFFFFDC3D)
@@ -210,9 +213,10 @@ class _HomeState extends State<Home> {
                           color: currentTab == 3
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
+                              size: 25,
                         ),
                         Text(
-                          'Account',
+                          '',
                           style: TextStyle(
                               color: currentTab == 3
                                   ? const Color(0xFFFFDC3D)

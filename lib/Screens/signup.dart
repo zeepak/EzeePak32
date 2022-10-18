@@ -340,9 +340,10 @@ class _SignupState extends State<Signup> {
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.fullName = fullNameEditingController.text;
+    userModel.phone = user.phoneNumber;
 
     await firebaseFirestore
-        .collection("Eusers")
+        .collection("UsersDetails")
         .doc(user.uid)
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
@@ -352,4 +353,5 @@ class _SignupState extends State<Signup> {
         MaterialPageRoute(builder: (context) => const Home()),
         (route) => false);
   }
+  
 }

@@ -5,7 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
-import '../Models/phonemodel.dart';
+
+import '../Models/user_model.dart';
 import 'home_page.dart';
 
 class MyVerify extends StatefulWidget {
@@ -197,15 +198,17 @@ class _MyVerifyState extends State<MyVerify> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
-    PhoneModel userModel = PhoneModel();
+    UserModel userModel = UserModel();
 
     // writing all the values
     
     userModel.uid = user?.uid;
     userModel.phone = phone;
+    userModel.email = user?.email;
+    userModel.fullName = user?.displayName;
 
     await firebaseFirestore
-        .collection("Pusers")
+        .collection("UsersDetails")
         .doc(user?.uid)
         .set(userModel.toMap());
     

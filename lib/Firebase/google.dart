@@ -28,12 +28,13 @@ UserCredential userCredential =
         
         if (userCredential.additionalUserInfo!.isNewUser) {
           // add the data to fire base
-          await _firestore.collection('Gusers').doc(user.uid).set(
+          await _firestore.collection('UsersDetails').doc(user.uid).set(
             {
-              'username' : user.displayName,
+              'fullName' : user.displayName,
               'uid' : user.uid,
               'profilePhoto' : user.photoURL,
               'email' : user.email,
+              'phone' : user.phoneNumber,
             }
           );
 

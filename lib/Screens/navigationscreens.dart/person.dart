@@ -1,53 +1,184 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:mobihub_2/Screens/main_login.dart';
-
-
-
+import '../main_login.dart';
 
 class Account extends StatefulWidget {
-  const Account({Key? key}) : super(key: key);
+  const Account({super.key});
 
   @override
   State<Account> createState() => _AccountState();
 }
 
 class _AccountState extends State<Account> {
- 
+   String? fullName = '';
+   String? profilePhoto = '';
+  Future _getDataFromDatabase()async{
+  await FirebaseFirestore.instance.collection("UsersDetails").doc(FirebaseAuth.instance.currentUser!.uid).get().then((snapshot)async{
+   if(snapshot.exists){
+    setState(() {
+      fullName = snapshot.data()!['fullName'];
+      profilePhoto = snapshot.data()!['profilePhoto'];
+    });
+   }
+  });
+  }
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+     appBar: AppBar(
+        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: Colors.white,
-        ),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children:  [
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              
+              children:  [
+                 const CircleAvatar(
+                  backgroundColor: Colors.black26,
+                  radius: 30,
+                  backgroundImage: AssetImage('assets/icons/user.png'),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    fullName!,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
             
-              ElevatedButton(
-                onPressed: (){},
-                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 0,
-                 ),
-                 child:  const Text('Contect Us',style: TextStyle(color: Colors.black,fontFamily: 'Lato1',fontSize: 16),),
-                 ),
-                 
-                  
-               const SizedBox(height: 15,),
-               ElevatedButton.icon(
-                
-                onPressed: ()async{
-                  await FirebaseAuth.instance.signOut();
+          Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: (){
+          
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.person) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Profile', style: TextStyle(  
+              fontSize: 16  
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
+    const SizedBox(height: 15,),
+    Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: (){
+          
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.notifications) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Notification', style: TextStyle(  
+              fontSize: 16  
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
+   const  SizedBox(height: 15,),
+   Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: (){
+          
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.contacts) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Contact Us', style: TextStyle(  
+              fontSize: 16  
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
+    const SizedBox(height: 15,),
+    Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: ()async{
+           await FirebaseAuth.instance.signOut();
                //userEmail = "";
               await GoogleSignIn().signOut();
               setState(() {
@@ -56,26 +187,35 @@ class _AccountState extends State<Account> {
                   MaterialPageRoute(builder: (context) => const MainLogin()),
                   (route) => false);
               });
-                }, 
-                icon: const Icon(Icons.logout,color: Colors.red,size: 18,), 
-                label: const Text('Logout',style: TextStyle(color: Colors.red,fontFamily: 'Lato1',fontSize: 16),),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 0,
-                  
-                ),
-                ),
-               
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.logout,color: Colors.red,) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Logout', style: TextStyle(  
+              fontSize: 16 , color: Colors.red
+
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
+            
+            
+            
           ],
         ),
       ),
-    )
     );
   }
 }
-// await FirebaseAuth.instance.signOut();
-//               //userEmail = "";
-//               await GoogleSignIn().signOut();
-//               setState(() {
-//                Navigator.push(context, MaterialPageRoute(builder: (context) => const MainLogin()));
-//               });
+
