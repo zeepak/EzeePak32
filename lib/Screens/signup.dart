@@ -341,6 +341,9 @@ class _SignupState extends State<Signup> {
     userModel.uid = user.uid;
     userModel.fullName = fullNameEditingController.text;
     userModel.phone = user.phoneNumber;
+    userModel.location = '';
+    userModel.joindate= '';
+    userModel.gender= '';
 
     await firebaseFirestore
         .collection("UsersDetails")

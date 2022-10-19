@@ -12,43 +12,53 @@ class _Home2State extends State<Home2> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Image.asset(
-          'assets/images/img2.png',
-          height: 70,
-          width: 70,
-        ),
-      ),
-      body: SafeArea(
+      
+      body:  SingleChildScrollView(
         child: Column(
-          children: [
-            Container(
-              height: 90,
-              width: 99999999,
-              color: const Color(0xFFFAFAFA),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: const [
-                       
+            children: [
+              Container(
+                height: 200,
+                width: 99999999,
+                color: const Color(0xFFFAFAFA),
+
+                
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children:  [
+                           Image.asset(
+            'assets/images/img4.png',
+            height: 70,
+            width: 70,
+          ),
+          const SizedBox(width: 190,),
+          IconButton(
+            onPressed: (){},
+             icon: Image.asset('assets/images/img5.png',
+                 height: 20,width: 20,),
+             ),
+             
+          IconButton(
+            onPressed: (){},
+             icon: Image.asset('assets/images/icon2.png',
+                 height: 20,width: 20,),
+             ),
+                          ],
+                        ),
+                      
+                        
                       ],
                     ),
-                    const SizedBox(height: 25),
-                    Row(
-                      children: const [],
-                    )
-                  ],
-                ),
+                  ),
+                
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
       ),
+      
     );
   }
 }

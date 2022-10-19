@@ -206,6 +206,9 @@ class _MyVerifyState extends State<MyVerify> {
     userModel.phone = phone;
     userModel.email = user?.email;
     userModel.fullName = user?.displayName;
+    userModel.location = '';
+    userModel.joindate= '';
+    userModel.gender= '';
 
     await firebaseFirestore
         .collection("UsersDetails")

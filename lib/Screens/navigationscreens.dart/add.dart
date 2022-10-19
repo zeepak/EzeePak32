@@ -1,9 +1,9 @@
+import 'dart:io';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:flutter/material.dart';
 
 class AddItems extends StatefulWidget {
   const AddItems({super.key});
@@ -13,10 +13,14 @@ class AddItems extends StatefulWidget {
 }
 
 class _AddItemsState extends State<AddItems> {
+  final _formKey = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
+  final _formKey3 = GlobalKey<FormState>();
+
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles;
 
-  openImages() async {
+  openImages(ImageSource source) async {
     try {
       var pickedfiles = await imgpicker.pickMultiImage();
       //you can use ImageCourse.camera for Camera capture
@@ -25,11 +29,42 @@ class _AddItemsState extends State<AddItems> {
         imagefiles = pickedfiles;
         setState(() {});
       } else {
-        //print("No image is selected.");
       }
+    // ignore: empty_catches
     } catch (e) {
-      //print("error while picking file.");
     }
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget BottomSheet() {
+    return SizedBox(
+      height: 120,
+      width: double.infinity,
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+              openImages(ImageSource.camera);
+            },
+            child: const ListTile(
+              leading: Icon(Icons.camera_alt_outlined),
+              title: Text('Camera'),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+              openImages(ImageSource.gallery);
+            },
+            child: const ListTile(
+              leading: Icon(Icons.image),
+              title: Text('Gallery'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   final List<String> items = [
@@ -130,59 +165,77 @@ class _AddItemsState extends State<AddItems> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: const Color(0xFFFFDC3D),
-        title: const Text(
-          'Sell Your Mobile',
-          style: TextStyle(fontFamily: 'Lato', fontSize: 17),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
+          leading: const Icon(
+            Icons.arrow_back_ios,
             color: Colors.black,
           ),
+          title: const Text(
+            'Sell Your Mobile',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          backgroundColor: Colors.amber[300],
         ),
-        elevation: 1,
-      ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 15),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0, right: 15),
-                  child: GestureDetector(
-                    onTap: () {
-                      openImages();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          const Text("Add Images"),
-                          const Divider(),
-                          //const Text("Picked Files:"),
-                          const Divider(),
-
-                          imagefiles != null
-                              ? Wrap(
-                                  children: imagefiles!.map((imageone) {
-                                    return Card(
-                                      child: SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Image.file(File(imageone.path)),
-                                      ),
-                                    );
-                                  }).toList(),
-                                )
-                              : Container()
-                        ],
-                      ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        TextButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.amberAccent)),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => BottomSheet()),
+                              );
+                            },
+                            child: Column(
+                              children: const [
+                                Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  'Add Image',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            )),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Container(),
+                        imagefiles != null
+                            ? Wrap(
+                                children: imagefiles!.map((imageone) {
+                                  return Card(
+                                    child: SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.file(File(imageone.path)),
+                                    ),
+                                  );
+                                }).toList(),
+                              )
+                            : Container(
+                                height: 200,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Colors.amber,
+                                    borderRadius: BorderRadius.circular(15)),
+                              ),
+                      ],
                     ),
                   ),
                 ),
@@ -198,9 +251,9 @@ class _AddItemsState extends State<AddItems> {
                       hint: Text(
                         'Location',
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).hintColor,
-                        ),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
                       ),
                       items: items
                           .map((item) => DropdownMenuItem<String>(
@@ -271,9 +324,9 @@ class _AddItemsState extends State<AddItems> {
                       hint: Text(
                         'Brand',
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).hintColor,
-                        ),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
                       ),
                       items: items3
                           .map((item) => DropdownMenuItem<String>(
@@ -344,9 +397,9 @@ class _AddItemsState extends State<AddItems> {
                       hint: Text(
                         'PTA',
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).hintColor,
-                        ),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
                       ),
                       items: items4
                           .map((item) => DropdownMenuItem<String>(
@@ -417,9 +470,9 @@ class _AddItemsState extends State<AddItems> {
                       hint: Text(
                         'Condition',
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).hintColor,
-                        ),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
                       ),
                       items: items5
                           .map((item) => DropdownMenuItem<String>(
@@ -490,9 +543,9 @@ class _AddItemsState extends State<AddItems> {
                       hint: Text(
                         'Warranty',
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).hintColor,
-                        ),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
                       ),
                       items: items6
                           .map((item) => DropdownMenuItem<String>(
@@ -557,34 +610,70 @@ class _AddItemsState extends State<AddItems> {
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 25.0, right: 25, top: 10),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                        hintText: 'RAM',
-                        prefixIcon: Icon(Icons.location_on_outlined)),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Plase Fill The Text';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                          hintText: 'RAM',
+                          hintStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(Icons.location_on_outlined)),
+                    ),
                   ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 25.0, right: 25, top: 10),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                        hintText: 'ROM',
-                        prefixIcon: Icon(Icons.ramen_dining)),
+                  child: Form(
+                    key: _formKey2,
+                    child: TextFormField(
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Plase fill the Text';
+                        }
+                        return null;
+                      }),
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                          hintText: 'ROM',
+                          hintStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(Icons.ramen_dining)),
+                    ),
                   ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 25.0, right: 25, top: 10),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                        hintText: 'Battery',
-                        prefixIcon: Icon(Icons.ac_unit_outlined)),
+                  child: Form(
+                    key: _formKey3,
+                    child: TextFormField(
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Plase fill the text';
+                        }
+                        return null;
+                      }),
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                          hintText: 'Battery',
+                          hintStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(Icons.ac_unit_outlined)),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -593,17 +682,25 @@ class _AddItemsState extends State<AddItems> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (ctx) => DetialScreen(),
-                      //   ),
-                      // );
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Proccessing !')));
+                      }
+                      if (_formKey2.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Proccessing !')));
+                      }
+                      if (_formKey3.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Proccessing !')));
+                      }
+                      
                     },
                     child: Container(
                       height: 40,
                       width: 120,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFDC3D),
+                        color: Colors.amber[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Center(
@@ -623,4 +720,9 @@ class _AddItemsState extends State<AddItems> {
         ));
   }
 }
+
+
+
+
+
 

@@ -7,6 +7,9 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 User get user => _auth.currentUser!;
 Future<bool> signInWithGoogle() async {
   bool result = false;
+  String? location;
+ String? gender;
+ String? joindate;
   
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -32,9 +35,11 @@ UserCredential userCredential =
             {
               'fullName' : user.displayName,
               'uid' : user.uid,
-              'profilePhoto' : user.photoURL,
+              'Location' : location,
+              'Gender' : gender,
               'email' : user.email,
               'phone' : user.phoneNumber,
+              'Join Date' : joindate,
             }
           );
 

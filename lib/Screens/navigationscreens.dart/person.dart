@@ -13,16 +13,27 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+   bool loading = false;
    String? fullName = '';
-   String? profilePhoto = '';
+   String? uid = '';
+   
   Future _getDataFromDatabase()async{
   await FirebaseFirestore.instance.collection("UsersDetails").doc(FirebaseAuth.instance.currentUser!.uid).get().then((snapshot)async{
-   if(snapshot.exists){
+   if(snapshot.exists && snapshot.get('fullName') != null){
     setState(() {
       fullName = snapshot.data()!['fullName'];
-      profilePhoto = snapshot.data()!['profilePhoto'];
+      uid = snapshot.data()!['uid'];
+    });
+   }else{
+    setState(() {
+      uid = snapshot.data()!['uid'];
+    loading = true;
     });
    }
+   
+   
+    
+   
   });
   }
   @override
@@ -56,54 +67,63 @@ class _AccountState extends State<Account> {
                 const SizedBox(
                   width: 20,
                 ),
+                
                 Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(
-                    fullName!,
-                    style: const TextStyle(
-                      fontSize: 20,
+                  padding: const EdgeInsets.only(top: 18.0),
+                  child: loading?  Text(
+
+                    uid!,
+                    style:  const TextStyle(
+                      fontSize: 15,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ) : Text(fullName!,style:  const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                    ),)
                 ),
               ],
             ),
-            const SizedBox(
-              height: 25,
-            ),
+            // const SizedBox(
+            //   height: 25,
+            // ),
             
-          Padding(  
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
-      child:Container(  
-        decoration: BoxDecoration(  
-          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
-        ),  
-      child: InkWell(  
-        splashColor: Colors.grey,  
-        onTap: (){
-          
-        },  
-        child: SizedBox(  
-          height: 40,  
-          child: Row(  
-            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
-            children: <Widget> [  
-            Row(children: const <Widget> [  
-             Icon(Icons.person) , 
-            Padding(  
-              padding: EdgeInsets.all(8.0),  
-            ),  
-            Text('Profile', style: TextStyle(  
-              fontSize: 16  
-            ),),  
-          ],),  
-        const Icon(Icons.arrow_right)  
-      ],)  
-        )   
-    ),  
-    ),  
-    ), 
+    //       Padding(  
+    //   padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+    //   child:Container(  
+    //     decoration: BoxDecoration(  
+    //       border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+    //     ),  
+    //   child: InkWell(  
+    //     splashColor: Colors.grey,  
+    //     onTap: (){
+    //          Navigator.push(
+    //                               context,
+    //                               MaterialPageRoute(
+    //                                   builder: (context) => const Profile()));
+    //     },  
+    //     child: SizedBox(  
+    //       height: 40,  
+    //       child: Row(  
+    //         mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+    //         children: <Widget> [  
+    //         Row(children: const <Widget> [  
+    //          Icon(Icons.person) , 
+    //         Padding(  
+    //           padding: EdgeInsets.all(8.0),  
+    //         ),  
+    //         Text('Profile', style: TextStyle(  
+    //           fontSize: 16  
+    //         ),),  
+    //       ],),  
+    //     const Icon(Icons.arrow_right)  
+    //   ],)  
+    //     )   
+    // ),  
+    // ),  
+    // ), 
     const SizedBox(height: 15,),
     Padding(  
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
@@ -136,7 +156,40 @@ class _AccountState extends State<Account> {
     ),  
     ),  
     ), 
-   const  SizedBox(height: 15,),
+   
+    const  SizedBox(height: 15,),
+   Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: (){
+          
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.favorite) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Favourit Ads', style: TextStyle(  
+              fontSize: 16  
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
+    const  SizedBox(height: 15,),
    Padding(  
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
       child:Container(  
@@ -203,7 +256,7 @@ class _AccountState extends State<Account> {
 
             ),),  
           ],),  
-        const Icon(Icons.arrow_right)  
+        
       ],)  
         )   
     ),  
