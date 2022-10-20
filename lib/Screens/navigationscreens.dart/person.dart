@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../main_login.dart';
 
+
 class Account extends StatefulWidget {
   const Account({super.key});
 
@@ -86,44 +87,41 @@ class _AccountState extends State<Account> {
                 ),
               ],
             ),
-            // const SizedBox(
-            //   height: 25,
-            // ),
+            const SizedBox(
+              height: 25,
+            ),
             
-    //       Padding(  
-    //   padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
-    //   child:Container(  
-    //     decoration: BoxDecoration(  
-    //       border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
-    //     ),  
-    //   child: InkWell(  
-    //     splashColor: Colors.grey,  
-    //     onTap: (){
-    //          Navigator.push(
-    //                               context,
-    //                               MaterialPageRoute(
-    //                                   builder: (context) => const Profile()));
-    //     },  
-    //     child: SizedBox(  
-    //       height: 40,  
-    //       child: Row(  
-    //         mainAxisAlignment : MainAxisAlignment.spaceBetween,  
-    //         children: <Widget> [  
-    //         Row(children: const <Widget> [  
-    //          Icon(Icons.person) , 
-    //         Padding(  
-    //           padding: EdgeInsets.all(8.0),  
-    //         ),  
-    //         Text('Profile', style: TextStyle(  
-    //           fontSize: 16  
-    //         ),),  
-    //       ],),  
-    //     const Icon(Icons.arrow_right)  
-    //   ],)  
-    //     )   
-    // ),  
-    // ),  
-    // ), 
+          Padding(  
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  
+      child:Container(  
+        decoration: BoxDecoration(  
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))  
+        ),  
+      child: InkWell(  
+        splashColor: Colors.grey,  
+        onTap: (){
+             
+        },  
+        child: SizedBox(  
+          height: 40,  
+          child: Row(  
+            mainAxisAlignment : MainAxisAlignment.spaceBetween,  
+            children: <Widget> [  
+            Row(children: const <Widget> [  
+             Icon(Icons.person) , 
+            Padding(  
+              padding: EdgeInsets.all(8.0),  
+            ),  
+            Text('Profile', style: TextStyle(  
+              fontSize: 16  
+            ),),  
+          ],),  
+        const Icon(Icons.arrow_right)  
+      ],)  
+        )   
+    ),  
+    ),  
+    ), 
     const SizedBox(height: 15,),
     Padding(  
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),  

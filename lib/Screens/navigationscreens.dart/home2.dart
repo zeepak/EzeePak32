@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobihub_2/Screens/navigationscreens.dart/filter.dart';
+import 'package:mobihub_2/Screens/navigationscreens.dart/notification.dart';
 
 class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
@@ -12,53 +14,50 @@ class _Home2State extends State<Home2> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      
-      body:  SingleChildScrollView(
-        child: Column(
-            children: [
-              Container(
-                height: 200,
-                width: 99999999,
-                color: const Color(0xFFFAFAFA),
-
-                
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:  [
-                           Image.asset(
-            'assets/images/img4.png',
-            height: 70,
-            width: 70,
-          ),
-          const SizedBox(width: 190,),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFAFAFA),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leading: Image.asset(
+          'assets/images/img4.png',
+          height: 70,
+          width: 70,
+        ),
+        actions: [
           IconButton(
-            onPressed: (){},
-             icon: Image.asset('assets/images/img5.png',
-                 height: 20,width: 20,),
-             ),
-             
-          IconButton(
-            onPressed: (){},
-             icon: Image.asset('assets/images/icon2.png',
-                 height: 20,width: 20,),
-             ),
-                          ],
-                        ),
-                      
-                        
-                      ],
-                    ),
-                  ),
-                
-              ),
-            ],
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Notrification()));
+            },
+            icon: Image.asset(
+              'assets/images/img5.png',
+              height: 20,
+              width: 20,
+            ),
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Filter()));
+            },
+            icon: Image.asset(
+              'assets/images/icon2.png',
+              height: 20,
+              width: 20,
+            ),
+          ),
+        ],
       ),
-      
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              color: const Color(0xFFFAFAFA),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
