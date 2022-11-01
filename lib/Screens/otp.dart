@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -22,8 +21,7 @@ class MyVerify extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<MyVerify> {
-  var auth =FirebaseAuth.instance;
-  String Vid = '';
+  bool loading =false;
   int resendToken = 0;
   String _verificationId = "";
   int? _resendToken;
@@ -50,7 +48,7 @@ class _MyVerifyState extends State<MyVerify> {
   final String phone;
   _MyVerifyState(this.phone);
   bool validate = false;
-  bool loading = false;
+  bool seconds = false;
   final _otpController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   @override
@@ -200,23 +198,15 @@ class _MyVerifyState extends State<MyVerify> {
                         style:
                             TextStyle(color: Colors.black, fontFamily: 'Lato'),
                       )),
-                  Container(
-                      padding: const EdgeInsets.only(top: 5),
-                      alignment: Alignment.topLeft,
-                      child: RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                              text: 'Code didn\'t send ?'
-                          ),
-                          TextSpan(
-                              recognizer:  TapGestureRecognizer()
-                                ..onTap = () {
-                                  sendOTP(phone: widget.phone);
-                                },
-                              text: 'Resend',style: TextStyle(color: Colors.black87)
-                          ),
-                        ]),
-                      )),
+                  TextButton(
+                      onPressed: () {
+                        sendOTP(phone: widget.phone);
+                      },
+                      child:  Text(
+                        "Resend()",
+                        style:
+                            TextStyle(color: Colors.black, fontFamily: 'Lato'),
+                      ))
                 ],
               )
             ],

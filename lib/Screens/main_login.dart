@@ -8,7 +8,6 @@ import 'package:mobihub_2/Screens/login_page.dart';
 import 'package:mobihub_2/Screens/otp.dart';
 
 import '../Firebase/google.dart';
-
 class MainLogin extends StatefulWidget {
   const MainLogin({Key? key}) : super(key: key);
 
