@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,31 @@ class MyVerify extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<MyVerify> {
+  var auth =FirebaseAuth.instance;
+  String Vid = '';
+  int resendToken = 0;
+  String _verificationId = "";
+  int? _resendToken;
+
+  Future<bool> sendOTP({required String phone}) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phone,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) async {
+        _verificationId = verificationId;
+        _resendToken = resendToken;
+      },
+      timeout: const Duration(seconds: 25),
+      forceResendingToken: _resendToken,
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationId = _verificationId;
+      },
+    );
+    debugPrint("_verificationId: $_verificationId");
+    return true;
+  }
+
   final String phone;
   _MyVerifyState(this.phone);
   bool validate = false;
@@ -174,18 +200,23 @@ class _MyVerifyState extends State<MyVerify> {
                         style:
                             TextStyle(color: Colors.black, fontFamily: 'Lato'),
                       )),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainLogin()));
-                      },
-                      child: const Text(
-                        "Resend()",
-                        style:
-                            TextStyle(color: Colors.black, fontFamily: 'Lato'),
-                      ))
+                  Container(
+                      padding: const EdgeInsets.only(top: 5),
+                      alignment: Alignment.topLeft,
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: 'Code didn\'t send ?'
+                          ),
+                          TextSpan(
+                              recognizer:  TapGestureRecognizer()
+                                ..onTap = () {
+                                  sendOTP(phone: widget.phone);
+                                },
+                              text: 'Resend',style: TextStyle(color: Colors.black87)
+                          ),
+                        ]),
+                      )),
                 ],
               )
             ],
