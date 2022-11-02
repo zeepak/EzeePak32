@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,8 @@ class MyVerify extends StatefulWidget {
   final String verificationId;
   final String phone;
 
-  const MyVerify({Key? key, required this.verificationId, required this.phone}) : super(key: key);
+  const MyVerify({Key? key, required this.verificationId, required this.phone})
+      : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -21,7 +24,40 @@ class MyVerify extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<MyVerify> {
-  bool loading =false;
+  int secondsRemaining = 30;
+  bool enableResend = false;
+  Timer? timer;
+
+  @override
+  initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          enableResend = true;
+        });
+      }
+    });
+  }
+  void _resendCode() {
+    //other code here
+    setState((){
+      secondsRemaining = 30;
+      enableResend = false;
+    });
+  }
+
+  @override
+  dispose(){
+    timer!.cancel();
+    super.dispose();
+  }
+
+  bool loading = false;
   int resendToken = 0;
   String _verificationId = "";
   int? _resendToken;
@@ -46,11 +82,14 @@ class _MyVerifyState extends State<MyVerify> {
   }
 
   final String phone;
+
   _MyVerifyState(this.phone);
+
   bool validate = false;
   bool seconds = false;
   final _otpController = TextEditingController();
   final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,7 +185,10 @@ class _MyVerifyState extends State<MyVerify> {
                           verificationId: widget.verificationId,
                           smsCode: _otpController.text.toString());
                       try {
-                        await _auth.signInWithCredential(crendital).then((value) => {postDetailsToFirestore()}).catchError((e){
+                        await _auth
+                            .signInWithCredential(crendital)
+                            .then((value) => {postDetailsToFirestore()})
+                            .catchError((e) {
                           Fluttertoast.showToast(msg: e!.message);
                         });
 
@@ -161,9 +203,9 @@ class _MyVerifyState extends State<MyVerify> {
                         setState(() {
                           loading = false;
                         });
-                         if (e == 'invalid-otp') {
-                            Fluttertoast.showToast(msg: 'Invalid OTP');
-                          }
+                        if (e == 'invalid-otp') {
+                          Fluttertoast.showToast(msg: 'Invalid OTP');
+                        }
                         //Fluttertoast.showToast(msg: '$e');
                       }
                     },
@@ -198,15 +240,29 @@ class _MyVerifyState extends State<MyVerify> {
                         style:
                             TextStyle(color: Colors.black, fontFamily: 'Lato'),
                       )),
-                  TextButton(
-                      onPressed: () {
-                        sendOTP(phone: widget.phone);
-                      },
-                      child:  Text(
-                        "Resend()",
-                        style:
-                            TextStyle(color: Colors.black, fontFamily: 'Lato'),
-                      ))
+                  secondsRemaining > 0
+                      ? TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "$secondsRemaining",
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'Lato'),
+                          ),
+                        )
+                      : TextButton(
+                          onPressed: () {
+
+                            sendOTP(phone: widget.phone);
+                            _resendCode();
+
+                          },
+                          child: Text(
+
+                            "Resend",
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'Lato'),
+                          ),
+                        ),
                 ],
               )
             ],
@@ -215,6 +271,7 @@ class _MyVerifyState extends State<MyVerify> {
       ),
     );
   }
+
   postDetailsToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -222,26 +279,25 @@ class _MyVerifyState extends State<MyVerify> {
     UserModel userModel = UserModel();
 
     // writing all the values
-    
+
     userModel.uid = user?.uid;
     userModel.phone = phone;
     userModel.email = user?.email;
     userModel.fullName = user?.displayName;
     userModel.location = '';
-    userModel.joindate= '';
-    userModel.gender= '';
+    userModel.joindate = '';
+    userModel.gender = '';
 
     await firebaseFirestore
         .collection("UsersDetails")
         .doc(user?.uid)
         .set(userModel.toMap());
-    
-                        Navigator.pushAndRemoveUntil(
-                            (context),
-                            MaterialPageRoute(
-                                builder: (context) => const Home()),
-                            (route) => false);
 
-                        Fluttertoast.showToast(msg: 'Login successfully');
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const Home()),
+        (route) => false);
+
+    Fluttertoast.showToast(msg: 'Login successfully');
   }
 }
