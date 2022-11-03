@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/login_page.dart';
 import 'package:mobihub_2/Screens/otp.dart';
 
 import '../Firebase/google.dart';
 class MainLogin extends StatefulWidget {
-  const MainLogin({Key? key}) : super(key: key);
+
+   const MainLogin({Key? key}) : super(key: key);
 
   @override
   State<MainLogin> createState() => _MainLoginState();
@@ -19,9 +19,17 @@ class _MainLoginState extends State<MainLogin> {
   bool loading = false;
 
   bool validate = false;
+  //var code ='+92';
 
+  TextEditingController countryController = TextEditingController();
   final TextEditingController _phonecontroller = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  String? phone;
+  @override
+  void initState() {
+    countryController.text="+92";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,39 +80,67 @@ class _MainLoginState extends State<MainLogin> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: TextField(
-              
-                cursorColor: Colors.black,
-                onChanged: (value) {
-                  if (value.length == 13) {
-                    setState(() {
-                      validate = true;
-                    });
-                  }
-                  if (value.length < 13) {
-                    setState(() {
-                      validate = false;
-                    });
-                  }
-                },
-                decoration: const InputDecoration(
-                  counterText: '',
-                  hintText: '+923123456789',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+              child: 
+              Row(
+                children: [
+                  SizedBox(
+                    width: 40,
+                    child: TextField(
+                      controller: countryController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+
+                    ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+                  Expanded(
+                    child: TextFormField(
+
+                    
+                      cursorColor: Colors.black,
+                      onChanged: (value) {
+                        phone=value;
+
+                        if (phone!.length == 10) {
+                          setState(() {
+                            validate = true;
+                          });
+                        }
+                        if (phone!.length < 10) {
+                          setState(() {
+                            validate = false;
+                          });
+                        }
+                      },
+                      decoration: const InputDecoration(
+                       // prefixText: '+92',
+                        counterText: '',
+                        hintText: '3159232001',
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        // prefix: Padding(
+                        //   padding: EdgeInsets.all(4),
+                        //   child: Text('+92'),
+                        // ),
+                      ),
+                      maxLength: 10,
+                      
+                      keyboardType: TextInputType.phone,
+                      //controller: _phonecontroller,
+                    ),
                   ),
-                  // prefix: Padding(
-                  //   padding: EdgeInsets.all(4),
-                  //   child: Text('+92'),
-                  // ),
-                ),
-                maxLength: 13,
-                
-                keyboardType: TextInputType.phone,
-                controller: _phonecontroller,
+                ],
               ),
             ),
             const SizedBox(
@@ -121,7 +157,7 @@ class _MainLoginState extends State<MainLogin> {
                       loading = true;
                     });
                     _auth.verifyPhoneNumber(
-                        phoneNumber: _phonecontroller.text,
+                        phoneNumber: countryController.text+phone!,
                         verificationCompleted: (_) {
                           setState(() {
                             loading = false;
@@ -140,15 +176,16 @@ class _MainLoginState extends State<MainLogin> {
                           
                         },
                         codeSent: (String verificationId, int? token) {
+
                           Fluttertoast.showToast(msg: "Code send");
-                          Navigator.pushAndRemoveUntil(
-                              (context),
-                              MaterialPageRoute(
-                                  builder: (context) => MyVerify(
-                                        verificationId: verificationId, phone: _phonecontroller.text,
-                                        
-                                      )),
-                              (route) => false);
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=> MyVerify(
+                            verificationId: verificationId, phone: _phonecontroller.text,
+                            number:countryController.text+phone!,
+
+
+                          ),
+                          ),
+                          );
 
                           setState(() {
                             loading = false;

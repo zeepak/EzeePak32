@@ -14,8 +14,9 @@ import 'home_page.dart';
 class MyVerify extends StatefulWidget {
   final String verificationId;
   final String phone;
+  final String number;
 
-  const MyVerify({Key? key, required this.verificationId, required this.phone})
+  const MyVerify({Key? key, required this.verificationId, required this.phone,required this.number})
       : super(key: key);
 
   @override
@@ -233,12 +234,24 @@ class _MyVerifyState extends State<MyVerify> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const MainLogin()));
+                                builder: (context) =>  MainLogin()));
                       },
-                      child: const Text(
-                        "Edit Phone Number ?",
-                        style:
-                            TextStyle(color: Colors.black, fontFamily: 'Lato'),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Row(
+
+                          children: [
+                             Text(
+                              widget.number,
+                              style:
+                                  TextStyle(color: Colors.black, fontFamily: 'Lato'),
+                            ),
+                            SizedBox(width: 4,),
+                            Icon(Icons.edit_outlined,color: Colors.black87,size: 18,),
+                          ],
+                        ),
                       )),
                   secondsRemaining > 0
                       ? TextButton(
