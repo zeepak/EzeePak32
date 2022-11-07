@@ -1,4 +1,10 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobihub_2/Firebase/google.dart';
+import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/login_page.dart';
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);
@@ -8,11 +14,12 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(left: 20,right: 20,top: 270,bottom: 10),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -29,12 +36,29 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,foregroundColor: Colors.white),
-                      onPressed: (){
+                      onPressed: ()async{
+                        await FirebaseAuth.instance.signOut();
                     setState(() {
+
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Login()), (route) => false);
                     });
                   }, child: Text('Sign Out')),
                 ),
+                SizedBox(height: 20,),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+                      Text('Don\'t receive an email code?' ),
+                      TextButton(onPressed: ()async{
+                       await user.sendEmailVerification();
+                       Fluttertoast.showToast(msg: 'email sent you again');
+                      }, child: Text('resend',style: TextStyle(color: Colors.black,fontSize: 14),)),
+                    ],
+                  ),
+                ),
+
 
               ],
             ),

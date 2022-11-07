@@ -352,7 +352,7 @@ class _SignupState extends State<Signup> {
         .doc(user.uid)
         .set(userModel.toMap());
        await user.sendEmailVerification();
-       await _auth.signOut();
+       //await _auth.signOut();
       Navigator.pushAndRemoveUntil(
           (context),
           MaterialPageRoute(builder: (context) => const VerificationScreen()),

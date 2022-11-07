@@ -30,7 +30,13 @@ class _Login extends State<Login> {
   // string for displaying the error Message
   String? errorMessage;
   User? users;
+  @override
+  void initState() {
+    setState(() {
 
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     //email field
@@ -261,16 +267,20 @@ class _Login extends State<Login> {
           .then((uid) =>
       {
         users=_auth.currentUser,
-        if(users!.emailVerified)
-          { setState(() {
-        loading = false;
-      }),
-            Fluttertoast.showToast(msg: "Login Successful"),
-            Navigator.pushAndRemoveUntil(
-                (context),
-                MaterialPageRoute(builder: (context) => const Home()),
-                    (route) => false),
-          }else{ setState(() {
+
+          if(users!.emailVerified)
+            { setState(() {
+              loading = false;
+            }),
+              Fluttertoast.showToast(msg: "Login Successful"),
+              Navigator.pushAndRemoveUntil(
+                  (context),
+                  MaterialPageRoute(builder: (context) => const Home()),
+                      (route) => false),
+            }
+
+
+        else{ setState(() {
         loading = false;
       }),
           Navigator.push(context, MaterialPageRoute(builder: (_)=>VerificationScreen()))

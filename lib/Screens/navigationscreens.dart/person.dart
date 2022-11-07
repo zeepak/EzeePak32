@@ -89,17 +89,9 @@ class _AccountState extends State<Account> {
                 ),
                 Padding(
                     padding: const EdgeInsets.only(top: 18.0),
-                    child: loading
-                        ? Text(
-                            uid,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : Text(
-                            fullName,
+                    child:
+                        Text(
+                            fullName.toString(),
                             style: const TextStyle(
                               fontSize: 20,
                               fontFamily: 'Lato',
