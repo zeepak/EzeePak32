@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mobihub_2/Screens/home_page.dart';
 
 import '../Models/user_model.dart';
+import 'email_verifcation_screen.dart';
 import 'login_page.dart';
 
 class Signup extends StatefulWidget {
@@ -24,8 +24,10 @@ class _SignupState extends State<Signup> {
   String? errorMessage;
 
   bool loading = false;
+
   // our form key
   final _formKey = GlobalKey<FormState>();
+
   // editing Controller
   final fullNameEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
@@ -177,17 +179,17 @@ class _SignupState extends State<Signup> {
         },
         child: loading
             ? const CircularProgressIndicator(
-                color: Colors.black,
-              )
+          color: Colors.black,
+        )
             : const Text(
-                "Sign Up",
-                style: TextStyle(
-                  fontFamily: 'Lato',
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+          "Sign Up",
+          style: TextStyle(
+            fontFamily: 'Lato',
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
 
@@ -301,8 +303,8 @@ class _SignupState extends State<Signup> {
         });
       } on FirebaseAuthException catch (error) {
         setState(() {
-        loading = false;
-      });
+          loading = false;
+        });
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";
@@ -342,19 +344,23 @@ class _SignupState extends State<Signup> {
     userModel.fullName = fullNameEditingController.text;
     userModel.phone = user.phoneNumber;
     userModel.location = '';
-    userModel.joindate= '';
-    userModel.gender= '';
+    userModel.joindate = '';
+    userModel.gender = '';
 
     await firebaseFirestore
         .collection("UsersDetails")
         .doc(user.uid)
         .set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully :) ");
+       await user.sendEmailVerification();
+       await _auth.signOut();
+      Navigator.pushAndRemoveUntil(
+          (context),
+          MaterialPageRoute(builder: (context) => const VerificationScreen()),
+              (route) => false);
+      setState(() {
 
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const Home()),
-        (route) => false);
+      });
+
   }
-  
+
 }
