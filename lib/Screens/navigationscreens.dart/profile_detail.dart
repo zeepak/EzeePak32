@@ -80,6 +80,52 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 height: 20,
               ),
               TextFormField(
+                onTap: (){
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      content: Text('Want to change your email?'),
+                      actions: [
+                        Padding(padding:EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller:emailC,
+                                decoration: InputDecoration(
+                                  hintText: 'new email',
+                                  prefixIcon: Icon(Icons.email_outlined),
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              TextFormField(
+                                controller: passwordC,
+                                decoration: InputDecoration(
+                                  hintText: 'old Password',
+                                  prefixIcon: Icon(Icons.lock_open_outlined),
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              ElevatedButton(onPressed: ()async{
+
+                                loading=true;
+
+                                await changeEmail(
+                                    email: emailC.text,password: passwordC.text
+                                );
+
+                                loading=false;
+
+
+
+                              }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
+                            ],
+                          ),
+                        )
+                      ],
+
+                    );
+                  }
+                  );
+                },
                 readOnly: true,
                 initialValue: widget.email,
                 // onChanged: (value) {
@@ -91,49 +137,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   hintText: 'Email',
                   prefixIcon: Icon(Icons.email_outlined),
                   suffixIcon: IconButton(onPressed: () {
-                    showDialog(context: context, builder: (context) {
-                      return AlertDialog(
-                        content: Text('Want to change your email?'),
-                        actions: [
-                          Padding(padding:EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller:emailC,
-                                  decoration: InputDecoration(
-                                    hintText: 'new email',
-                                    prefixIcon: Icon(Icons.email_outlined),
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-                                TextFormField(
-                                  controller: passwordC,
-                                  decoration: InputDecoration(
-                                    hintText: 'old Password',
-                                    prefixIcon: Icon(Icons.lock_open_outlined),
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                               ElevatedButton(onPressed: ()async{
 
-                                   loading=true;
-
-                                 await changeEmail(
-                                    email: emailC.text,password: passwordC.text
-                                  );
-
-                                    loading=false;
-
-
-
-                                  }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
-                              ],
-                            ),
-                          )
-                        ],
-
-                      );
-                    });
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
               ),
@@ -141,6 +145,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 height: 20,
               ),
               TextFormField(
+                onTap: (){
+                  setState(() async {
+                    city.text = await Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => SearchScreen()));
+                  });
+                },
                 readOnly: true,
                 controller: city,
 
@@ -148,13 +158,6 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   hintText: 'Address',
                   prefixIcon: Icon(Icons.location_city_outlined),
                   suffixIcon: IconButton(onPressed: () {
-                    print(city
-                        .toString()
-                        .length);
-                    setState(() async {
-                      city.text = await Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => SearchScreen()));
-                    });
                   }, icon: Icon(Icons.arrow_drop_down_circle_outlined)),
                 ),
               ),
@@ -193,9 +196,13 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.amberAccent),
                       onPressed: () async {
-                        loading = true;
+                        setState(() {
+                          loading = true;
+                        });
                         await postDetailsToFirestore();
-                        loading = false;
+                        setState(() {
+                          loading = false;
+                        });
                       },
                       child: loading
                           ? Center(
