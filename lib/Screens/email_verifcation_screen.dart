@@ -1,10 +1,9 @@
-import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Firebase/google.dart';
-import 'package:mobihub_2/Screens/home_page.dart';
+
 import 'package:mobihub_2/Screens/login_page.dart';
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);

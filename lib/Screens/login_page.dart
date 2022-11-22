@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Firebase/forgot_password.dart';
-import 'package:mobihub_2/Firebase/google.dart';
 import 'package:mobihub_2/Screens/email_verifcation_screen.dart';
 import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/signup.dart';
@@ -289,12 +288,14 @@ class _Login extends State<Login> {
 
       });
 
-    }
-    on FirebaseAuthException catch (error) {
+    }on FirebaseAuthException catch (error) {
       setState(() {
         loading = false;
       });
       switch (error.code) {
+        case "user-not-found":
+          errorMessage = "User with this email doesn't exist.";
+          break;
         case "invalid-email":
           errorMessage = "Your email address appears to be malformed.";
 
@@ -302,9 +303,7 @@ class _Login extends State<Login> {
         case "wrong-password":
           errorMessage = "Your password is wrong.";
           break;
-        case "user-not-found":
-          errorMessage = "User with this email doesn't exist.";
-          break;
+
         case "user-disabled":
           errorMessage = "User with this email has been disabled.";
           break;
@@ -320,10 +319,6 @@ class _Login extends State<Login> {
       }
       Fluttertoast.showToast(msg: errorMessage!);
     }
-
-  //
-
-
 
     }
   }

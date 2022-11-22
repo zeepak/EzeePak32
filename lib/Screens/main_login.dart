@@ -102,7 +102,7 @@ class _MainLoginState extends State<MainLogin> {
                   ),
                   Expanded(
                     child: TextFormField(
-
+                      controller: _phonecontroller,
                     
                       cursorColor: Colors.black,
                       onChanged: (value) {
