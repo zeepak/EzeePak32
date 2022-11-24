@@ -1,11 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobihub_2/Screens/navigationscreens.dart/notification.dart';
 import 'package:mobihub_2/widgets/brand_container.dart';
+import 'package:mobihub_2/widgets/text_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../search_screens/home_screen_location_search.dart';
+import '../search_screens/home_screen_searchbar.dart';
 
 class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
@@ -16,6 +20,7 @@ class Home2 extends StatefulWidget {
 
 class _Home2State extends State<Home2> {
   var sliderController = CarouselController();
+  var city = TextEditingController();
    int currentIndex=0 ;
   List<dynamic> images=[];
 
@@ -81,44 +86,55 @@ class _Home2State extends State<Home2> {
               padding: EdgeInsets.all(5),
               height: 40,
               decoration: BoxDecoration(
-                  color: Color(0xFFBDC8D2),
+                  color: const Color(0xFFEFEFEF),
                   borderRadius: BorderRadius.circular(10)),
-              child: TextField(
+              child: TextFormField(
+             onTap: (){
+               Navigator.push(context, MaterialPageRoute(builder: (_)=>HomeScreenSearchBar()));
+             },
+                style: const TextStyle(color: Colors.black),
+                cursorColor: Colors.blue,
+
                 decoration: InputDecoration(
-                    prefixIcon: Row(
-                      children: [
-                        Icon(Icons.search_outlined),
-                        Text(
-                          'Search',
-                          style: TextStyle(color: Color(0xFF65717B)),
-                        )
-                      ],
-                    ),
-                    suffixIcon: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        VerticalDivider(
-                          color: Color(0xFF9AA6B0),
-                          thickness: 1.5,
-                        ),
-                        Icon(Icons.location_on_outlined),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Location',
-                              style: TextStyle(color: Colors.black54),
-                            ))
-                      ],
+                  contentPadding: const EdgeInsets.only(
+                    top: 15,
+                  ),
+                    prefixIcon: const Icon(Icons.search_outlined),
+                    hintText: 'search',
+
+                    suffixIcon: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                           Container(height: 30, child: VerticalDivider(color: Colors.grey,thickness: 1.5,)),
+                          const Icon(Icons.location_on_outlined),
+                          TextButton(
+                              onPressed: () async{
+                              city.text=await  Navigator.of(context).push(MaterialPageRoute(builder: (_)=>HomeScreenLocationSearch()));
+                              setState(() {
+                              });
+                              },
+                              child: city.text.isNotEmpty?Text(
+                                '${city.text}',overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: Colors.black54),
+                              ):Text(
+                                'Location',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                          )
+                        ],
+                      ),
                     ),
                     // suffixText: 'Loc',suffixStyle: TextStyle(color: Colors.black),
 
-                    border: OutlineInputBorder(borderSide: BorderSide.none)),
+                    border: const OutlineInputBorder(borderSide: BorderSide.none)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Container(
+             Container(
 
               child:
                Center(
@@ -176,25 +192,33 @@ class _Home2State extends State<Home2> {
 
 
               ),
-
-
-
-            //////////////////////
-
-            ////////////////////
-            SizedBox(height: 1,),
+            SizedBox(height: 3,),
             Center(child: dotIndicator()),
 
 
             SizedBox(
               height: 20,
             ),
-            Text(
-              'Browser by Brand',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Browser by Brand',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15),
+                ),
+                GestureDetector(
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 20,
@@ -246,31 +270,50 @@ class _Home2State extends State<Home2> {
             SizedBox(
               height: 20,
             ),
-            Text(
-              'Browser by Price',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Browser by Price',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15),
+                ),
+                GestureDetector(
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 20,
             ),
+           Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             children: [
+               Container(
+                 height: 36,
+                   width: 150,
+                   decoration: BoxDecoration(
+                     color: Color(0xFFEFEFEF),
+                     borderRadius: BorderRadius.circular(3),
+                   ),
+
+                   child: CustomTextButton(text: 'Below Rs. 10,000', onPressed: (){})),
+               CustomTextButton(text: 'Rs. 20,000 - Rs. 30,000', onPressed: (){}),
+             ],
+           ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(onPressed: () {}, child: Text('Below Rs. 10,000')),
-                TextButton(
-                    onPressed: () {}, child: Text('Rs. 20,000 - Rs. 30,000')),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                    onPressed: () {}, child: Text('Rs. 10,000 - Rs. 20,000')),
-                TextButton(
-                    onPressed: () {}, child: Text('Rs. 30,000 - Rs. 40,000')),
+                CustomTextButton(text: 'Rs. 10,000 - Rs. 20,000', onPressed: (){}),
+                CustomTextButton(text: 'Rs. 30,000 - Rs. 40,000', onPressed: (){}),
               ],
             ),
             SizedBox(
@@ -286,12 +329,14 @@ class _Home2State extends State<Home2> {
                       fontWeight: FontWeight.w600,
                       fontSize: 15),
                 ),
-                Text(
-                  'View All',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14),
+                GestureDetector(
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13),
+                  ),
                 ),
               ],
             ),
@@ -304,14 +349,15 @@ class _Home2State extends State<Home2> {
               child: StreamBuilder(
                 stream: ref.snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                        child: Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      enabled: true,
-                      child: Text('Loading...'),
-                    ));
+                  if (!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.white,
+                        highlightColor: Colors.grey,
+                        period: const Duration(milliseconds: 2500),
+                        child: Text("HELLO"),
+                      ),
+                    );
                   }
                   var data = snapshot.data;
                   return ListView.separated(
@@ -321,32 +367,70 @@ class _Home2State extends State<Home2> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            height: 150,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 4,
-                                    offset: Offset(4, 8), // Shadow position
+                          Stack(
+                            children: [
+
+                              Positioned(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 35,),
+                                  width: 184,
+                                  height:160,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        5
+                                    ),
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.black.withOpacity(0.03),
+                                        Colors.black.withOpacity(0.0),
+                                        Colors.black.withOpacity(0.03), //This controls the darkness of the bar
+                                      ],
+                                      // stops: [0, 1], if you want to adjust the gradiet this is where you would do it
+                                    ),
                                   ),
-                                ],
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      data.docs[index]['images'][0]),
-                                  fit: BoxFit.cover,
+
+                                  child: Container(
+
+                                    height: 150,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              data.docs[index]['images'][0]),
+                                          fit: BoxFit.cover,
+                                        ),
+
+
+
+                                     // borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 8), // Shadow position
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
+                              ),
+                              Positioned(
+                                  right: -10,
+                                  top: -5,
+                                  child: IconButton(
+                                onPressed: (){},
+                                icon: Icon(CupertinoIcons.heart,color: Colors.black,),
+                              )),
+
+                            ],
                           ),
                           Container(
                             padding: const EdgeInsets.all(5),
-                            height: 65,
-                            width: 150,
+                            height: 85,
+                            width: 184,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -366,7 +450,7 @@ class _Home2State extends State<Home2> {
                                 Text(
                                   data.docs[index]['title'],
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
@@ -376,10 +460,10 @@ class _Home2State extends State<Home2> {
                                   'PKR ${data.docs[index]['price']}',
                                   style: TextStyle(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w400),
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 3,
+                                  height: 5,
                                 ),
                                 Text(
                                   data.docs[index]['location'],
@@ -387,9 +471,21 @@ class _Home2State extends State<Home2> {
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400),
                                 ),
+                                SizedBox(height: 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(data.docs[index]['brand'],style: TextStyle(fontSize: 11),),
+                                    Container(height: 10, child: VerticalDivider(color: Colors.grey,thickness: 1,)),
+                                    Text(data.docs[index]['pta'],style: TextStyle(fontSize: 11),),
+                                    Container(height: 10, child: VerticalDivider(color: Colors.grey,thickness: 1,)),
+                                    Text(data.docs[index]['ram'],style: TextStyle(fontSize: 11),),
+                                  ],
+                                )
                               ],
                             ),
                           ),
+
                         ],
                       );
                       // return Center(child: Text(snapshot.data!.docs.length.toString()),);
@@ -400,6 +496,7 @@ class _Home2State extends State<Home2> {
                     ),
                   );
                 },
+
               ),
             ),
             SizedBox(

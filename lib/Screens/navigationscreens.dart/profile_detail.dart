@@ -14,9 +14,10 @@ class ProfileDetailScreen extends StatefulWidget {
   final String? email;
   final String? location;
   final String? gender;
+  final bool number;
 
   const ProfileDetailScreen(
-      {Key? key, required this.name, this.email, this.location, required this.gender})
+      {Key? key, required this.name, this.email, this.location, required this.gender,required this.number})
       : super(key: key);
 
   @override
@@ -135,6 +136,71 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 // },
                 decoration: InputDecoration(
                   hintText: 'Email',
+                  prefixIcon: Icon(Icons.email_outlined),
+                  suffixIcon: IconButton(onPressed: () {
+
+                  }, icon: Icon(Icons.edit_outlined),),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                // onTap: (){
+                //   showDialog(context: context, builder: (context) {
+                //     return AlertDialog(
+                //       content: Text('Want to change your email?'),
+                //       actions: [
+                //         Padding(padding:EdgeInsets.all(10),
+                //           child: Column(
+                //             children: [
+                //               TextFormField(
+                //                 controller:emailC,
+                //                 decoration: InputDecoration(
+                //                   hintText: 'new email',
+                //                   prefixIcon: Icon(Icons.email_outlined),
+                //                 ),
+                //               ),
+                //               SizedBox(height: 10,),
+                //               TextFormField(
+                //                 controller: passwordC,
+                //                 decoration: InputDecoration(
+                //                   hintText: 'old Password',
+                //                   prefixIcon: Icon(Icons.lock_open_outlined),
+                //                 ),
+                //               ),
+                //               SizedBox(height: 5,),
+                //               ElevatedButton(onPressed: ()async{
+                //
+                //                 loading=true;
+                //
+                //                 await changeEmail(
+                //                     email: emailC.text,password: passwordC.text
+                //                 );
+                //
+                //                 loading=false;
+                //
+                //
+                //
+                //               }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
+                //             ],
+                //           ),
+                //         )
+                //       ],
+                //
+                //     );
+                //   }
+                //   );
+                // },
+                readOnly: true,
+                initialValue: widget.number.toString(),
+                // onChanged: (value) {
+                //   setState(() {
+                //     email = value;
+                //   });
+                // },
+                decoration: InputDecoration(
+                  hintText: 'Phone number',
                   prefixIcon: Icon(Icons.email_outlined),
                   suffixIcon: IconButton(onPressed: () {
 

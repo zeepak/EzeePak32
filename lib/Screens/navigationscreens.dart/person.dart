@@ -15,11 +15,12 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   bool loading = false;
-  String fullName = '';
+  String? fullName = '';
   String? email = '';
   String? address = '';
   String gender = '';
   String uid = '';
+  bool number =false;
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -31,7 +32,8 @@ class _AccountState extends State<Account> {
           snapshot.get('fullName') != null &&
           snapshot.get('email')   != null &&
           snapshot.get('location') != null &&
-          snapshot.get('gender' )!= null
+          snapshot.get('gender' )!= null &&
+      snapshot.get('phone')!=null
       )
       {
         setState(() {
@@ -39,6 +41,7 @@ class _AccountState extends State<Account> {
           email = snapshot.data()!['email'];
           address = snapshot.data()!['location'];
           gender = snapshot.data()!['gender'];
+          number=snapshot.get('phone')!=null;
 
           uid = snapshot.data()!['uid'];
         });
@@ -49,6 +52,7 @@ class _AccountState extends State<Account> {
           address = snapshot.data()!['location'];
           gender = snapshot.data()!['gender'];
           uid = snapshot.data()!['uid'];
+          number=snapshot.get('phone')!=null;
           loading = true;
         });
       }
@@ -115,7 +119,7 @@ class _AccountState extends State<Account> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => ProfileDetailScreen(name: fullName.toString(),email: email,location: address,gender: gender,)));
+                              builder: (_) => ProfileDetailScreen(name: fullName.toString(),email: email,location: address,gender: gender, number: number,)));
                     },
                     child: SizedBox(
                         height: 40,

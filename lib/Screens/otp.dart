@@ -47,7 +47,7 @@ class _MyVerifyState extends State<MyVerify> {
   void _resendCode() {
     //other code here
     setState((){
-      secondsRemaining = 30;
+      secondsRemaining = 60;
       enableResend = false;
     });
   }
@@ -184,14 +184,22 @@ class _MyVerifyState extends State<MyVerify> {
                       });
                       final crendital = PhoneAuthProvider.credential(
                           verificationId: widget.verificationId,
-                          smsCode: _otpController.text.toString());
+                          smsCode: _otpController.text);
                       try {
                         await _auth
-                            .signInWithCredential(crendital)
-                            .then((value) => {postDetailsToFirestore()})
-                            .catchError((e) {
-                          Fluttertoast.showToast(msg: e!.message);
+                            .signInWithCredential(crendital);
+                        setState(() {
+                          loading=false;
                         });
+
+                        Navigator.pushAndRemoveUntil(
+                                (context),
+                                MaterialPageRoute(builder: (context) => const Home()),
+                                (route) => false);
+
+                            Fluttertoast.showToast(msg: 'Login successfully');
+
+
 
                         // Navigator.pushAndRemoveUntil(
                         //     (context),
@@ -285,32 +293,27 @@ class _MyVerifyState extends State<MyVerify> {
     );
   }
 
-  postDetailsToFirestore() async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
-
-    UserModel userModel = UserModel();
-
-    // writing all the values
-
-    userModel.uid = user?.uid;
-    userModel.phone = phone;
-    userModel.email = user?.email;
-    userModel.fullName = user?.displayName;
-    userModel.location = '';
-    userModel.joindate = '';
-    userModel.gender = '';
-
-    await firebaseFirestore
-        .collection("UsersDetails")
-        .doc(user?.uid)
-        .set(userModel.toMap());
-
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const Home()),
-        (route) => false);
-
-    Fluttertoast.showToast(msg: 'Login successfully');
-  }
+  // postDetailsToFirestore() async {
+  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  //   User? user = _auth.currentUser;
+  //
+  //   UserModel userModel = UserModel();
+  //
+  //   // writing all the values
+  //
+  //   userModel.uid = user?.uid;
+  //   userModel.phone = phone;
+  //
+  //   await firebaseFirestore
+  //       .collection("UsersDetails")
+  //       .doc(user?.uid)
+  //       .set(userModel.toMap());
+  //
+  //   Navigator.pushAndRemoveUntil(
+  //       (context),
+  //       MaterialPageRoute(builder: (context) => const Home()),
+  //       (route) => false);
+  //
+  //   Fluttertoast.showToast(msg: 'Login successfully');
+  // }
 }

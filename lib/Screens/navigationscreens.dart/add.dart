@@ -1403,6 +1403,7 @@ class _AddItemsState extends State<AddItems> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: TextFormField(
+
                             controller: colorSelectionController,
                             decoration: InputDecoration(
                               isDense: true,
@@ -1416,12 +1417,10 @@ class _AddItemsState extends State<AddItems> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                             ),
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return 'Text is empty';
-                              }
-                              return null;
-                            },
+                            validator: (String? value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Please enter a valid type of business';
+                              }},
 
                           ),
                         ),
@@ -1439,8 +1438,85 @@ class _AddItemsState extends State<AddItems> {
                   ),
 
                   const SizedBox(
-                    height: 25,
+                    height: 5,
                   ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.centerLeft,
+                    height: 45,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEFEFEF),
+                    ),
+                    child: Text('Contact Information',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: TextFormField(
+                      controller: titleController,
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        hintText: 'Name',
+                        hintStyle:TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
+
+                        icon: Image.asset('assets/icons/name.png',height: 22,),
+
+
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Text is empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: TextFormField(
+                      controller: descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      textAlign: TextAlign.start,
+                      decoration: InputDecoration(
+                        hintText: 'Mobile Number',
+                        hintStyle:TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
+
+                        icon: Image.asset('assets/icons/number.png',height: 22,),
+
+
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Text is empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.only(left: 70,top: 10),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
+                        Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
+
+                      ],
+                    ),
+                  ),
+
+
+                  SizedBox(height: 20,),
                   Center(
                     child: GestureDetector(
                       onTap: () async {

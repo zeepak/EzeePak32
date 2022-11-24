@@ -158,12 +158,12 @@ class _MainLoginState extends State<MainLogin> {
                     });
                     _auth.verifyPhoneNumber(
                         phoneNumber: countryController.text+phone!,
-                        verificationCompleted: (_) {
+                        verificationCompleted: (PhoneAuthCredential credential) {
                           setState(() {
                             loading = false;
                           });
                         },
-                        verificationFailed: (e) {
+                        verificationFailed: (FirebaseAuthException e) {
                           setState(() {
                             loading = false;
                           });
