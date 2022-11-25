@@ -9,9 +9,9 @@ class CustomTextButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        TextButton(onPressed: () {}, child: FittedBox(fit: BoxFit.cover, child: Text(text,style: TextStyle(color: Color(0xFF5D5D5D),fontSize: 13),)),style: TextButton.styleFrom(
+        TextButton(onPressed: () {},style: TextButton.styleFrom(
           backgroundColor: Color(0xFFEFEFEF)
-        ),),
+        ), child: FittedBox(fit: BoxFit.cover, child: Text(text,style: TextStyle(color: Color(0xFF5D5D5D),fontSize: 13),)),),
       ],
     );
   }

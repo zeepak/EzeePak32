@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/email_verifcation_screen.dart';
-import 'package:mobihub_2/Screens/login_page.dart';
 import 'package:mobihub_2/Screens/search_screens/search_filter.dart';
 
 import '../../Models/user_model.dart';
@@ -14,10 +13,11 @@ class ProfileDetailScreen extends StatefulWidget {
   final String? email;
   final String? location;
   final String? gender;
-  final bool number;
+  final String? phone;
+
 
   const ProfileDetailScreen(
-      {Key? key, required this.name, this.email, this.location, required this.gender,required this.number})
+      {Key? key, required this.name, required this.email, this.location, required this.gender,  required this.phone})
       : super(key: key);
 
   @override
@@ -34,8 +34,10 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   var passwordC =TextEditingController();
   var city = TextEditingController();
 
+
   @override
   void initState() {
+    print(widget.email);
     if (widget.location != null && widget.location!.isNotEmpty) {
       setState(() {
         city = TextEditingController(text: widget.location);
@@ -77,10 +79,76 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   suffixIcon: Icon(Icons.edit_outlined),
                 ),
               ),
+
               SizedBox(
                 height: 20,
               ),
-              TextFormField(
+              widget.email == null?
+                  Visibility(
+                  visible: false,
+                  child:  TextFormField(
+                    onTap: (){
+                      showDialog(context: context, builder: (context) {
+                        return AlertDialog(
+                          content: Text('Want to change your email?'),
+                          actions: [
+                            Padding(padding:EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller:emailC,
+                                    decoration: InputDecoration(
+                                      hintText: 'new email',
+                                      prefixIcon: Icon(Icons.email_outlined),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  TextFormField(
+                                    controller: passwordC,
+                                    decoration: InputDecoration(
+                                      hintText: 'old Password',
+                                      prefixIcon: Icon(Icons.lock_open_outlined),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  ElevatedButton(onPressed: ()async{
+
+                                    loading=true;
+
+                                    await changeEmail(
+                                        email: emailC.text,password: passwordC.text
+                                    );
+
+                                    loading=false;
+
+
+
+                                  }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
+                                ],
+                              ),
+                            )
+                          ],
+
+                        );
+                      }
+                      );
+                    },
+                    readOnly: true,
+                    initialValue: widget.email,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     email = value;
+                    //   });
+                    // },
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      prefixIcon: Icon(Icons.email_outlined),
+                      suffixIcon: IconButton(onPressed: () {
+
+                      }, icon: Icon(Icons.edit_outlined),),
+                    ),
+                  ))
+              :TextFormField(
                 onTap: (){
                   showDialog(context: context, builder: (context) {
                     return AlertDialog(
@@ -142,71 +210,33 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                // onTap: (){
-                //   showDialog(context: context, builder: (context) {
-                //     return AlertDialog(
-                //       content: Text('Want to change your email?'),
-                //       actions: [
-                //         Padding(padding:EdgeInsets.all(10),
-                //           child: Column(
-                //             children: [
-                //               TextFormField(
-                //                 controller:emailC,
-                //                 decoration: InputDecoration(
-                //                   hintText: 'new email',
-                //                   prefixIcon: Icon(Icons.email_outlined),
-                //                 ),
-                //               ),
-                //               SizedBox(height: 10,),
-                //               TextFormField(
-                //                 controller: passwordC,
-                //                 decoration: InputDecoration(
-                //                   hintText: 'old Password',
-                //                   prefixIcon: Icon(Icons.lock_open_outlined),
-                //                 ),
-                //               ),
-                //               SizedBox(height: 5,),
-                //               ElevatedButton(onPressed: ()async{
-                //
-                //                 loading=true;
-                //
-                //                 await changeEmail(
-                //                     email: emailC.text,password: passwordC.text
-                //                 );
-                //
-                //                 loading=false;
-                //
-                //
-                //
-                //               }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
-                //             ],
-                //           ),
-                //         )
-                //       ],
-                //
-                //     );
-                //   }
-                //   );
-                // },
+              widget.phone == null?
+                  Visibility(visible:false,child:  TextFormField(
+
+                    readOnly: true,
+                    initialValue: widget.phone.toString(),
+
+                    decoration: InputDecoration(
+                      hintText: 'Phone number',
+                      prefixIcon: const Icon(Icons.phone_android),
+                      suffixIcon: IconButton(onPressed: () {
+
+                      }, icon: Icon(Icons.edit_outlined),),
+                    ),
+                  ))
+              :TextFormField(
+
                 readOnly: true,
-                initialValue: widget.number.toString(),
-                // onChanged: (value) {
-                //   setState(() {
-                //     email = value;
-                //   });
-                // },
+                initialValue: widget.phone.toString(),
+
                 decoration: InputDecoration(
                   hintText: 'Phone number',
-                  prefixIcon: Icon(Icons.email_outlined),
+                  prefixIcon: const Icon(Icons.phone_android),
                   suffixIcon: IconButton(onPressed: () {
 
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
-              ),
+              ), //Phone TextField
               SizedBox(
                 height: 20,
               ),
@@ -289,7 +319,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     try {
 
       User user = _auth.currentUser!;
-      DocumentReference ref=await collectionRef.doc(user.uid);
+      DocumentReference ref=collectionRef.doc(user.uid);
       final cred =
       EmailAuthProvider.credential(email: user.email!, password: passwordC.text);
       user.reauthenticateWithCredential(cred).then((value) {
@@ -318,9 +348,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   }
 
   postDetailsToFirestore() async {
-    var _auth = FirebaseAuth.instance;
+    var auth = FirebaseAuth.instance;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
+    User? user = auth.currentUser;
 
     UserModel userModel = UserModel();
 
@@ -344,4 +374,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
         MaterialPageRoute(builder: (context) => const Home()),
             (route) => false);
   }
+
+
+
 }

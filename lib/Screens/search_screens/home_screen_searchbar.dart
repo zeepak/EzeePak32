@@ -25,7 +25,7 @@ class _HomeScreenSearchBarState extends State<HomeScreenSearchBar> {
         child: Container(
           padding: EdgeInsets.all(10),
           child: Column(
-            children: [
+            children: const [
 
 
 

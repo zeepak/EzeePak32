@@ -1,14 +1,10 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
-
-import '../Models/user_model.dart';
 import 'home_page.dart';
 
 class MyVerify extends StatefulWidget {
@@ -25,7 +21,7 @@ class MyVerify extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<MyVerify> {
-  int secondsRemaining = 30;
+  int secondsRemaining = 60;
   bool enableResend = false;
   Timer? timer;
 

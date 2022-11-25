@@ -29,7 +29,7 @@ class _YouraddsState extends State<Youradds> {
       title: const Text('My Ads',style: TextStyle(fontFamily: 'Lato',fontSize: 17),),
         ),
         backgroundColor: Colors.white,
-        body:  TabBarView(children: [
+        body:  const TabBarView(children: [
             ActiveAdsScreen(),
             Center(child: Text('No pending ads yet'),),
             Center(child: Text('No delete ads yet'),),

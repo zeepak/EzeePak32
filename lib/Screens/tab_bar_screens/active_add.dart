@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mobihub_2/Firebase/google.dart';
-import 'package:mobihub_2/Models/post_model.dart';
 
 class ActiveAdsScreen extends StatefulWidget {
     const ActiveAdsScreen({Key? key}) : super(key: key);

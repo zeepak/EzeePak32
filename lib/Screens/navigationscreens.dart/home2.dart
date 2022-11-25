@@ -116,7 +116,7 @@ class _Home2State extends State<Home2> {
                               });
                               },
                               child: city.text.isNotEmpty?Text(
-                                '${city.text}',overflow: TextOverflow.ellipsis,
+                                city.text,overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.black54),
                               ):Text(
                                 'Location',
@@ -134,64 +134,58 @@ class _Home2State extends State<Home2> {
             const SizedBox(
               height: 20,
             ),
-             Container(
+             Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SizedBox(
+                      width: 350,
+                      height: 150,
 
-              child:
-               Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        width: 350,
-                        height: 150,
+                      child:
+                      CarouselSlider.builder(
+                        itemCount: images.length,
 
-                        child:
-                        CarouselSlider.builder(
-                          itemCount: images.length,
+                        itemBuilder:(context,index, realIndex){
 
-                          itemBuilder:(context,index, realIndex){
+                          return    images.isNotEmpty?Container(
 
-                            return    images.isNotEmpty?Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
 
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-
-                                        images[index]
-                                      )
+                                      images[index]
+                                    )
 
 
-                                      // NetworkImage(
-                                      //
-                                      //
-                                      // ),
-                                  ),
-                              ),
-                            ):Center(child: CircularProgressIndicator());
-                          },
-                          options: CarouselOptions(
-                            //height: 150,
-                              viewportFraction: 1,
-                              autoPlay: true,
-                            onPageChanged: (index,reason){
-                                setState(() {
-                                  currentIndex =index;
-                                });
+                                    // NetworkImage(
+                                    //
+                                    //
+                                    // ),
+                                ),
+                            ),
+                          ):Center(child: CircularProgressIndicator());
+                        },
+                        options: CarouselOptions(
+                          //height: 150,
+                            viewportFraction: 1,
+                            autoPlay: true,
+                          onPageChanged: (index,reason){
+                              setState(() {
+                                currentIndex =index;
+                              });
 
-                            }
+                          }
 
 
-                              ),
-                        ),
-
+                            ),
                       ),
+
                     ),
+                  ),
 
-                  )
-
-
-              ),
+                ),
             SizedBox(height: 3,),
             Center(child: dotIndicator()),
 
@@ -406,7 +400,7 @@ class _Home2State extends State<Home2> {
 
 
                                      // borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
                                           color: Colors.grey,
                                           blurRadius: 4,
@@ -431,7 +425,7 @@ class _Home2State extends State<Home2> {
                             padding: const EdgeInsets.all(5),
                             height: 85,
                             width: 184,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(10),

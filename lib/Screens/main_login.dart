@@ -137,7 +137,6 @@ class _MainLoginState extends State<MainLogin> {
                       maxLength: 10,
                       
                       keyboardType: TextInputType.phone,
-                      //controller: _phonecontroller,
                     ),
                   ),
                 ],
