@@ -302,7 +302,10 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       },
                       child: loading
                           ? Center(
-                          child: CircularProgressIndicator(color: Colors.blue,))
+                          child: SizedBox(
+                              height: 20,width: 20,
+                              child
+                              : CircularProgressIndicator()))
                           : Text('Save')),
                 ],
               ),
