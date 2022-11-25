@@ -83,7 +83,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              widget.email == null?
+              widget.email!.isEmpty?
                   Visibility(
                   visible: false,
                   child:  TextFormField(
@@ -210,7 +210,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
               ),
-              widget.phone == null?
+              widget.phone!.isEmpty ?
                   Visibility(visible:false,child:  TextFormField(
 
                     readOnly: true,
