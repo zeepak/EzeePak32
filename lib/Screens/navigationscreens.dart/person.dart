@@ -15,12 +15,13 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   bool loading = false;
-  String? fullName = '';
-  String? email = '';
-  String? address = '';
-  String gender = '';
-  String uid = '';
-  String? phone='' ;
+   String? fullName='' ;
+   String? email='' ;
+   String? location='';
+
+   String? uid;
+
+
 
 
   Future _getDataFromDatabase() async {
@@ -32,31 +33,25 @@ class _AccountState extends State<Account> {
       if (snapshot.exists &&
           snapshot.get('fullName') != null &&
           snapshot.get('email')   != null &&
-          snapshot.get('location') != null &&
-          snapshot.get('gender' )!= null &&
-          snapshot.get('phone')!=null
+          snapshot.get('location') != null
+
+
       )
       {
         setState(() {
           fullName = snapshot.data()!['fullName'];
           email = snapshot.data()!['email'];
-          address = snapshot.data()!['location'];
-          gender = snapshot.data()!['gender'];
-          phone =snapshot.data()!['phone'];
-
-
           uid = snapshot.data()!['uid'];
+          location=snapshot.data()!['location'];
         });
       }
 
       else {
         setState(() {
           fullName = snapshot.data()!['fullName'];
-          email = snapshot.data()!['email'];
-          address = snapshot.data()!['location'];
-          gender = snapshot.data()!['gender'];
+          email = snapshot.data()!['email'].toString();
+          location=snapshot.data()!['location'];
           uid = snapshot.data()!['uid'];
-          phone =snapshot.data()!['phone'];
           loading = true;
         });
       }
@@ -123,7 +118,7 @@ class _AccountState extends State<Account> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => ProfileDetailScreen(name: fullName.toString(),email: email,location: address,gender: gender,phone: phone,)));
+                              builder: (_) => ProfileDetailScreen(name: fullName!,location:location!)));
                     },
                     child: SizedBox(
                         height: 40,

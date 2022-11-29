@@ -9,15 +9,10 @@ import '../../Models/user_model.dart';
 import '../home_page.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
-  final String? name;
-  final String? email;
-  final String? location;
-  final String? gender;
-  final String? phone;
-
-
+final String name;
+final String? location;
   const ProfileDetailScreen(
-      {Key? key, required this.name, required this.email, this.location, required this.gender,  required this.phone})
+      {Key? key, required this.name, this.location})
       : super(key: key);
 
   @override
@@ -33,21 +28,65 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   var emailC = TextEditingController();
   var passwordC =TextEditingController();
   var city = TextEditingController();
+  String? email='';
+  String? fullName='';
+  String? phone='';
+  //String? location='';
+  String? gender='';
+  String? uid;
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("UsersDetails")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get(GetOptions(source: Source.cache))
+        .then((snapshot) async {
+      if (snapshot.exists &&
+
+          snapshot.get('email')   != null &&
+          snapshot.get('location') != null &&
+          snapshot.get('gender' )!= null &&
+          snapshot.get('phone')!=null
+      )
+      {
+        setState(() {
+
+          email = snapshot.data()!['email'];
+          phone = snapshot.data()!['phone'];
+          gender = snapshot.data()!['gender'];
+          uid = snapshot.data()!['uid'];
+        });
+      }
+
+      else {
+        setState(() {
+
+          email = snapshot.data()!['email'].toString();
+          phone = snapshot.data()!['phone'];
+          gender = snapshot.data()!['gender'];
+          uid = snapshot.data()!['uid'];
+        });
+      }
+    });
+  }
 
 
   @override
   void initState() {
-    print(widget.email);
     if (widget.location != null && widget.location!.isNotEmpty) {
       setState(() {
         city = TextEditingController(text: widget.location);
       });
     }
-    if (widget.name != null && widget.name!.isNotEmpty) {
+    print('Name is == ${widget.name}');
+
+
+    if (widget.name != null && widget.name.isNotEmpty) {
       setState(() {
-        name = TextEditingController(text: widget.name);
+        name = TextEditingController(text:widget.name);
       });
     }
+    _getDataFromDatabase();
+
     super.initState();
   }
 
@@ -83,7 +122,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              widget.email!.isEmpty?
+              email!.isEmpty?
                   Visibility(
                   visible: false,
                   child:  TextFormField(
@@ -134,7 +173,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       );
                     },
                     readOnly: true,
-                    initialValue: widget.email,
+                    initialValue: email.toString(),
                     // onChanged: (value) {
                     //   setState(() {
                     //     email = value;
@@ -196,7 +235,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   );
                 },
                 readOnly: true,
-                initialValue: widget.email,
+                initialValue: email.toString(),
                 // onChanged: (value) {
                 //   setState(() {
                 //     email = value;
@@ -210,11 +249,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
               ),
-              widget.phone!.isEmpty ?
-                  Visibility(visible:false,child:  TextFormField(
+              phone!.isEmpty?
+                  Visibility(visible:false,
+                      child:  TextFormField(
 
                     readOnly: true,
-                    initialValue: widget.phone.toString(),
+                    initialValue: phone.toString(),
 
                     decoration: InputDecoration(
                       hintText: 'Phone number',
@@ -227,7 +267,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               :TextFormField(
 
                 readOnly: true,
-                initialValue: widget.phone.toString(),
+                initialValue: phone.toString(),
 
                 decoration: InputDecoration(
                   hintText: 'Phone number',
@@ -249,6 +289,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 },
                 readOnly: true,
                 controller: city,
+                // initialValue: city.text,
 
                 decoration: InputDecoration(
                   hintText: 'Address',
@@ -264,8 +305,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person,),
                 ),
-                hint: Text(widget.gender!.isNotEmpty
-                    ? widget.gender!
+                hint: Text(gender!.isNotEmpty
+                    ? gender!
                     : 'Select Gender'),
                 items: ['Male', 'Female'].map(
                       (val) {

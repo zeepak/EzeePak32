@@ -353,11 +353,11 @@ class _Home2State extends State<Home2> {
                       ),
                     );
                   }
-                  var data = snapshot.data;
+                  snapshot.data;
                   return ListView.separated(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: data!.docs.length,
+                    itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
@@ -393,7 +393,7 @@ class _Home2State extends State<Home2> {
 
                                         image: DecorationImage(
                                           image: NetworkImage(
-                                              data.docs[index]['images'][0]),
+                                              snapshot.data!.docs[index]['images'][0]),
                                           fit: BoxFit.cover,
                                         ),
 
@@ -442,7 +442,7 @@ class _Home2State extends State<Home2> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.docs[index]['title'],
+                                  snapshot.data!.docs[index]['title'],
                                   style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w500),
@@ -451,7 +451,7 @@ class _Home2State extends State<Home2> {
                                   height: 3,
                                 ),
                                 Text(
-                                  'PKR ${data.docs[index]['price']}',
+                                  'PKR ${snapshot.data!.docs[index]['price']}',
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500),
@@ -460,7 +460,7 @@ class _Home2State extends State<Home2> {
                                   height: 5,
                                 ),
                                 Text(
-                                  data.docs[index]['location'],
+                                  snapshot.data!.docs[index]['location'].toString(),
                                   style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400),
@@ -469,11 +469,11 @@ class _Home2State extends State<Home2> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text(data.docs[index]['brand'],style: TextStyle(fontSize: 11),),
+                                    Text(snapshot.data!.docs[index]['brand'],style: TextStyle(fontSize: 11),),
                                     Container(height: 10, child: VerticalDivider(color: Colors.grey,thickness: 1,)),
-                                    Text(data.docs[index]['pta'],style: TextStyle(fontSize: 11),),
+                                    Text(snapshot.data!.docs[index]['pta'],style: TextStyle(fontSize: 11),),
                                     Container(height: 10, child: VerticalDivider(color: Colors.grey,thickness: 1,)),
-                                    Text(data.docs[index]['ram'],style: TextStyle(fontSize: 11),),
+                                    Text(snapshot.data!.docs[index]['ram'],style: TextStyle(fontSize: 11),),
                                   ],
                                 )
                               ],
