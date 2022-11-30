@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       body: PageStorage(
         bucket: bucket,
         child: currentScreen,
@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       setState(() {
                         if(FirebaseAuth.instance.currentUser != null){
-                          currentScreen = const Account();
+                          currentScreen =  Account();
                         currentTab = 3;
                         }else{
                            Navigator.push(context,
@@ -231,6 +231,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+
     );
   }
 }

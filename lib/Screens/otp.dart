@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
+import '../Models/user_model.dart';
 import 'home_page.dart';
 
 class MyVerify extends StatefulWidget {
@@ -182,8 +184,24 @@ class _MyVerifyState extends State<MyVerify> {
                           verificationId: widget.verificationId,
                           smsCode: _otpController.text);
                       try {
-                        await _auth
+                         UserCredential userDetail=await _auth
                             .signInWithCredential(crendital);
+                            if(userDetail.additionalUserInfo!.isNewUser)
+                             {
+                               await postDetailsToFirestore();
+
+                             }else{
+                              if(_auth.currentUser !=null){
+
+                                Navigator.pushAndRemoveUntil(
+                                    (context),
+                                    MaterialPageRoute(builder: (context) => const Home()),
+                                        (route) => false);
+
+                                Fluttertoast.showToast(msg: 'Login successfully');
+                              }
+                            }
+
                         setState(() {
                           loading=false;
                         });
@@ -289,27 +307,28 @@ class _MyVerifyState extends State<MyVerify> {
     );
   }
 
-  // postDetailsToFirestore() async {
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //   User? user = _auth.currentUser;
-  //
-  //   UserModel userModel = UserModel();
-  //
-  //   // writing all the values
-  //
-  //   userModel.uid = user?.uid;
-  //   userModel.phone = phone;
-  //
-  //   await firebaseFirestore
-  //       .collection("UsersDetails")
-  //       .doc(user?.uid)
-  //       .set(userModel.toMap());
-  //
-  //   Navigator.pushAndRemoveUntil(
-  //       (context),
-  //       MaterialPageRoute(builder: (context) => const Home()),
-  //       (route) => false);
-  //
-  //   Fluttertoast.showToast(msg: 'Login successfully');
-  // }
+  postDetailsToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel = UserModel();
+
+    // writing all the values
+
+    userModel.uid = user?.uid;
+    userModel.phone = phone;
+
+
+    await firebaseFirestore
+        .collection("UsersDetails")
+        .doc(user?.uid)
+        .set(userModel.toMap());
+
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const Home()),
+        (route) => false);
+
+    Fluttertoast.showToast(msg: 'Login successfully');
+  }
 }

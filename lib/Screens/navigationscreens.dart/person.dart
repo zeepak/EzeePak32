@@ -15,11 +15,12 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   bool loading = false;
-   String? fullName='' ;
-   String? email='' ;
-   String? location='';
+  String? fullName='' ;
+  String? email='' ;
+  String? phone='' ;
+  String? location='';
 
-   String? uid;
+  String? uid;
 
 
 
@@ -33,6 +34,7 @@ class _AccountState extends State<Account> {
       if (snapshot.exists &&
           snapshot.get('fullName') != null &&
           snapshot.get('email')   != null &&
+          snapshot.get('phone')   != null &&
           snapshot.get('location') != null
 
 
@@ -43,6 +45,7 @@ class _AccountState extends State<Account> {
           email = snapshot.data()!['email'];
           uid = snapshot.data()!['uid'];
           location=snapshot.data()!['location'];
+          phone=snapshot.data()!['phone'];
         });
       }
 
@@ -51,6 +54,7 @@ class _AccountState extends State<Account> {
           fullName = snapshot.data()!['fullName'];
           email = snapshot.data()!['email'].toString();
           location=snapshot.data()!['location'];
+          phone=snapshot.data()!['phone'];
           uid = snapshot.data()!['uid'];
           loading = true;
         });
@@ -93,14 +97,22 @@ class _AccountState extends State<Account> {
                 Padding(
                     padding: const EdgeInsets.only(top: 18.0),
                     child:
-                        Text(
-                            fullName.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )),
+                    fullName == null?
+                    Text(
+                        uid.toString(),
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.bold,
+                        ),)
+
+                        :Text(
+                      fullName.toString(),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
               ],
             ),
             const SizedBox(
@@ -118,7 +130,7 @@ class _AccountState extends State<Account> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => ProfileDetailScreen(name: fullName!,location:location!)));
+                              builder: (_) => ProfileDetailScreen(name: fullName.toString(),location:location.toString(),phone: phone.toString(),email: email.toString(),)));
                     },
                     child: SizedBox(
                         height: 40,
@@ -264,7 +276,7 @@ class _AccountState extends State<Account> {
                             (context),
                             MaterialPageRoute(
                                 builder: (context) => const MainLogin()),
-                            (route) => false);
+                                (route) => false);
                       });
                     },
                     child: SizedBox(

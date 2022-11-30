@@ -159,10 +159,6 @@ class _Home2State extends State<Home2> {
                                     )
 
 
-                                    // NetworkImage(
-                                    //
-                                    //
-                                    // ),
                                 ),
                             ),
                           ):Center(child: CircularProgressIndicator());

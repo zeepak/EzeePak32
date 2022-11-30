@@ -9,10 +9,12 @@ import '../../Models/user_model.dart';
 import '../home_page.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
-final String name;
-final String? location;
+  final String? name;
+  final String? location;
+  final String? phone;
+  final String? email;
   const ProfileDetailScreen(
-      {Key? key, required this.name, this.location})
+      {Key? key,   required this.name,  this.location, required this.phone,required this.email})
       : super(key: key);
 
   @override
@@ -28,13 +30,13 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   var emailC = TextEditingController();
   var passwordC =TextEditingController();
   var city = TextEditingController();
-  String? email='';
-  String? fullName='';
-  String? phone='';
+  //String? email='';
+  //String? fullName='';
+  //String phone='';
   //String? location='';
-  String? gender='';
+  String gender='';
   String? uid;
-  Future _getDataFromDatabase() async {
+   _getDataFromDatabase() async {
     await FirebaseFirestore.instance
         .collection("UsersDetails")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -43,27 +45,22 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       if (snapshot.exists &&
 
           snapshot.get('email')   != null &&
-          snapshot.get('location') != null &&
           snapshot.get('gender' )!= null &&
           snapshot.get('phone')!=null
       )
       {
         setState(() {
 
-          email = snapshot.data()!['email'];
-          phone = snapshot.data()!['phone'];
+         // phone = snapshot.data()!['phone'];
           gender = snapshot.data()!['gender'];
-          uid = snapshot.data()!['uid'];
         });
       }
 
       else {
         setState(() {
 
-          email = snapshot.data()!['email'].toString();
-          phone = snapshot.data()!['phone'];
+          //phone = snapshot.data()!['phone'];
           gender = snapshot.data()!['gender'];
-          uid = snapshot.data()!['uid'];
         });
       }
     });
@@ -72,18 +69,19 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
 
   @override
   void initState() {
+
     if (widget.location != null && widget.location!.isNotEmpty) {
-      setState(() {
+
         city = TextEditingController(text: widget.location);
-      });
+
     }
-    print('Name is == ${widget.name}');
+    debugPrint('Name is == ${widget.name}');
 
 
-    if (widget.name != null && widget.name.isNotEmpty) {
-      setState(() {
+    if (widget.name != null && widget.name!.isNotEmpty) {
+
         name = TextEditingController(text:widget.name);
-      });
+
     }
     _getDataFromDatabase();
 
@@ -122,58 +120,14 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              email!.isEmpty?
-                  Visibility(
+              widget.email == 'null'?
+
+              Visibility(
                   visible: false,
                   child:  TextFormField(
-                    onTap: (){
-                      showDialog(context: context, builder: (context) {
-                        return AlertDialog(
-                          content: Text('Want to change your email?'),
-                          actions: [
-                            Padding(padding:EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  TextFormField(
-                                    controller:emailC,
-                                    decoration: InputDecoration(
-                                      hintText: 'new email',
-                                      prefixIcon: Icon(Icons.email_outlined),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10,),
-                                  TextFormField(
-                                    controller: passwordC,
-                                    decoration: InputDecoration(
-                                      hintText: 'old Password',
-                                      prefixIcon: Icon(Icons.lock_open_outlined),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5,),
-                                  ElevatedButton(onPressed: ()async{
 
-                                    loading=true;
-
-                                    await changeEmail(
-                                        email: emailC.text,password: passwordC.text
-                                    );
-
-                                    loading=false;
-
-
-
-                                  }, child:loading?Center(child: CircularProgressIndicator(color:Colors.black,),):  Text('Submit'))
-                                ],
-                              ),
-                            )
-                          ],
-
-                        );
-                      }
-                      );
-                    },
                     readOnly: true,
-                    initialValue: email.toString(),
+                    initialValue: widget.email,
                     // onChanged: (value) {
                     //   setState(() {
                     //     email = value;
@@ -187,7 +141,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       }, icon: Icon(Icons.edit_outlined),),
                     ),
                   ))
-              :TextFormField(
+                  :TextFormField(
                 onTap: (){
                   showDialog(context: context, builder: (context) {
                     return AlertDialog(
@@ -235,7 +189,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   );
                 },
                 readOnly: true,
-                initialValue: email.toString(),
+                initialValue: widget.email.toString(),
                 // onChanged: (value) {
                 //   setState(() {
                 //     email = value;
@@ -249,12 +203,15 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   }, icon: Icon(Icons.edit_outlined),),
                 ),
               ),
-              phone!.isEmpty?
-                  Visibility(visible:false,
+
+              widget.phone =='null'?
+
+              Visibility(
+                      visible:false,
                       child:  TextFormField(
 
                     readOnly: true,
-                    initialValue: phone.toString(),
+                    initialValue: widget.phone.toString(),
 
                     decoration: InputDecoration(
                       hintText: 'Phone number',
@@ -263,11 +220,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
 
                       }, icon: Icon(Icons.edit_outlined),),
                     ),
-                  ))
-              :TextFormField(
+                  )
+                  )
+                  : TextFormField(
 
                 readOnly: true,
-                initialValue: phone.toString(),
+                initialValue: widget.phone.toString(),
 
                 decoration: InputDecoration(
                   hintText: 'Phone number',
@@ -289,7 +247,6 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 },
                 readOnly: true,
                 controller: city,
-                // initialValue: city.text,
 
                 decoration: InputDecoration(
                   hintText: 'Address',
@@ -305,9 +262,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person,),
                 ),
-                hint: Text(gender!.isNotEmpty
-                    ? gender!
-                    : 'Select Gender'),
+                hint: Text(gender.isNotEmpty
+                    ? gender: 'Select Gender'),
                 items: ['Male', 'Female'].map(
                       (val) {
                     return DropdownMenuItem<String>(
@@ -346,7 +302,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                           child: SizedBox(
                               height: 20,width: 20,
                               child
-                              : CircularProgressIndicator()))
+                                  : CircularProgressIndicator()))
                           : Text('Save')),
                 ],
               ),
@@ -374,7 +330,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
             Fluttertoast.showToast(msg: 'Verification Email has been sent to you');
             await _auth.signOut();
 
-           });
+          });
           setState(() {
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>VerificationScreen()), (route) => false);
           });
@@ -387,7 +343,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     } on Exception catch (err) {
       Fluttertoast.showToast(msg: err.toString());
 
-     // showErrorDialog(err.toString());
+      // showErrorDialog(err.toString());
     }
   }
 
