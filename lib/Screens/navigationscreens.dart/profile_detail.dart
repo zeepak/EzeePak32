@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/email_verifcation_screen.dart';
+import 'package:mobihub_2/Screens/navigationscreens.dart/phone_update_otp.dart';
 import 'package:mobihub_2/Screens/search_screens/search_filter.dart';
 
 import '../../Models/user_model.dart';
 import '../home_page.dart';
+
 
 class ProfileDetailScreen extends StatefulWidget {
   final String? name;
@@ -30,6 +32,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   var emailC = TextEditingController();
   var passwordC =TextEditingController();
   var city = TextEditingController();
+  String? changePhoneNumber='';
+  var changeNumberController =TextEditingController();
   //String? email='';
   //String? fullName='';
   //String phone='';
@@ -120,9 +124,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              widget.email == 'null'?
+             widget.email!.isEmpty || widget.email == 'null'?
 
-              Visibility(
+                   Visibility(
                   visible: false,
                   child:  TextFormField(
 
@@ -204,7 +208,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 ),
               ),
 
-              widget.phone =='null'?
+              widget.phone!.isEmpty || widget.phone =='null'?
 
               Visibility(
                       visible:false,
@@ -223,6 +227,73 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   )
                   )
                   : TextFormField(
+                onTap: (){
+                  showDialog(context: context, builder: (context){
+                    return AlertDialog(
+                      title: Text('want to change your number'),
+                      actions: [
+                        TextFormField(
+
+                      controller: changeNumberController,
+                          decoration: InputDecoration(
+                            hintText: 'Type number',
+                            prefixIcon: Icon(Icons.phone_android),
+
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        ElevatedButton(onPressed: (){
+                          FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: changeNumberController.text,
+                              timeout: const Duration(minutes: 2),
+                              verificationCompleted: (credential) async {
+
+                                await ( FirebaseAuth.instance.currentUser!).updatePhoneNumber(credential);
+                                // either this occurs or the user needs to manually enter the SMS code
+                              },
+                              verificationFailed: (FirebaseAuthException e){
+                                setState(() {
+                                  loading = false;
+                                });
+                                if (e.code == 'invalid-phone-number') {
+                                  Fluttertoast.showToast(msg: 'Invalid Phone Number');
+                                }
+                                if (e.code == 'too-many-requests') {
+                                  Fluttertoast.showToast(msg: 'To many request');
+                                }
+                              },
+                              codeSent: (String verificationId, int? token) async {
+                                Fluttertoast.showToast(msg: "Code send");
+                                Navigator.push(context, MaterialPageRoute(builder: (_)=> PhoneUpdateOtpScreen(
+                                  verificationId: verificationId, phone: changeNumberController.text,
+                                  number:changeNumberController.text,
+
+
+                                ),
+                                ),
+                                );
+
+                                setState(() {
+                                  loading = false;
+                                });
+                              },
+                              codeAutoRetrievalTimeout: (e) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                Fluttertoast.showToast(msg: e);
+                              });
+                        },   child: loading==true
+                            ? Center(
+                            child: SizedBox(
+                                height: 20,width: 20,
+                                child
+                                    : CircularProgressIndicator()))
+                            : const Text('Update')),
+                      ],
+                    );
+                  });
+                },
 
                 readOnly: true,
                 initialValue: widget.phone.toString(),

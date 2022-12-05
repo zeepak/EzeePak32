@@ -6,30 +6,31 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
-import '../Models/user_model.dart';
-import 'home_page.dart';
 
-class MyVerify extends StatefulWidget {
+import '../../Models/user_model.dart';
+import '../home_page.dart';
+
+
+class PhoneUpdateOtpScreen extends StatefulWidget {
   final String verificationId;
   final String phone;
   final String number;
 
-  const MyVerify({Key? key, required this.verificationId, required this.phone,required this.number})
+  const PhoneUpdateOtpScreen({Key? key, required this.verificationId, required this.phone,required this.number})
       : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  State<MyVerify> createState() => _MyVerifyState(phone);
+  State<PhoneUpdateOtpScreen> createState() => _PhoneUpdateOtpScreenState(phone);
 }
 
-class _MyVerifyState extends State<MyVerify> {
+class _PhoneUpdateOtpScreenState extends State<PhoneUpdateOtpScreen> {
   int secondsRemaining = 60;
   bool enableResend = false;
   Timer? timer;
 
   @override
   initState() {
-    print(widget.verificationId);
     super.initState();
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
@@ -83,7 +84,7 @@ class _MyVerifyState extends State<MyVerify> {
 
   final String phone;
 
-  _MyVerifyState(this.phone);
+  _PhoneUpdateOtpScreenState(this.phone);
 
   bool validate = false;
   bool seconds = false;
@@ -178,51 +179,11 @@ class _MyVerifyState extends State<MyVerify> {
                       ),
                     ),
                     onPressed: () async {
-                      setState(() {
-                        loading = true;
-                      });
-                      final crendital = PhoneAuthProvider.credential(
-                          verificationId: widget.verificationId,
-                          smsCode: _otpController.text);
+
+
                       try {
-                         UserCredential userDetail=await _auth
-                            .signInWithCredential(crendital);
-                            if(userDetail.additionalUserInfo!.isNewUser)
-                             {
-                               await postDetailsToFirestore();
+                        await postDetailsToFirestore();
 
-                             }else{
-                              if(_auth.currentUser !=null){
-
-                                Navigator.pushAndRemoveUntil(
-                                    (context),
-                                    MaterialPageRoute(builder: (context) => const Home()),
-                                        (route) => false);
-
-                                Fluttertoast.showToast(msg: 'Login successfully');
-                              }
-                            }
-
-                        setState(() {
-                          loading=false;
-                        });
-
-                        Navigator.pushAndRemoveUntil(
-                                (context),
-                                MaterialPageRoute(builder: (context) => const Home()),
-                                (route) => false);
-
-                            Fluttertoast.showToast(msg: 'Login successfully');
-
-
-
-                        // Navigator.pushAndRemoveUntil(
-                        //     (context),
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const Home()),
-                        //     (route) => false);
-
-                        // Fluttertoast.showToast(msg: 'Login successfully');
                       } catch (e) {
                         setState(() {
                           loading = false;
@@ -235,17 +196,17 @@ class _MyVerifyState extends State<MyVerify> {
                     },
                     child: loading
                         ? const CircularProgressIndicator(
-                            color: Colors.black,
-                          )
+                      color: Colors.black,
+                    )
                         : Text(
-                            "Verify Code",
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              color: validate ? Colors.black : Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                      "Verify Code",
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        color: validate ? Colors.black : Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -266,10 +227,10 @@ class _MyVerifyState extends State<MyVerify> {
                         child: Row(
 
                           children: [
-                             Text(
+                            Text(
                               widget.number,
                               style:
-                                  TextStyle(color: Colors.black, fontFamily: 'Lato'),
+                              TextStyle(color: Colors.black, fontFamily: 'Lato'),
                             ),
                             SizedBox(width: 4,),
                             Icon(Icons.edit_outlined,color: Colors.black87,size: 18,),
@@ -278,27 +239,27 @@ class _MyVerifyState extends State<MyVerify> {
                       )),
                   secondsRemaining > 0
                       ? TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "$secondsRemaining",
-                            style: TextStyle(
-                                color: Colors.black, fontFamily: 'Lato'),
-                          ),
-                        )
+                    onPressed: () {},
+                    child: Text(
+                      "$secondsRemaining",
+                      style: TextStyle(
+                          color: Colors.black, fontFamily: 'Lato'),
+                    ),
+                  )
                       : TextButton(
-                          onPressed: () {
+                    onPressed: () {
 
-                            sendOTP(phone: widget.phone);
-                            _resendCode();
+                      sendOTP(phone: widget.phone);
+                      _resendCode();
 
-                          },
-                          child: Text(
+                    },
+                    child: Text(
 
-                            "Resend",
-                            style: TextStyle(
-                                color: Colors.black, fontFamily: 'Lato'),
-                          ),
-                        ),
+                      "Resend",
+                      style: TextStyle(
+                          color: Colors.black, fontFamily: 'Lato'),
+                    ),
+                  ),
                 ],
               )
             ],
@@ -309,6 +270,9 @@ class _MyVerifyState extends State<MyVerify> {
   }
 
   postDetailsToFirestore() async {
+    setState(() {
+      loading=true;
+    });
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
@@ -322,14 +286,19 @@ class _MyVerifyState extends State<MyVerify> {
 
     await firebaseFirestore
         .collection("UsersDetails")
-        .doc(user?.uid)
-        .set(userModel.toMap());
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+        'phone':phone
+    });
+    setState(() {
+      loading=false;
+    });
 
     Navigator.pushAndRemoveUntil(
         (context),
         MaterialPageRoute(builder: (context) => const Home()),
-        (route) => false);
+            (route) => false);
 
-    Fluttertoast.showToast(msg: 'Login successfully');
+    Fluttertoast.showToast(msg: 'Number Changed Successfully');
   }
 }

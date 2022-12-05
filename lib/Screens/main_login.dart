@@ -155,7 +155,8 @@ class _MainLoginState extends State<MainLogin> {
                     setState(() {
                       loading = true;
                     });
-                    _auth.verifyPhoneNumber(
+                    _auth.
+                    verifyPhoneNumber(
                         phoneNumber: countryController.text+phone!,
                         verificationCompleted: (PhoneAuthCredential credential) {
                           setState(() {
@@ -169,7 +170,7 @@ class _MainLoginState extends State<MainLogin> {
                           if (e.code == 'invalid-phone-number') {
                             Fluttertoast.showToast(msg: 'Invalid Phone Number');
                           }
-                          if (e.code == 'to-many-request') {
+                          if (e.code == 'too-many-requests') {
                             Fluttertoast.showToast(msg: 'To many request');
                           }
                           

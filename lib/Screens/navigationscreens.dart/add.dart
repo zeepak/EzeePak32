@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:mobihub_2/Models/post_model.dart';
+import 'package:mobihub_2/Screens/home_page.dart';
+import 'package:mobihub_2/Screens/navigationscreens.dart/link_phone_in_post_otp.dart';
 class AddItems extends StatefulWidget {
   const AddItems({super.key});
 
@@ -17,12 +19,17 @@ class AddItems extends StatefulWidget {
 
 class _AddItemsState extends State<AddItems> {
   final _formKey = GlobalKey<FormState>();
-  final _formKey2 = GlobalKey<FormState>();
-  final _formKey3 = GlobalKey<FormState>();
+   String? adPhone='';
+   String? changeNumber='';
+   String? changeName='';
+  var adPhoneController = TextEditingController();
+  String? fullName ='';
+  bool whatsAppSwitch =false;
+  //var mobileNumberController =TextEditingController();
 
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles = [];
-  final _auth = FirebaseAuth.instance;
+  //final _auth = FirebaseAuth.instance;
   var titleController =TextEditingController();
   var descriptionController =TextEditingController();
   var priceController =TextEditingController();
@@ -72,9 +79,16 @@ class _AddItemsState extends State<AddItems> {
 
   @override
   void initState() {
+    setState(() {
+
+    });
+
+
+    getUserData();
+    print(fullName.toString());
+    print(adPhone.toString());
     super.initState();
   }
-
   // ignore: non_constant_identifier_names
   Widget BottomSheet() {
     return SizedBox(
@@ -1453,10 +1467,17 @@ class _AddItemsState extends State<AddItems> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextFormField(
-                      controller: titleController,
+
+                      controller:TextEditingController(text: fullName ==null || fullName!.isEmpty?changeName:fullName.toString()),
+
+                      onChanged: (value){
+                        TextSelection.collapsed(offset: changeName!.length);
+                        changeName = value;
+
+                      },
                       textAlign: TextAlign.start,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                      keyboardType: TextInputType.name,
+
                       maxLength: 40,
                       decoration: InputDecoration(
                         hintText: 'Name',
@@ -1480,9 +1501,17 @@ class _AddItemsState extends State<AddItems> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextFormField(
-                      controller: descriptionController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                     //initialValue: adPhone.toString(),
+                      textInputAction: TextInputAction.done,
+                     controller:TextEditingController(text: adPhone==null || adPhone!.isEmpty?changeNumber:adPhone),
+                      onChanged: (value){
+
+                         TextSelection.collapsed(offset: changeNumber!.length);
+                         changeNumber = value;
+
+                      },
+
+                      keyboardType: TextInputType.text,
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                         hintText: 'Mobile Number',
@@ -1510,17 +1539,30 @@ class _AddItemsState extends State<AddItems> {
                       children: [
                         Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
                         Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
+                        Switch(
 
+                            value: whatsAppSwitch, onChanged: (value){
+                          setState(() {
+                            whatsAppSwitch =value;
+
+                          });
+                        })
                       ],
                     ),
                   ),
 
 
                   SizedBox(height: 20,),
-                  Center(
+                  adPhone!=null && adPhone!.isNotEmpty?
+                 Center(
                     child: GestureDetector(
                       onTap: () async {
+
                         if (_formKey.currentState!.validate()) {
+
+                            setState(() {
+                              loading=true;
+                            });
 
                             if(imagefiles!.length<6){
                               Fluttertoast.showToast(msg: 'Select minimum 6 images');
@@ -1533,6 +1575,10 @@ class _AddItemsState extends State<AddItems> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Proccessing !')));
                               await postDetailsToFirestore();
+                              setState(() {
+                                loading=false;
+                              });
+
 
                             }on FirebaseException catch(e){
                               Fluttertoast.showToast(msg: e.toString());
@@ -1567,7 +1613,97 @@ class _AddItemsState extends State<AddItems> {
                         )),
                       ),
                     ),
-                  ),
+                  )
+                     :
+                 Center(
+                   child: GestureDetector(
+                     onTap: () async {
+                         try{
+                           ScaffoldMessenger.of(context).showSnackBar(
+                               const SnackBar(content: Text('Proccessing !')));
+
+                           await FirebaseAuth.instance.
+                           verifyPhoneNumber(
+                               phoneNumber: changeNumber,
+                               verificationCompleted: (PhoneAuthCredential credential) {
+                                 setState(() {
+                                   loading = false;
+                                 });
+                               },
+                               verificationFailed: (FirebaseAuthException e) {
+                                 setState(() {
+                                   loading = false;
+                                 });
+                                 switch (e.code) {
+                                   case "provider-already-linked":
+                                     print("The provider has already been linked to the user.");
+                                     break;
+                                   case "invalid-credential":
+                                    Fluttertoast.showToast(msg: 'The provider\'s credential is not valid');
+                                     break;
+                                   case "credential-already-in-use":
+                                     Fluttertoast.showToast(msg: 'already linked to a Firebase User');
+                                     break;
+                                 // See the API reference for the full list of error codes.
+                                   default:
+                                    Fluttertoast.showToast(msg: 'something went wrong');
+                                 }
+
+                               },
+                               codeSent: (String verificationId, int? token) async {
+
+                                 Fluttertoast.showToast(msg: "Code send");
+                                 await Navigator.push(context, MaterialPageRoute(builder: (_)=> LinkPhonePostOtp(
+                                   verificationId: verificationId, phone: changeNumber!,
+                                   number:changeNumber!,
+
+
+                                 ),
+                                 ),
+                                 );
+
+                                 setState(() {
+                                   loading = false;
+                                 });
+                               },
+                               codeAutoRetrievalTimeout: (e) {
+                                 setState(() {
+                                   loading = false;
+                                 });
+                                 Fluttertoast.showToast(msg: e);
+                               });
+
+                         }on FirebaseException catch(e){
+                           Fluttertoast.showToast(msg: e.toString());
+
+                         }
+
+
+                     },
+                     child: Container(
+                       height: 40,
+                       width: 120,
+                       decoration: BoxDecoration(
+                         color: Colors.amber[300],
+                         borderRadius: BorderRadius.circular(10),
+                       ),
+                       child:  Center(
+                           child:loading?Center(
+                             child: SizedBox(
+                                 width: MediaQuery.of(context).size.width*0.1,
+                                 height: MediaQuery.of(context).size.width*0.1,
+                                 child: CircularProgressIndicator(color: Colors.black,)),
+                           ): Text(
+                             'Add Item',
+                             style: TextStyle(
+                               fontSize: 15,
+                               fontWeight: FontWeight.bold,
+                             ),
+                           )),
+                     ),
+                   ),
+                 )
+
                 ],
               ),
             ),
@@ -1599,6 +1735,9 @@ class _AddItemsState extends State<AddItems> {
     postModel.color=colorSelection;
     postModel.images=imageUrls;
     postModel.uid=uid;
+    postModel.name =fullName!=null?fullName:changeName;
+    postModel.number=adPhone;
+    postModel.whatsAppSwitch =whatsAppSwitch;
     await uploadImages();
 
     await firebaseFirestore
@@ -1609,7 +1748,7 @@ class _AddItemsState extends State<AddItems> {
       loading=false;
     });
     Fluttertoast.showToast(msg: 'Post successfully added');
-    Navigator.pop(context);
+   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Home()), (route) => false);
 
   }
  Future postImages(XFile? imageFile) async{
@@ -1624,4 +1763,26 @@ class _AddItemsState extends State<AddItems> {
       await postImages(image).then((value) => imageUrls.add(value));
     }
  }
+  getUserData()async{
+    await FirebaseFirestore.instance.collection('UsersDetails').doc(FirebaseAuth.instance.currentUser!.uid
+    ).get(GetOptions(source:Source.cache)).then((value) async{
+      if(value.exists &&
+
+      value.get('phone')!=null ||
+      value.get('fullName')!=null
+      ){
+        setState(() {
+          adPhone =value.data()!['phone'];
+          fullName =value.data()!['fullName'];
+
+        });
+      }
+      else{
+        setState(() {
+          fullName =value.data()!['fullName'];
+          adPhone =value.data()!['phone'];
+        });
+      }
+    });
+  }
 }

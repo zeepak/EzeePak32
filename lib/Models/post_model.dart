@@ -13,6 +13,9 @@ class PostModel{
   String? battery;
   String? color;
   String? uid;
+  String? name;
+  String? number;
+  bool? whatsAppSwitch;
   List<String>? images;
 
   PostModel({
@@ -30,7 +33,10 @@ class PostModel{
       this.battery,
       this.color,
       this.images,
-      this.uid
+      this.uid,
+    this.name,
+    this.number,
+    this.whatsAppSwitch
 
   });
 
@@ -50,7 +56,10 @@ class PostModel{
       'battery': battery,
       'color': color,
       'images': images,
-      'uid':uid
+      'uid':uid,
+      'name':name,
+      'number':number,
+      'whatsAppSwitch' :whatsAppSwitch
     };
   }
 
@@ -70,6 +79,10 @@ class PostModel{
       battery: map['battery'] as String,
       color: map['color'] as String,
       uid:map['uid'] as String,
+      name:map['name'] as String,
+      number:map['number'] as String,
+
+      whatsAppSwitch: map['whatsAppSwitch'] as bool,
       images: map['images'] as List<String>?,
     );
   }
