@@ -12,19 +12,18 @@ import 'package:mobihub_2/Models/post_model.dart';
 import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/Screens/navigationscreens.dart/link_phone_in_post_otp.dart';
 import 'package:mobihub_2/controller/sell_controller.dart';
-import 'package:uuid/uuid.dart';
-class AddItems extends StatefulWidget {
-  const AddItems({super.key});
+class PostUpdateScreen extends StatefulWidget {
+  const PostUpdateScreen({super.key});
 
   @override
-  State<AddItems> createState() => _AddItemsState();
+  State<PostUpdateScreen> createState() => _PostUpdateScreenState();
 }
 
-class _AddItemsState extends State<AddItems> {
+class _PostUpdateScreenState extends State<PostUpdateScreen> {
   final _formKey = GlobalKey<FormState>();
-   String? adPhone='';
-   String? changeNumber='';
-   String? changeName='';
+  String? adPhone='';
+  String? changeNumber='';
+  String? changeName='';
   final FocusNode unitCodeCtrlFocusNode = FocusNode();
   var adPhoneController = TextEditingController();
   String? fullName ='';
@@ -33,8 +32,7 @@ class _AddItemsState extends State<AddItems> {
 
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles = [];
-  var postUid =DateTime.now().millisecondsSinceEpoch;
-
+  //final _auth = FirebaseAuth.instance;
   var titleController =TextEditingController();
   var descriptionController =TextEditingController();
   var priceController =TextEditingController();
@@ -87,14 +85,13 @@ class _AddItemsState extends State<AddItems> {
 
 
 
-     getUserData();
+    getUserData();
     print(fullName.toString());
     print(adPhone.toString());
     super.initState();
   }
   // ignore: non_constant_identifier_names
   Widget BottomSheet() {
-    print(postUid.toString());
     return SizedBox(
       height: 120,
       width: double.infinity,
@@ -308,11 +305,11 @@ class _AddItemsState extends State<AddItems> {
     super.dispose();
   }
   final List<String> batteryList = [
-   '2800 mAh',
-   '3200 mAh',
-   '3800 mAh',
-   '4200 mAh',
-   '5000 mAh',
+    '2800 mAh',
+    '3200 mAh',
+    '3800 mAh',
+    '4200 mAh',
+    '5000 mAh',
 
   ];
   String? batterySelection;
@@ -380,73 +377,73 @@ class _AddItemsState extends State<AddItems> {
                           imagefiles != null
                               ?
 
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                  height: 230,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    //color: Color(0xC5C5C0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.07),
-                                        spreadRadius: 5,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: GridView.builder(
-                                    itemCount: imagefiles!.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-
-                                          crossAxisCount: 3,
-                                            crossAxisSpacing: 15,
-                                            mainAxisSpacing: 10
-
-                                          ),
-                                      itemBuilder: (context, index) {
-                                        return Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
-                                              ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
-                                              ),
-                                              child: Container(
-                                                padding: EdgeInsets.only(right: 10,top: 10),
-                                                width: 140,
-                                                height: 140,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
-                                                      ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
-                                                  ),
-                                                ),
-                                                child: Image.file(File(imagefiles![index].path),fit: BoxFit.cover,),
-                                              ),
-                                            ),
-                                            Positioned(
-                                                left: 53,
-                                                bottom: 53,
-                                                child: IconButton(
-                                              onPressed: (){
-                                                setState(() {
-                                                  imagefiles!.removeAt(index);
-                                                });
-                                              },icon: Icon(Icons.cancel_rounded,color: Colors.red,),
-                                            )),
-
-                                          ],
-                                        );
-                                      }),
-                                )
-                              : Container(
-                                  height: 200,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.amber,
-                                      borderRadius: BorderRadius.circular(15)),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            height: 230,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              //color: Color(0xC5C5C0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.07),
+                                  spreadRadius: 5,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 3), // changes position of shadow
                                 ),
+                              ],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: GridView.builder(
+                                itemCount: imagefiles!.length,
+                                gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 15,
+                                    mainAxisSpacing: 10
+
+                                ),
+                                itemBuilder: (context, index) {
+                                  return Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
+                                            ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.only(right: 10,top: 10),
+                                          width: 140,
+                                          height: 140,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
+                                                ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
+                                            ),
+                                          ),
+                                          child: Image.file(File(imagefiles![index].path),fit: BoxFit.cover,),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          left: 53,
+                                          bottom: 53,
+                                          child: IconButton(
+                                            onPressed: (){
+                                              setState(() {
+                                                imagefiles!.removeAt(index);
+                                              });
+                                            },icon: Icon(Icons.cancel_rounded,color: Colors.red,),
+                                          )),
+
+                                    ],
+                                  );
+                                }),
+                          )
+                              : Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15)),
+                          ),
                           Container(
                             height: 20,
                             width: 20,
@@ -522,9 +519,9 @@ class _AddItemsState extends State<AddItems> {
                       decoration: InputDecoration(
                         hintText: 'Title',
                         hintStyle:TextStyle(
-                          fontSize: 15,
-                          color: Theme.of(context).hintColor,
-                          fontWeight: FontWeight.bold),
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
 
                         icon: Image.asset('assets/icons/Title.png',height: 22,),
 
@@ -594,7 +591,7 @@ class _AddItemsState extends State<AddItems> {
 
                   Padding(
                     padding:
-                        const EdgeInsets.only(bottom: 10),
+                    const EdgeInsets.only(bottom: 10),
                     child:
                     DropdownButton2(
 
@@ -616,14 +613,14 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       items: cities
                           .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ))
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                              fontSize: 14,fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ))
                           .toList(),
                       value: selectedValue,
                       onChanged: (value) {
@@ -681,7 +678,7 @@ class _AddItemsState extends State<AddItems> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only( bottom: 10),
+                    const EdgeInsets.only( bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
@@ -701,15 +698,15 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       items: brand
                           .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ))
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ))
                           .toList(),
                       value: selectedValue3,
                       onChanged: (value) {
@@ -763,7 +760,7 @@ class _AddItemsState extends State<AddItems> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(bottom: 10),
+                    const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
@@ -783,15 +780,15 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       items: pta
                           .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ))
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ))
                           .toList(),
                       value: selectedValue4,
                       onChanged: (value) {
@@ -849,7 +846,7 @@ class _AddItemsState extends State<AddItems> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(bottom: 10),
+                    const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
@@ -869,15 +866,15 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       items: condition
                           .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ))
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ))
                           .toList(),
                       value: selectedValue5,
                       onChanged: (value) {
@@ -935,7 +932,7 @@ class _AddItemsState extends State<AddItems> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only( bottom: 10),
+                    const EdgeInsets.only( bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
@@ -955,15 +952,15 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       items: warranty
                           .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ))
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ))
                           .toList(),
                       value: selectedValue6,
                       onChanged: (value) {
@@ -1504,224 +1501,224 @@ class _AddItemsState extends State<AddItems> {
                       },
                     ),
                   ),
-                 Obx(() => Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 35),
-                   child: TextFormField(
-                     //initialValue: adPhone.toString(),
-                     textInputAction: TextInputAction.done,
-                     controller:TextEditingController(text: sellcontroller.postData.value?.phone !=null? sellcontroller.postData.value?.phone:changeNumber,),
-                     onChanged: (value){
+                  Obx(() => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: TextFormField(
+                      //initialValue: adPhone.toString(),
+                      textInputAction: TextInputAction.done,
+                      controller:TextEditingController(text: sellcontroller.postData.value?.phone !=null? sellcontroller.postData.value?.phone:changeNumber,),
+                      onChanged: (value){
 
-                       TextSelection.collapsed(offset: changeNumber!.length);
-                       changeNumber = value;
+                        TextSelection.collapsed(offset: changeNumber!.length);
+                        changeNumber = value;
 
-                     },
+                      },
 
-                     keyboardType: TextInputType.text,
-                     textAlign: TextAlign.start,
-                     decoration: InputDecoration(
-                       hintText: 'Mobile Number',
-                       hintStyle:TextStyle(
-                           fontSize: 15,
-                           color: Theme.of(context).hintColor,
-                           fontWeight: FontWeight.bold),
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.start,
+                      decoration: InputDecoration(
+                        hintText: 'Mobile Number',
+                        hintStyle:TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).hintColor,
+                            fontWeight: FontWeight.bold),
 
-                       icon: Image.asset('assets/icons/number.png',height: 22,),
-
-
-                     ),
-                     validator: (text) {
-                       if (text == null || text.isEmpty) {
-                         return 'Text is empty';
-                       }
-                       return null;
-                     },
-                   ),
-                 ),),
-                     SizedBox(height: 10,),
-                     Container(
-                       padding: EdgeInsets.only(left: 70,top: 10),
-                       child: Row(
-                         children: [
-                           Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
-                           Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
-                           Switch(
-
-                               value: whatsAppSwitch, onChanged: (value){
-                             setState(() {
-                               whatsAppSwitch =value;
-
-                             });
-                           })
-                         ],
-                       ),
-                     ),
+                        icon: Image.asset('assets/icons/number.png',height: 22,),
 
 
-                     SizedBox(height: 20,),
-                     StatefulBuilder(builder: (context, setState) {
-                       return sellcontroller.postData.value?.phone!=null?
-                       Center(
-                         child: GestureDetector(
-                           onTap: () async {
-                             FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Text is empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.only(left: 70,top: 10),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
+                        Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
+                        Switch(
 
-                             if (_formKey.currentState!.validate()) {
+                            value: whatsAppSwitch, onChanged: (value){
+                          setState(() {
+                            whatsAppSwitch =value;
 
-                               setState(() {
-                                 loading=true;
-                               });
-
-                               if(imagefiles!.length<6){
-                                 Fluttertoast.showToast(msg: 'Select minimum 6 images');
-                                 return ;
-                               }else if(imagefiles!.length==null && imagefiles!.isEmpty){
-                                 Fluttertoast.showToast(msg: 'First Select images');
-                                 return ;
-                               }
-                               try{
-                                 ScaffoldMessenger.of(context).showSnackBar(
-                                     const SnackBar(content: Text('Proccessing !')));
-                                 await postDetailsToFirestore();
-                                 setState(() {
-                                   loading=false;
-                                 });
-
-
-                               }on FirebaseException catch(e){
-                                 Fluttertoast.showToast(msg: e.toString());
-
-                               }
+                          });
+                        })
+                      ],
+                    ),
+                  ),
 
 
+                  SizedBox(height: 20,),
+                  StatefulBuilder(builder: (context, setState) {
+                    return sellcontroller.postData.value?.phone!=null?
+                    Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
 
-                             }
+                          if (_formKey.currentState!.validate()) {
 
+                            setState(() {
+                              loading=true;
+                            });
 
-                           },
-                           child: Container(
-                             height: 40,
-                             width: 120,
-                             decoration: BoxDecoration(
-                               color: Colors.amber[300],
-                               borderRadius: BorderRadius.circular(10),
-                             ),
-                             child:  Center(
-                                 child:loading?Center(
-                                   child: SizedBox(
-                                       width: MediaQuery.of(context).size.width*0.1,
-                                       height: MediaQuery.of(context).size.width*0.1,
-                                       child: CircularProgressIndicator(color: Colors.black,)),
-                                 ): Text(
-                                   'Add Item',
-                                   style: TextStyle(
-                                     fontSize: 15,
-                                     fontWeight: FontWeight.bold,
-                                   ),
-                                 )),
-                           ),
-                         ),
-                       )
-                           :
-                       Center(
-                         child: GestureDetector(
-                           onTap: () async {
-
-                             setState(() {
-                               loading =true;
-                             });
-                             try{
-                               ScaffoldMessenger.of(context).showSnackBar(
-                                   const SnackBar(content: Text('Proccessing !')));
-                               FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
+                            if(imagefiles!.length<6){
+                              Fluttertoast.showToast(msg: 'Select minimum 6 images');
+                              return ;
+                            }else if(imagefiles!.length==null && imagefiles!.isEmpty){
+                              Fluttertoast.showToast(msg: 'First Select images');
+                              return ;
+                            }
+                            try{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Proccessing !')));
+                              await postDetailsToFirestore();
+                              setState(() {
+                                loading=false;
+                              });
 
 
-                               await FirebaseAuth.instance.
-                               verifyPhoneNumber(
-                                   phoneNumber: changeNumber,
-                                   verificationCompleted: (PhoneAuthCredential credential) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                   },
-                                   verificationFailed: (FirebaseAuthException e) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                     switch (e.code) {
-                                       case "provider-already-linked":
-                                         print("The provider has already been linked to the user.");
-                                         break;
-                                       case "invalid-credential":
-                                         Fluttertoast.showToast(msg: 'The provider\'s credential is not valid');
-                                         break;
-                                       case "credential-already-in-use":
-                                         Fluttertoast.showToast(msg: 'already linked to a Firebase User');
-                                         break;
-                                     // See the API reference for the full list of error codes.
-                                       default:
-                                         Fluttertoast.showToast(msg: 'something went wrong');
-                                     }
+                            }on FirebaseException catch(e){
+                              Fluttertoast.showToast(msg: e.toString());
 
-                                   },
-                                   codeSent: (String verificationId, int? token) async {
-
-                                     Fluttertoast.showToast(msg: "Code send");
-                                     await Navigator.push(context, MaterialPageRoute(builder: (_)=> LinkPhonePostOtp(
-                                       verificationId: verificationId, phone: changeNumber!,
-                                       number:changeNumber!,)
-
-                                       ,),);
-
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                   },
-                                   codeAutoRetrievalTimeout: (e) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                     print(e);
-                                   });
+                            }
 
 
 
-
-                             }on FirebaseException catch(e){
-
+                          }
 
 
-                             }
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.amber[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child:  Center(
+                              child:loading?Center(
+                                child: SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.1,
+                                    height: MediaQuery.of(context).size.width*0.1,
+                                    child: CircularProgressIndicator(color: Colors.black,)),
+                              ): Text(
+                                'Add Item',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                        ),
+                      ),
+                    )
+                        :
+                    Center(
+                      child: GestureDetector(
+                        onTap: () async {
+
+                          setState(() {
+                            loading =true;
+                          });
+                          try{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Proccessing !')));
+                            FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
+
+
+                            await FirebaseAuth.instance.
+                            verifyPhoneNumber(
+                                phoneNumber: changeNumber,
+                                verificationCompleted: (PhoneAuthCredential credential) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                },
+                                verificationFailed: (FirebaseAuthException e) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  switch (e.code) {
+                                    case "provider-already-linked":
+                                      print("The provider has already been linked to the user.");
+                                      break;
+                                    case "invalid-credential":
+                                      Fluttertoast.showToast(msg: 'The provider\'s credential is not valid');
+                                      break;
+                                    case "credential-already-in-use":
+                                      Fluttertoast.showToast(msg: 'already linked to a Firebase User');
+                                      break;
+                                  // See the API reference for the full list of error codes.
+                                    default:
+                                      Fluttertoast.showToast(msg: 'something went wrong');
+                                  }
+
+                                },
+                                codeSent: (String verificationId, int? token) async {
+
+                                  Fluttertoast.showToast(msg: "Code send");
+                                  await Navigator.push(context, MaterialPageRoute(builder: (_)=> LinkPhonePostOtp(
+                                    verificationId: verificationId, phone: changeNumber!,
+                                    number:changeNumber!,)
+
+                                    ,),);
+
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                },
+                                codeAutoRetrievalTimeout: (e) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print(e);
+                                });
 
 
 
 
-                           },
-                           child: Container(
-                             height: 40,
-                             width: 120,
-                             decoration: BoxDecoration(
-                               color: Colors.amber[300],
-                               borderRadius: BorderRadius.circular(10),
-                             ),
-                             child:  Center(
-                                 child:loading?Center(
-                                   child: SizedBox(
-                                       width: MediaQuery.of(context).size.width*0.1,
-                                       height: MediaQuery.of(context).size.width*0.1,
-                                       child: CircularProgressIndicator(color: Colors.black,)),
-                                 ): Text(
-                                   'Add Item',
-                                   style: TextStyle(
-                                     fontSize: 15,
-                                     fontWeight: FontWeight.bold,
-                                   ),
-                                 )),
-                           ),
-                         ),
-                       );
+                          }on FirebaseException catch(e){
 
-                     },),
+
+
+                          }
+
+
+
+
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.amber[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child:  Center(
+                              child:loading?Center(
+                                child: SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.1,
+                                    height: MediaQuery.of(context).size.width*0.1,
+                                    child: CircularProgressIndicator(color: Colors.black,)),
+                              ): Text(
+                                'Add Item',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                        ),
+                      ),
+                    );
+
+                  },),
                 ],
               ),
             ),
@@ -1730,7 +1727,6 @@ class _AddItemsState extends State<AddItems> {
   }
   List<String> imageUrls=[];
   postDetailsToFirestore() async {
-
     var uid =FirebaseAuth.instance.currentUser!.uid;
     setState(() {
       loading=true;
@@ -1758,43 +1754,39 @@ class _AddItemsState extends State<AddItems> {
     postModel.number=adPhone;
     postModel.whatsAppSwitch =whatsAppSwitch;
     postModel.searchText = titleController.text.toLowerCase();
-    postModel.isShow=false;
-    postModel.postUid = postUid.toString();
-    postModel.status ='pending';
-    postModel.customerId=[];
 
     await uploadImages();
 
     await firebaseFirestore
         .collection("Posts")
-        .doc(postUid.toString())
+        .doc(uid.toString())
         .set(postModel.toMap());
     setState(() {
       loading=false;
     });
     Fluttertoast.showToast(msg: 'Post successfully added');
-   Get.offAll(()=>Home());
+    Get.offAll(()=>Home());
 
   }
- Future postImages(XFile? imageFile) async{
+  Future postImages(XFile? imageFile) async{
     String urls;
     Reference ref=FirebaseStorage.instance.ref().child('posts').child(imageFile!.name);
     await ref.putData(await imageFile.readAsBytes());
-     urls=await ref.getDownloadURL();
-     return urls;
- }
- uploadImages()async{
+    urls=await ref.getDownloadURL();
+    return urls;
+  }
+  uploadImages()async{
     for(var image in imagefiles!){
       await postImages(image).then((value) => imageUrls.add(value));
     }
- }
+  }
   getUserData()async{
     await FirebaseFirestore.instance.collection('UsersDetails').doc(FirebaseAuth.instance.currentUser!.uid
     ).get().then((value) async{
       if(value.exists &&
 
-      value.get('phone')!=null &&
-      value.get('fullName')!=null
+          value.get('phone')!=null &&
+          value.get('fullName')!=null
       ){
         setState(() {
           adPhone =value.data()!['phone'];

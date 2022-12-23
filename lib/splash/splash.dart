@@ -2,10 +2,13 @@
 
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 
+import '../controller/sell_controller.dart';
 import 'firebase_splash.dart';
 
 
@@ -18,13 +21,14 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   SplashServices splashScreen = SplashServices();
+
     @override
       void initState() {
    
     super.initState();
     splashScreen.isLogin(context);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

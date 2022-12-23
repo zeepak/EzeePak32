@@ -4,12 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../Models/user_model.dart';
-import '../home_page.dart';
-import 'add.dart';
 
 
 class LinkPhonePostOtp extends StatefulWidget {
@@ -307,7 +306,8 @@ class _LinkPhonePostOtpState extends State<LinkPhonePostOtp> {
         .update({
       'phone':phone
     });
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>AddItems()), (route) => false);
+
+ Navigator.pop(context);
 
 
 

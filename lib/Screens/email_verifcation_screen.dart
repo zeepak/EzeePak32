@@ -2,9 +2,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:mobihub_2/Firebase/google.dart';
 
 import 'package:mobihub_2/Screens/login_page.dart';
+
+import '../controller/sell_controller.dart';
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);
 
@@ -37,6 +40,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,foregroundColor: Colors.white),
                       onPressed: ()async{
                         await FirebaseAuth.instance.signOut();
+                        if (Get.isRegistered<Sellcontroller>()) {
+                          Get.delete<Sellcontroller>();
+
+                        }
                     setState(() {
 
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Login()), (route) => false);

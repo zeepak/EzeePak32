@@ -29,9 +29,9 @@ class _ChatState extends State<Chat> {
         ),
         backgroundColor: Colors.white,
       body: const TabBarView(children: [
-            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
-            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
-            Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+            Center(child: Text('Still in Progress...',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+            // Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
+            // Center(child: Text('No Message yet?',style: TextStyle(fontFamily: 'Lato',fontSize: 20),),),
            
         ]),
       ),

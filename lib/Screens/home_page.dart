@@ -1,6 +1,5 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:mobihub_2/Screens/navigationscreens.dart/add.dart';
@@ -12,47 +11,54 @@ import 'navigationscreens.dart/person.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-  
+
   @override
-  
+
   // ignore: library_private_types_in_public_api
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  final auth = FirebaseAuth.instance;
-  
-  
-  int currentTab = 0;
+
+
+
+
   final List<Widget> screens = const [
     Home2(),
     Chat(),
     Youradds(),
     Account(),
   ];
-  final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const Home2();
 
+
+  @override
+  void initState() {
+
+
+
+    super.initState();
+  }
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      body: PageStorage(
-        bucket: bucket,
-        child: currentScreen,
-      ),
+      body: screens.elementAt(_selectedIndex),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFFFFDC3D),
         elevation: 2.5,
         onPressed: () {
-   if(FirebaseAuth.instance.currentUser != null){
-     Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddItems()));
-   }else{
-     Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  MainLogin()));
-   }
-          
+
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AddItems()));
+
+
+
         },
         child: const Icon(
           Icons.add,
@@ -80,9 +86,9 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                         currentScreen = const Home2();
-                        currentTab = 0;
-                        
+
+                        _selectedIndex = 0;
+
                       });
                     },
                     child: Column(
@@ -90,15 +96,15 @@ class _HomeState extends State<Home> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0
+                          color: _selectedIndex == 0
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
-                              size: 25,
+                          size: 25,
                         ),
                         Text(
                           '',
                           style: TextStyle(
-                              color: currentTab == 0
+                              color: _selectedIndex == 0
                                   ? const Color(0xFFFFDC3D)
                                   : Colors.white),
                         )
@@ -113,14 +119,10 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        if(FirebaseAuth.instance.currentUser != null){
-                           currentScreen = const Chat();
-                        currentTab = 1;
-                        }else{
-                           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  MainLogin()));
-                        }
-                        
+
+                          _selectedIndex = 1;
+
+
                       });
                     },
                     child: Column(
@@ -128,15 +130,15 @@ class _HomeState extends State<Home> {
                       children: [
                         Icon(
                           Icons.chat,
-                          color: currentTab == 1
+                          color: _selectedIndex == 1
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
-                              size: 25,
+                          size: 25,
                         ),
                         Text(
                           '',
                           style: TextStyle(
-                              color: currentTab == 1
+                              color: _selectedIndex == 1
                                   ? const Color(0xFFFFDC3D)
                                   : Colors.white),
                         )
@@ -156,14 +158,10 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        if(FirebaseAuth.instance.currentUser != null){
-                           currentScreen = const Youradds();
-                        currentTab = 2;
-                        }else{
-                           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  MainLogin()));
-                        }
-                        
+
+                          _selectedIndex = 2;
+
+
                       });
                     },
                     child: Column(
@@ -171,15 +169,15 @@ class _HomeState extends State<Home> {
                       children: [
                         Icon(
                           Icons.favorite,
-                          color: currentTab == 2
+                          color: _selectedIndex == 2
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
-                              size: 25,
+                          size: 25,
                         ),
                         Text(
                           '',
                           style: TextStyle(
-                              color: currentTab == 2
+                              color: _selectedIndex == 2
                                   ? const Color(0xFFFFDC3D)
                                   : Colors.white),
                         )
@@ -195,14 +193,10 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        if(FirebaseAuth.instance.currentUser != null){
-                          currentScreen =  Account();
-                        currentTab = 3;
-                        }else{
-                           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  MainLogin()));
-                        }
-                        
+
+                          _selectedIndex = 3;
+
+
                       });
                     },
                     child: Column(
@@ -210,15 +204,15 @@ class _HomeState extends State<Home> {
                       children: [
                         Icon(
                           Icons.person,
-                          color: currentTab == 3
+                          color: _selectedIndex == 3
                               ? const Color(0xFFFFDC3D)
                               : Colors.black,
-                              size: 25,
+                          size: 25,
                         ),
                         Text(
                           '',
                           style: TextStyle(
-                              color: currentTab == 3
+                              color: _selectedIndex == 3
                                   ? const Color(0xFFFFDC3D)
                                   : Colors.white),
                         )

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobihub_2/Screens/navigationscreens.dart/profile_detail.dart';
+import 'package:mobihub_2/controller/sell_controller.dart';
 
 import '../main_login.dart';
 
@@ -271,6 +273,10 @@ class _AccountState extends State<Account> {
                       await FirebaseAuth.instance.signOut();
                       //userEmail = "";
                       await GoogleSignIn().signOut();
+                      if (Get.isRegistered<Sellcontroller>()) {
+                        Get.delete<Sellcontroller>();
+
+                      }
                       setState(() {
                         Navigator.pushAndRemoveUntil(
                             (context),

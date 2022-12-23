@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobihub_2/Screens/tab_bar_screens/active_add.dart';
+import 'package:mobihub_2/Screens/tab_bar_screens/favorite_add_screen.dart';
+
+import '../tab_bar_screens/delete_screen.dart';
+import '../tab_bar_screens/pending_screen.dart';
 
 class Youradds extends StatefulWidget {
   const Youradds({Key? key}) : super(key: key);
@@ -29,11 +33,11 @@ class _YouraddsState extends State<Youradds> {
       title: const Text('My Ads',style: TextStyle(fontFamily: 'Lato',fontSize: 17),),
         ),
         backgroundColor: Colors.white,
-        body:  const TabBarView(children: [
+        body:   TabBarView(children: [
             ActiveAdsScreen(),
-            Center(child: Text('No pending ads yet'),),
-            Center(child: Text('No delete ads yet'),),
-            Center(child: Text('No favourit ads yet'),),
+            PendingPostScreen(),
+            DeleteScreen(),
+            FavoriteAddScreen(),
         ]),
       
       ),

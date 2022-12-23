@@ -1,7 +1,7 @@
 class PostModel{
   String? title;
   String? desc;
-  String? price;
+  var price;
   String? location;
   String? brand;
   String? pta;
@@ -16,7 +16,13 @@ class PostModel{
   String? name;
   String? number;
   bool? whatsAppSwitch;
+  String? searchText;
   List<String>? images;
+  bool? isShow;
+  String? postUid;
+  String? favoriteAds;
+  String? status;
+  List<String>? customerId;
 
   PostModel({
       this.title,
@@ -36,7 +42,13 @@ class PostModel{
       this.uid,
     this.name,
     this.number,
-    this.whatsAppSwitch
+    this.whatsAppSwitch,
+     this.searchText,
+    this.isShow,
+    this.postUid,
+    this.customerId,
+    this.favoriteAds,
+    this.status
 
   });
 
@@ -59,31 +71,43 @@ class PostModel{
       'uid':uid,
       'name':name,
       'number':number,
-      'whatsAppSwitch' :whatsAppSwitch
+      'whatsAppSwitch' :whatsAppSwitch,
+      'searchText':searchText,
+      'isShow':isShow,
+      'postUid':postUid,
+      'favoriteAds':favoriteAds,
+      'customerId':customerId,
+      'status':status
     };
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
-      title: map['title'] as String,
-      desc: map['desc'] as String,
-      price: map['price'] as String,
-      location: map['location'] as String,
-      brand: map['brand'] as String,
-      pta: map['pta'] as String,
-      condtion: map['condtion'] as String,
-      warranty: map['warranty'] as String,
-      ram: map['ram'] as String,
-      memory: map['memory'] as String,
-      camera: map['camera'] as String,
-      battery: map['battery'] as String,
-      color: map['color'] as String,
-      uid:map['uid'] as String,
-      name:map['name'] as String,
-      number:map['number'] as String,
+      title: map['title'] ??'',
+      desc: map['desc'] ??'',
+      price: map['price'] ??'',
+      location: map['location']??'',
+      brand: map['brand'] ??'',
+      pta: map['pta'] ??'',
+      condtion: map['condtion'] ??'',
+      warranty: map['warranty'] ??'',
+      ram: map['ram'] ??'',
+      memory: map['memory'] ??'',
+      camera: map['camera'] ??'',
+      battery: map['battery'] ??'',
+      color: map['color'] ??'',
+      uid:map['uid'] ??'',
+      name:map['name']??'',
+      number:map['number'] ??'',
 
-      whatsAppSwitch: map['whatsAppSwitch'] as bool,
-      images: map['images'] as List<String>?,
+      whatsAppSwitch: map['whatsAppSwitch']?? false,
+      images: map['images']  ??[],
+      searchText: map['searchText'] ??'',
+        isShow:map['isShow']??false,
+       postUid: map['postUid']??'',
+        favoriteAds: map['favoriteAds']??'',
+        customerId: map['customerId']??'',
+      status: map['status']??''
     );
   }
 }

@@ -40,18 +40,7 @@ class _MainLoginState extends State<MainLogin> {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.close,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  (context),
-                  MaterialPageRoute(builder: (context) => const Home()),
-                  (route) => false);
-            },
-          ),
+
         ],
       ),
       body: SingleChildScrollView(
