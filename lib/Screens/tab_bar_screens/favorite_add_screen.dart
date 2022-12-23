@@ -43,14 +43,9 @@ class _FavoriteAddScreenState extends State<FavoriteAddScreen> {
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return
-                  SizedBox(
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.white,
-                      highlightColor: Colors.grey,
-                      period: const Duration(milliseconds: 2500),
-                      child: Text("HELLO"),
-                    ),
-                  );
+                 Center(
+                   child: CircularProgressIndicator(),
+                 );
               }
               return ListView.separated(
                 physics: BouncingScrollPhysics(),
@@ -125,7 +120,16 @@ class _FavoriteAddScreenState extends State<FavoriteAddScreen> {
                                       SizedBox(height: 4,),
                                     ],
                                   ),
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.favorite_rounded,color: Colors.red,))
+                                  IconButton(onPressed: ()async{
+                                    var post =[FirebaseAuth.instance.currentUser!.uid];
+                                    await FirebaseFirestore.instance.collection('Posts').doc(snapshot.data!.docs[index]['postUid']).update({
+                                      'customerId':FieldValue.arrayRemove(post),
+                                    });
+                                    Fluttertoast.showToast(msg: 'Remove from Favorite List');
+                                    setState(() {
+
+                                    });
+                                  }, icon: Icon(Icons.favorite_rounded,color: Colors.red,))
                                 ],
                               ),
                             ),

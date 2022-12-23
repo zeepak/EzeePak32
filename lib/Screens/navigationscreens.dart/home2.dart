@@ -482,7 +482,8 @@ class _Home2State extends State<Home2> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10
                                     ),
-                                    child: Image.network(snapshot.data!.docs[index]['images'][0],
+                                    child: CachedNetworkImage(
+                                    imageUrl: snapshot.data!.docs[index]['images'][0],
                                       width: 150,
                                       height: 140,
                                       fit: BoxFit.cover,
@@ -537,7 +538,7 @@ class _Home2State extends State<Home2> {
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                   );
                 },
