@@ -58,6 +58,7 @@ class _Home2State extends State<Home2> {
 
   @override
   Widget build(BuildContext context) {
+    print(sellcontroller.city.value);
     return
       Scaffold(
       backgroundColor: Colors.white,
@@ -99,6 +100,7 @@ class _Home2State extends State<Home2> {
                   color: const Color(0xFFEFEFEF),
                   borderRadius: BorderRadius.circular(10)),
               child: TextFormField(
+                readOnly: true,
              onTap: (){
                Navigator.push(context, MaterialPageRoute(builder: (_)=>HomeScreenSearchBar()));
              },

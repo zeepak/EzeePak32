@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../controller/sell_controller.dart';
 
 class HomeScreenLocationSearch extends StatefulWidget {
   const HomeScreenLocationSearch({Key? key}) : super(key: key);
@@ -9,6 +12,7 @@ class HomeScreenLocationSearch extends StatefulWidget {
 }
 
 class _HomeScreenLocationSearchState extends State<HomeScreenLocationSearch> {
+  Sellcontroller sellcontroller=Get.put(Sellcontroller());
 
 
   List<String> popularCities =[
@@ -526,6 +530,7 @@ class _HomeScreenLocationSearchState extends State<HomeScreenLocationSearch> {
                       visualDensity: VisualDensity(vertical: -4),
                       onTap: () {
                        String city =textEditingController.text.isNotEmpty?searchedCities[index]:allCityList[index];
+                       sellcontroller.city.value =city;
                        Navigator.pop(context,city);
 
                       },

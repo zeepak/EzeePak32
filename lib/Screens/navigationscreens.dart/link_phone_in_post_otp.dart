@@ -9,6 +9,7 @@ import 'package:mobihub_2/Screens/main_login.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../Models/user_model.dart';
+import '../../controller/sell_controller.dart';
 
 
 class LinkPhonePostOtp extends StatefulWidget {
@@ -25,13 +26,14 @@ class LinkPhonePostOtp extends StatefulWidget {
 }
 
 class _LinkPhonePostOtpState extends State<LinkPhonePostOtp> {
+  Sellcontroller sellcontroller=Get.put(Sellcontroller());
   int secondsRemaining = 60;
   bool enableResend = false;
   Timer? timer;
 
   @override
   initState() {
-    print(widget.phone);
+
     super.initState();
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
@@ -306,8 +308,8 @@ class _LinkPhonePostOtpState extends State<LinkPhonePostOtp> {
         .update({
       'phone':phone
     });
-
- Navigator.pop(context);
+     sellcontroller.postData.value=phone.toString();
+     Navigator.pop(context);
 
 
 

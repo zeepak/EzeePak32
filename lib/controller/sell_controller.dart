@@ -1,25 +1,36 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:mobihub_2/Models/post_model.dart';
-import 'package:mobihub_2/Models/user_model.dart';
 
 class Sellcontroller extends GetxController
 {
-  Rx<UserModel?> postData=Rx<UserModel?>(null);
+  final auth=FirebaseAuth.instance.currentUser!.uid;
+  RxString postData=''.obs;
+  RxBool pressedBool = false.obs;
+  RxString city=''.obs;
 
   @override
-void onInit(){
-  postData.bindStream(getData());
+void onInit() {
+
+   //getData();
+
+   // print('Data is ${postData.value.capitalize}');
+   // postData.bindStream(getData());
+  // getData();
 
 
-
-  super.onInit();
+    super.onInit();
 
 }
-  Stream<UserModel> getData(){
-    return   FirebaseFirestore.instance.collection('UsersDetails').doc(FirebaseAuth.instance.currentUser!.uid
-    ).snapshots().map((event) => UserModel.fromMap(event.data() as Map<String,dynamic>) );
-  }
+  // Stream<DocumentSnapshot> getData(){
+  //   return   FirebaseFirestore.instance.collection('UsersDetails').doc(auth
+  //   ).snapshots().map((event){
+  //
+  //     if(event.exists && event.get('fullName')!=null){
+  //       postData.value=event.data()!['fullName'];
+  //     }
+  //     return event.data()!['fullName'];
+  //   });
+  // }
+
 
 }

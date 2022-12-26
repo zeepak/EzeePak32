@@ -279,7 +279,8 @@ class _Login extends State<Login> {
             }
 
 
-        else{ setState(() {
+        else{
+          setState(() {
         loading = false;
       }),
           Navigator.push(context, MaterialPageRoute(builder: (_)=>VerificationScreen()))

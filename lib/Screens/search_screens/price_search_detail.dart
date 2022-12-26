@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../post_Detail_screen.dart';
+import 'filter_screen.dart';
 
 class PriceSearchDetail extends StatefulWidget {
   int minPrice;
@@ -40,42 +41,61 @@ class _PriceSearchDetailState extends State<PriceSearchDetail> {
         return Column(
           children: [
             SizedBox(height: 40,),
-            widget.priceRange==null?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text.rich(
+              children: [
+                widget.priceRange==null?
 
-                      TextSpan(
-                          children: [
-                            TextSpan(text: 'Showing: ',style: TextStyle(color: Colors.grey)),
-                            TextSpan(text: 'price range ${widget.minPrice} to ${widget.maxPrice}',style: TextStyle(fontWeight: FontWeight.bold))
-                          ]
-                      )
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text.rich(
+
+                          TextSpan(
+                              children: [
+                                TextSpan(text: 'Showing: ',style: TextStyle(color: Colors.grey)),
+                                TextSpan(text: 'price range ${widget.minPrice} to ${widget.maxPrice}',style: TextStyle(fontWeight: FontWeight.bold))
+                              ]
+                          )
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ):
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text.rich(
+                ):
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text.rich(
 
-                      TextSpan(
-                          children: [
-                            TextSpan(text: 'Showing: ',style: TextStyle(color: Colors.grey)),
-                            TextSpan(text: 'All Phones',style: TextStyle(fontWeight: FontWeight.bold))
+                          TextSpan(
+                              children: [
+                                TextSpan(text: 'Showing: ',style: TextStyle(color: Colors.grey)),
+                                TextSpan(text: 'All Phones',style: TextStyle(fontWeight: FontWeight.bold))
 
-                          ]
-                      )
+                              ]
+                          )
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width*0.09,),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>FilterScreen()));
+                  },
+                  child: Container(
+                    child: Row(
+                      children: [
+                      Icon(Icons.filter_list,color: Colors.blueAccent,size: 30,),
+                      Text('Filter',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12),),
+                    ],),
+                  ),
+                )
+              ],
             ),
             Expanded(
               child: ListView.builder(

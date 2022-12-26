@@ -11,7 +11,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:mobihub_2/Models/post_model.dart';
 import 'package:mobihub_2/Screens/home_page.dart';
 import 'package:mobihub_2/controller/sell_controller.dart';
-class PostUpdateScreen extends StatefulWidget {
+
+class PendingUpdateScreen extends StatefulWidget {
   String? title;
   String? desc;
   int? price;
@@ -33,57 +34,75 @@ class PostUpdateScreen extends StatefulWidget {
   String? postUid;
   String? favoriteAds;
   String? customerId;
-   PostUpdateScreen({super.key,
-     this.title, this.images, this.number, this.name, this.whatsAppSwitch, this.uid, this.location, this.color, this.battery,
-     this.camera,this.memory,this.ram, this.warranty, this.condtion, this.pta, this.brand, this.price,this.desc
-     ,this.postUid ,this.favoriteAds,this.customerId
-   });
+
+  PendingUpdateScreen(
+      {super.key,
+      this.title,
+      this.images,
+      this.number,
+      this.name,
+      this.whatsAppSwitch,
+      this.uid,
+      this.location,
+      this.color,
+      this.battery,
+      this.camera,
+      this.memory,
+      this.ram,
+      this.warranty,
+      this.condtion,
+      this.pta,
+      this.brand,
+      this.price,
+      this.desc,
+      this.postUid,
+      this.favoriteAds,
+      this.customerId});
 
   @override
-  State<PostUpdateScreen> createState() => _PostUpdateScreenState();
+  State<PendingUpdateScreen> createState() => _PendingUpdateScreenState();
 }
 
-class _PostUpdateScreenState extends State<PostUpdateScreen> {
+class _PendingUpdateScreenState extends State<PendingUpdateScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? changeDescription='';
+
+  String? changeTitle = '';
+  String? changeDescription = '';
   int? changePrice;
 
-  String? changeTitle='';
-  final FocusNode unitCodeCtrlFocusNode = FocusNode();
-  var adPhoneController = TextEditingController();
-  String? fullName ='';
-  bool whatsAppSwitch =false;
+  String? fullName = '';
+  bool whatsAppSwitch = false;
+
   //var mobileNumberController =TextEditingController();
 
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles = [];
-  var postUid =DateTime.now().millisecondsSinceEpoch;
+  var postUid = DateTime.now().millisecondsSinceEpoch;
 
-  var titleController =TextEditingController();
-  var descriptionController =TextEditingController();
-  var priceController =TextEditingController();
+  var titleController = TextEditingController();
+  var descriptionController = TextEditingController();
+  var priceController = TextEditingController();
+
   // string for displaying the error Message
   String? errorMessage;
 
   bool loading = false;
 
   List<XFile>? camerafiles;
+
   cameraImages(ImageSource source) async {
     try {
       var camfiles = await imgpicker.pickImage(source: ImageSource.camera);
 
-      if (camfiles != null && imagefiles!.length<=11 ) {
-
-
+      if (camfiles != null && imagefiles!.length <= 11) {
         setState(() {
           imagefiles!.add(camfiles);
         });
-      } else{
+      } else {
         Fluttertoast.showToast(msg: 'pictures should be 6 & less than 12s');
       }
       // ignore: empty_catches
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   openImages(ImageSource imageSource) async {
@@ -97,7 +116,7 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
         setState(() {
           imagefiles!.addAll(pickedfiles);
         });
-      }else {
+      } else {
         Fluttertoast.showToast(msg: 'pictures should be 6 & less than 12s');
       }
       // ignore: empty_catches
@@ -108,16 +127,11 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
 
   @override
   void initState() {
-    setState(() {
-
-    });
-
-
     super.initState();
   }
+
   // ignore: non_constant_identifier_names
   Widget BottomSheet() {
-    print(postUid.toString());
     return SizedBox(
       height: 120,
       width: double.infinity,
@@ -204,7 +218,6 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     "Oukitel",
     "Remaxx",
     "Vgo-tel",
-
   ];
 
   String? selectedValue3;
@@ -267,6 +280,7 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     textEditingController.dispose();
     super.dispose();
   }
+
   final List<String> ramList = [
     'Below 1 GB',
     '1 GB',
@@ -279,7 +293,6 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     '8 GB',
     '9 GB',
     'Above 8 GB',
-
   ];
   String? ramSelection;
   final TextEditingController ramSelectionController = TextEditingController();
@@ -288,6 +301,7 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     ramSelectionController.dispose();
     super.dispose();
   }
+
   final List<String> colorList = [
     'Black',
     'White',
@@ -297,19 +311,16 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     'Purple',
     'Gold',
     'Gray',
-    'Silver'
-    ,
-
+    'Silver',
   ];
   String? colorSelection;
-  final TextEditingController colorSelectionController = TextEditingController();
+  final TextEditingController colorSelectionController =
+      TextEditingController();
 
   void colorSelect() {
     colorSelectionController.dispose();
     super.dispose();
   }
-
-
 
   final List<String> memoryList = [
     '4 GB',
@@ -320,60 +331,65 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
     '128 GB',
     '256 GB',
     '512 GB',
-
-
   ];
   String? memorySelection;
-  final TextEditingController memorySelectionController = TextEditingController();
+  final TextEditingController memorySelectionController =
+      TextEditingController();
 
   void memorySelect() {
     memorySelectionController.dispose();
     super.dispose();
   }
+
   final List<String> batteryList = [
     '2800 mAh',
     '3200 mAh',
     '3800 mAh',
     '4200 mAh',
     '5000 mAh',
-
   ];
   String? batterySelection;
-  final TextEditingController batterySelectionController = TextEditingController();
+  final TextEditingController batterySelectionController =
+      TextEditingController();
 
   void batterSelect() {
     batterySelectionController.dispose();
     super.dispose();
   }
+
   final List<String> cameraList = [
     '4 MP',
     '8 MP',
     '13 MP',
     '50 MP',
     '108 MP',
-
-
   ];
   String? cameraSelection;
-  final TextEditingController cameraSelectionController = TextEditingController();
+  final TextEditingController cameraSelectionController =
+      TextEditingController();
 
   void cameraSelect() {
     cameraSelectionController.dispose();
     super.dispose();
   }
-  Sellcontroller sellcontroller=Get.put(Sellcontroller());
+
+  Sellcontroller sellcontroller = Get.put(Sellcontroller());
+
   @override
   Widget build(BuildContext context) {
+    print(widget.desc);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leading:  IconButton(
-            onPressed:(){
+          leading: IconButton(
+            onPressed: () {
               Navigator.pop(context);
-            },icon:Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),),
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+          ),
           title: const Text(
             'Sell Your Mobile',
             style: TextStyle(
@@ -383,7 +399,7 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
           backgroundColor: Colors.amber[300],
         ),
         body: Padding(
-          padding: const EdgeInsets.only( bottom: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Form(
@@ -391,7 +407,6 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0, right: 15),
                     child: Container(
@@ -401,97 +416,115 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                         children: [
                           //Container(),
                           imagefiles != null
-                              ?
-
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            height: 230,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              //color: Color(0xC5C5C0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.07),
-                                  spreadRadius: 5,
-                                  blurRadius: 2,
-                                  offset: Offset(0, 3), // changes position of shadow
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: GridView.builder(
-                                itemCount: imagefiles!.length,
-                                gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 15,
-                                    mainAxisSpacing: 10
-
-                                ),
-                                itemBuilder: (context, index) {
-                                  return Stack(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
-                                            ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.only(right: 10,top: 10),
-                                          width: 140,
-                                          height: 140,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10)
-                                                ,bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)
-                                            ),
-                                          ),
-                                          child: Image.file(File(imagefiles![index].path),fit: BoxFit.cover,),
-                                        ),
+                              ? Container(
+                                  padding: EdgeInsets.all(20),
+                                  height: 230,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    //color: Color(0xC5C5C0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.07),
+                                        spreadRadius: 5,
+                                        blurRadius: 2,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
                                       ),
-                                      Positioned(
-                                          left: 53,
-                                          bottom: 53,
-                                          child: IconButton(
-                                            onPressed: (){
-                                              setState(() {
-                                                imagefiles!.removeAt(index);
-                                              });
-                                            },icon: Icon(Icons.cancel_rounded,color: Colors.red,),
-                                          )),
-
                                     ],
-                                  );
-                                }),
-                          )
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: GridView.builder(
+                                      itemCount: imagefiles!.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 15,
+                                              mainAxisSpacing: 10),
+                                      itemBuilder: (context, index) {
+                                        return Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10)),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    right: 10, top: 10),
+                                                width: 140,
+                                                height: 140,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  10)),
+                                                ),
+                                                child: Image.file(
+                                                  File(imagefiles![index].path),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                                left: 53,
+                                                bottom: 53,
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      imagefiles!
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.cancel_rounded,
+                                                    color: Colors.red,
+                                                  ),
+                                                )),
+                                          ],
+                                        );
+                                      }),
+                                )
                               : Container(
-                            height: 200,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.circular(15)),
-                          ),
+                                  height: 200,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(15)),
+                                ),
                           Container(
                             height: 20,
                             width: 20,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: Colors.red
-                            ),
-                            child: Center(child: Text(imagefiles!.length.toString(),style: TextStyle(color: Colors.white),)),
+                                color: Colors.red),
+                            child: Center(
+                                child: Text(
+                              imagefiles!.length.toString(),
+                              style: TextStyle(color: Colors.white),
+                            )),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
                                 context: context,
                                 shape: const RoundedRectangleBorder(
-
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10))),
                                 builder: ((builder) => BottomSheet()),
                               );
-
                             },
                             child: DottedBorder(
                               color: const Color(0xFFFFDC3D),
@@ -525,7 +558,6 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),
@@ -536,10 +568,10 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextFormField(
-                      initialValue: widget.title,
-                      onChanged: (values){
+                      initialValue:widget.title,
+                      onChanged: (values) {
                         setState(() {
-                          changeTitle =values;
+                          changeTitle = values;
                         });
                       },
                       textAlign: TextAlign.start,
@@ -548,14 +580,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       maxLength: 40,
                       decoration: InputDecoration(
                         hintText: 'Title',
-                        hintStyle:TextStyle(
+                        hintStyle: TextStyle(
                             fontSize: 15,
                             color: Theme.of(context).hintColor,
                             fontWeight: FontWeight.bold),
-
-                        icon: Image.asset('assets/icons/Title.png',height: 22,),
-
-
+                        icon: Image.asset(
+                          'assets/icons/Title.png',
+                          height: 22,
+                        ),
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -568,10 +600,10 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextFormField(
-                        initialValue: widget.desc,
-                      onChanged: (value){
+                      initialValue: widget.desc,
+                      onChanged: (value) {
                         setState(() {
-                          changeDescription=value;
+                          changeDescription = value;
                         });
                       },
                       keyboardType: TextInputType.multiline,
@@ -579,14 +611,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                         hintText: 'Description',
-                        hintStyle:TextStyle(
+                        hintStyle: TextStyle(
                             fontSize: 15,
                             color: Theme.of(context).hintColor,
                             fontWeight: FontWeight.bold),
-
-                        icon: Image.asset('assets/icons/description.png',height: 22,),
-
-
+                        icon: Image.asset(
+                          'assets/icons/description.png',
+                          height: 22,
+                        ),
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -596,28 +628,30 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       initialValue: widget.price.toString(),
-                      onChanged: (value){
+                      onChanged: (value) {
                         setState(() {
-                          changePrice=int.parse(value);
+                          changePrice = int.parse(value);
                         });
                       },
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                         hintText: 'Price(PKR)',
-                        hintStyle:TextStyle(
+                        hintStyle: TextStyle(
                             fontSize: 15,
                             color: Theme.of(context).hintColor,
                             fontWeight: FontWeight.bold),
-
-                        icon: Image.asset('assets/icons/price-tag.png',height: 22,),
-
-
+                        icon: Image.asset(
+                          'assets/icons/price-tag.png',
+                          height: 22,
+                        ),
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -627,19 +661,22 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
-                    child:
-                    DropdownButton2(
-
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/location.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/location.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Location',
@@ -653,14 +690,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: cities
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue,
                       onChanged: (value) {
@@ -717,14 +754,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only( bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/Brand.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/Brand.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Brand',
@@ -738,15 +779,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: brand
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue3,
                       onChanged: (value) {
@@ -783,7 +823,8 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                               ),
                             ),
                             validator: (value) => value == null
-                                ? 'Please fill in your gender' : null,
+                                ? 'Please fill in your gender'
+                                : null,
                           ),
                         ),
                       ),
@@ -799,14 +840,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/approved.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/approved.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'PTA',
@@ -820,15 +865,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: pta
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue4,
                       onChanged: (value) {
@@ -885,14 +929,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/condition.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/condition.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Condition',
@@ -906,15 +954,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: condition
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue5,
                       onChanged: (value) {
@@ -971,14 +1018,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only( bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/warranty.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/warranty.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Warranty',
@@ -992,15 +1043,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: warranty
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue6,
                       onChanged: (value) {
@@ -1057,16 +1107,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
-                    child:
-                    DropdownButton2(
-
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/ram.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/ram.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Ram',
@@ -1080,14 +1132,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: ramList
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: ramSelection,
                       onChanged: (value) {
@@ -1144,16 +1196,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
-                    child:
-                    DropdownButton2(
-
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/memory-card.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/memory-card.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Memory',
@@ -1167,14 +1221,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: memoryList
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: memorySelection,
                       onChanged: (value) {
@@ -1230,17 +1284,19 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       },
                     ),
                   ),
-
-
                   Padding(
-                    padding:
-                    const EdgeInsets.only( bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/Camera.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/Camera.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Camera',
@@ -1254,15 +1310,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: cameraList
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: cameraSelection,
                       onChanged: (value) {
@@ -1319,16 +1374,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
-                    child:
-                    DropdownButton2(
-
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/battery.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/battery.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Battery',
@@ -1342,14 +1399,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: batteryList
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: batterySelection,
                       onChanged: (value) {
@@ -1406,16 +1463,18 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(bottom: 10),
-                    child:
-                    DropdownButton2(
-
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButton2(
                       isExpanded: true,
                       hint: Row(
                         children: [
-                          Image.asset('assets/icons/color.png',height: 22,),
-                          SizedBox(width: 10,),
+                          Image.asset(
+                            'assets/icons/color.png',
+                            height: 22,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: Text(
                               'Color',
@@ -1429,14 +1488,14 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       ),
                       items: colorList
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 14,fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                           .toList(),
                       value: colorSelection,
                       onChanged: (value) {
@@ -1459,7 +1518,6 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: TextFormField(
-
                             controller: colorSelectionController,
                             decoration: InputDecoration(
                               isDense: true,
@@ -1476,8 +1534,8 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                             validator: (String? value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Please enter a valid type of business';
-                              }},
-
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -1503,217 +1561,222 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                     decoration: BoxDecoration(
                       color: Color(0xFFEFEFEF),
                     ),
-                    child: Text('Contact Information',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
+                    child: Text(
+                      'Contact Information',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
                   ),
-
-
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
-                    padding: EdgeInsets.only(left: 70,top: 10),
+                    padding: EdgeInsets.only(left: 70, top: 10),
                     child: Row(
                       children: [
-                        Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
-                        Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
-                        Obx(()=> Switch(
-
-                            value: sellcontroller.pressedBool.value, onChanged: (value){
-
-                          sellcontroller.pressedBool.value =value;
-
-
-                        }),
+                        Image.asset(
+                          'assets/icons/whatsapp.png',
+                          width: 35,
+                          height: 35,
+                        ),
+                        Text(
+                          ' Allow WhatsApp Contact',
+                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                        ),
+                        Obx(
+                          () => Switch(
+                              value: sellcontroller.pressedBool.value,
+                              onChanged: (value) {
+                                sellcontroller.pressedBool.value = value;
+                              }),
                         ),
                       ],
                     ),
                   ),
-
-
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Center(
-                          child: GestureDetector(
-                            onTap: () async {
-                              FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
 
-                              if (_formKey.currentState!.validate()) {
+                          if (imagefiles!.length < 6) {
+                            Fluttertoast.showToast(
+                                msg: 'Select minimum 6 images');
+                            setState(() {
+                              loading = false;
+                            });
+                            return;
+                          } else if (imagefiles!.length == null &&
+                              imagefiles!.isEmpty) {
+                            Fluttertoast.showToast(msg: 'First Select images');
+                            setState(() {
+                              loading = false;
+                            });
+                            return;
+                          }
+                          if (selectedValue == null) {
+                            Fluttertoast.showToast(msg: 'Select location');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if(selectedValue3 == null) {
+                            Fluttertoast.showToast(msg: 'Select Brand');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (selectedValue4 == null) {
+                            Fluttertoast.showToast(msg: 'Select Pta section');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (selectedValue6 == null) {
+                            Fluttertoast.showToast(
+                                msg: 'Select condition ');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (selectedValue5 == null) {
+                            Fluttertoast.showToast(
+                                msg: 'Select warranty ');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
 
-                                setState(() {
-                                  loading=true;
-                                });
-
-                                if(imagefiles!.length<6){
-                                   Fluttertoast.showToast(msg: 'Select minimum 6 images');
-                                   setState(() {
-                                     loading=false;
-                                   });
-                                   return;
-
-                                }else if(imagefiles!.length==null && imagefiles!.isEmpty){
-                                  Fluttertoast.showToast(msg: 'First Select images');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return ;
-                                }
-                                if (selectedValue == null) {
-                                  Fluttertoast.showToast(msg: 'Select location');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if(selectedValue3 == null) {
-                                  Fluttertoast.showToast(msg: 'Select Brand');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (selectedValue4 == null) {
-                                  Fluttertoast.showToast(msg: 'Select Pta section');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (selectedValue6 == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Select condition ');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (selectedValue5 == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Select warranty ');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-
-                                if (ramSelection == null) {
-                                  Fluttertoast.showToast(msg: 'Select ram');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (memorySelection == null) {
-                                  Fluttertoast.showToast(msg: 'Select memory');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (cameraSelection == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Select camera section');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (batterySelection == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Select battery section');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                if (colorSelection == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Select mobile color');
-                                  setState(() {
-                                    loading=false;
-                                  });
-                                  return;
-                                }
-                                try{
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Proccessing !')));
-                                  await postDetailsToFirestore();
-                                  setState(() {
-                                    loading=false;
-                                  });
-
-
-                                }on FirebaseException catch(e){
-                                  Fluttertoast.showToast(msg: e.toString());
-
-                                }
-
-
-
-                              }
-
-
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: Colors.amber[300],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child:  Center(
-                                  child:loading?Center(
+                          if (ramSelection == null) {
+                            Fluttertoast.showToast(msg: 'Select ram');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (memorySelection == null) {
+                            Fluttertoast.showToast(msg: 'Select memory');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (cameraSelection == null) {
+                            Fluttertoast.showToast(
+                                msg: 'Select camera section');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (batterySelection == null) {
+                            Fluttertoast.showToast(
+                                msg: 'Select battery section');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          if (colorSelection == null) {
+                            Fluttertoast.showToast(
+                                msg: 'Select mobile color');
+                            setState(() {
+                              loading=false;
+                            });
+                            return;
+                          }
+                          try {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Proccessing !')));
+                            await postDetailsToFirestore();
+                            setState(() {
+                              loading = false;
+                            });
+                          } on FirebaseException catch (e) {
+                            Fluttertoast.showToast(msg: e.toString());
+                          }
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.amber[300],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                            child: loading
+                                ? Center(
                                     child: SizedBox(
-                                        width: MediaQuery.of(context).size.width*0.1,
-                                        height: MediaQuery.of(context).size.width*0.1,
-                                        child: CircularProgressIndicator(color: Colors.black,)),
-                                  ): Text(
-                                    'Update Post',
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        )),
+                                  )
+                                : Text(
+                                    'Update post',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )),
-                            ),
-                          ),
-                        )
-
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
           ),
         ));
   }
-  List<String> imageUrls=[];
-  postDetailsToFirestore() async {
 
-    var uid =FirebaseAuth.instance.currentUser!.uid;
+  List<String> imageUrls = [];
+
+  postDetailsToFirestore() async {
     setState(() {
-      loading=true;
+      loading = true;
     });
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-
-    PostModel postModel=PostModel();
+    PostModel postModel = PostModel();
     postModel.title =changeTitle!.isNotEmpty?changeTitle:widget.title.toString();
     postModel.desc = changeDescription!.isNotEmpty? changeDescription:widget.desc;
     postModel.price = changePrice??widget.price;
-    postModel.location=selectedValue;
-    postModel.brand=selectedValue3;
-    postModel.pta=selectedValue4;
-    postModel.condtion=selectedValue5;
-    postModel.warranty=selectedValue6;
-    postModel.ram=ramSelection;
-    postModel.memory=memorySelection;
-    postModel.camera=cameraSelection;
-    postModel.battery=batterySelection;
-    postModel.color=colorSelection;
-    postModel.images=imageUrls;
-    postModel.uid=widget.uid;
-    postModel.number=widget.number;
-    postModel.whatsAppSwitch =sellcontroller.pressedBool.value;
+    postModel.location = selectedValue;
+    postModel.brand = selectedValue3;
+    postModel.pta = selectedValue4;
+    postModel.condtion = selectedValue5;
+    postModel.warranty = selectedValue6;
+    postModel.ram = ramSelection;
+    postModel.memory = memorySelection;
+    postModel.camera = cameraSelection;
+    postModel.battery = batterySelection;
+    postModel.color = colorSelection;
+    postModel.images = imageUrls;
+    postModel.uid = widget.uid;
+    postModel.whatsAppSwitch = sellcontroller.pressedBool.value;
     postModel.searchText = changeTitle!.isNotEmpty?changeTitle!.toLowerCase():widget.title!.toLowerCase();
+    postModel.isShow = false;
     postModel.postUid = widget.postUid;
-    postModel.status ='active';
-    postModel.number=widget.number;
-    postModel.name =widget.name;
-    postModel.customerId=[];
+    postModel.status = 'pending';
+    postModel.number = widget.number;
+    postModel.name = widget.name;
+    postModel.customerId = [];
 
     await uploadImages();
 
@@ -1722,23 +1785,24 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
         .doc(widget.postUid)
         .update(postModel.toMap());
     setState(() {
-      loading=false;
+      loading = false;
     });
-    Fluttertoast.showToast(msg: 'Post updated Successfully');
-    Get.offAll(()=>Home());
-
+    Fluttertoast.showToast(msg: 'Post updated successfully');
+    Get.offAll(() => Home());
   }
-  Future postImages(XFile? imageFile) async{
+
+  Future postImages(XFile? imageFile) async {
     String urls;
-    Reference ref=FirebaseStorage.instance.ref().child('posts').child(imageFile!.name);
+    Reference ref =
+        FirebaseStorage.instance.ref().child('posts').child(imageFile!.name);
     await ref.putData(await imageFile.readAsBytes());
-    urls=await ref.getDownloadURL();
+    urls = await ref.getDownloadURL();
     return urls;
   }
-  uploadImages()async{
-    for(var image in imagefiles!){
+
+  uploadImages() async {
+    for (var image in imagefiles!) {
       await postImages(image).then((value) => imageUrls.add(value));
     }
   }
-
 }

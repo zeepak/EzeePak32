@@ -104,7 +104,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                     name = TextEditingController(text: (value));
                   });
                 },
-                initialValue: name.text,
+                initialValue: name.text=='null'?FirebaseAuth.instance.currentUser!.uid:name.text,
                 decoration: InputDecoration(
                   hintText: 'Name',
                   prefixIcon: Icon(Icons.person_outline_outlined),

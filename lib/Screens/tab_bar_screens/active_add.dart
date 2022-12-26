@@ -171,7 +171,26 @@ class _ActiveAdsScreenState extends State<ActiveAdsScreen> {
                                           width: 130,
                                           height: 40,
                                           child: TextButton(onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (_)=>PostUpdateScreen()));
+                                            Get.to(()=>PostUpdateScreen(
+                                              images:snapshot.data!.docs[index]['images'],
+                                              title:snapshot.data!.docs[index]['title'] ,
+                                              desc:snapshot.data!.docs[index]['desc'] ,
+                                              number:snapshot.data!.docs[index]['number'] ,
+                                              location:snapshot.data!.docs[index]['location'] ,
+                                              warranty:snapshot.data!.docs[index]['warranty'] ,
+                                              ram:snapshot.data!.docs[index]['ram'] ,
+                                              pta:snapshot.data!.docs[index]['pta'] ,
+                                              price:snapshot.data!.docs[index]['price'] ,
+                                              memory:snapshot.data!.docs[index]['memory'] ,
+                                              uid:snapshot.data!.docs[index]['uid'] ,
+                                              name:snapshot.data!.docs[index]['name'] ,
+                                              battery:snapshot.data!.docs[index]['battery'] ,
+                                              brand:snapshot.data!.docs[index]['brand'] ,
+                                              camera:snapshot.data!.docs[index]['camera'] ,
+                                              condtion:snapshot.data!.docs[index]['condtion'] ,
+                                              color:snapshot.data!.docs[index]['color'] ,
+                                              whatsAppSwitch:snapshot.data!.docs[index]['whatsAppSwitch'] ,
+                                              postUid:snapshot.data!.docs[index]['postUid'] ,));
 
 
                                           },

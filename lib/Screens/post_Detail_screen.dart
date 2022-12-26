@@ -33,9 +33,11 @@ class  PostDetailScreen extends StatefulWidget {
   String? favoriteAds;
   String? customerId;
 
-   PostDetailScreen({Key? key,this.title, this.images, this.number, this.name, this.whatsAppSwitch, this.uid, this.location, this.color, this.battery,
+   PostDetailScreen({Key? key,
+     this.title, this.images, this.number, this.name, this.whatsAppSwitch, this.uid, this.location, this.color, this.battery,
    this.camera,this.memory,this.ram, this.warranty, this.condtion, this.pta, this.brand, this.price,this.desc
-  ,this.postUid ,this.favoriteAds,this.customerId}) : super(key: key);
+  ,this.postUid ,this.favoriteAds,this.customerId
+   }) : super(key: key);
 
   @override
   State<PostDetailScreen> createState() => _PostDetailScreenState();

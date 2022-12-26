@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../post_Detail_screen.dart';
+import 'filter_screen.dart';
 
 class BrandSearchDetailScreen extends StatefulWidget {
   var brand;
@@ -38,7 +39,7 @@ class _BrandSearchDetailScreenState extends State<BrandSearchDetailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 50,left: 10,right: 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text.rich(
 
@@ -48,6 +49,19 @@ class _BrandSearchDetailScreenState extends State<BrandSearchDetailScreen> {
                                 TextSpan(text: 'Results for ${widget.brand}',style: TextStyle(fontWeight: FontWeight.bold))
                               ]
                           )
+                      ),
+                      SizedBox(width: 30,),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>FilterScreen()));
+                        },
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Icon(Icons.filter_list,color: Colors.blueAccent,size: 30,),
+                              Text('Filter',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12),),
+                            ],),
+                        ),
                       ),
                     ],
                   ),

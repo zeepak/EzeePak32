@@ -21,9 +21,10 @@ class AddItems extends StatefulWidget {
 }
 
 class _AddItemsState extends State<AddItems> {
+  bool check = false;
   final _formKey = GlobalKey<FormState>();
    String? adPhone='';
-   String? changeNumber='';
+   var changeNumber=TextEditingController();
    String? changeName='';
   final FocusNode unitCodeCtrlFocusNode = FocusNode();
   var adPhoneController = TextEditingController();
@@ -84,12 +85,9 @@ class _AddItemsState extends State<AddItems> {
 
   @override
   void initState() {
+    sellcontroller.postData.value;
 
-
-
-     getUserData();
-    print(fullName.toString());
-    print(adPhone.toString());
+    getUserData();
     super.initState();
   }
   // ignore: non_constant_identifier_names
@@ -1455,7 +1453,6 @@ class _AddItemsState extends State<AddItems> {
                       },
                     ),
                   ),
-
                   const SizedBox(
                     height: 5,
                   ),
@@ -1504,40 +1501,48 @@ class _AddItemsState extends State<AddItems> {
                       },
                     ),
                   ),
-                 Obx(() => Padding(
+
+                     Obx(
+                         ()=>Padding(
                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                   child: TextFormField(
-                     //initialValue: adPhone.toString(),
-                     textInputAction: TextInputAction.done,
-                     controller:TextEditingController(text: sellcontroller.postData.value?.phone !=null? sellcontroller.postData.value?.phone:changeNumber,),
-                     onChanged: (value){
+                   child:TextFormField(
+                       //initialValue: adPhone.toString(),
+                       textInputAction: TextInputAction.done,
+                       controller:sellcontroller.postData.value!=null&&sellcontroller.postData.value!='null'?TextEditingController(text: sellcontroller.postData.value):changeNumber,
+                       //TextEditingController(text: sellcontroller.postData.value !=null ||sellcontroller.postData.value !='null'? sellcontroller.postData.value:changeNumber.text,),
+                       // onChanged: (value){
+                       //
+                       //
+                       //    TextSelection.collapsed(offset: changeNumber!.length);
+                       //
+                       //       changeNumber = value;
+                       //
+                       //
+                       // },
 
-                       TextSelection.collapsed(offset: changeNumber!.length);
-                       changeNumber = value;
+                       keyboardType: TextInputType.text,
+                       textAlign: TextAlign.start,
+                       decoration: InputDecoration(
+                         hintText: 'Mobile Number',
+                         hintStyle:TextStyle(
+                             fontSize: 15,
+                             color: Theme.of(context).hintColor,
+                             fontWeight: FontWeight.bold),
 
-                     },
-
-                     keyboardType: TextInputType.text,
-                     textAlign: TextAlign.start,
-                     decoration: InputDecoration(
-                       hintText: 'Mobile Number',
-                       hintStyle:TextStyle(
-                           fontSize: 15,
-                           color: Theme.of(context).hintColor,
-                           fontWeight: FontWeight.bold),
-
-                       icon: Image.asset('assets/icons/number.png',height: 22,),
+                         icon: Image.asset('assets/icons/number.png',height: 22,),
 
 
-                     ),
-                     validator: (text) {
-                       if (text == null || text.isEmpty) {
-                         return 'Text is empty';
-                       }
-                       return null;
-                     },
+                       ),
+                       validator: (text) {
+                         if (text == null || text.isEmpty) {
+                           return 'Text is empty';
+                         }
+                         return null;
+                       },
                    ),
-                 ),),
+                 ),
+                     ),
+
                      SizedBox(height: 10,),
                      Container(
                        padding: EdgeInsets.only(left: 70,top: 10),
@@ -1545,183 +1550,264 @@ class _AddItemsState extends State<AddItems> {
                          children: [
                            Image.asset('assets/icons/whatsapp.png',width: 35,height: 35,),
                            Text(' Allow WhatsApp Contact',style: TextStyle(fontSize: 15,color: Colors.grey),),
-                           Switch(
+                           Obx(()=> Switch(
 
-                               value: whatsAppSwitch, onChanged: (value){
-                             setState(() {
-                               whatsAppSwitch =value;
+                                 value: sellcontroller.pressedBool.value, onChanged: (value){
 
-                             });
-                           })
+                                 sellcontroller.pressedBool.value =value;
+
+
+                             }),
+                           ),
                          ],
                        ),
                      ),
 
 
                      SizedBox(height: 20,),
-                     StatefulBuilder(builder: (context, setState) {
-                       return sellcontroller.postData.value?.phone!=null?
-                       Center(
-                         child: GestureDetector(
-                           onTap: () async {
-                             FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
-
-                             if (_formKey.currentState!.validate()) {
-
-                               setState(() {
-                                 loading=true;
-                               });
-
-                               if(imagefiles!.length<6){
-                                 Fluttertoast.showToast(msg: 'Select minimum 6 images');
-                                 return ;
-                               }else if(imagefiles!.length==null && imagefiles!.isEmpty){
-                                 Fluttertoast.showToast(msg: 'First Select images');
-                                 return ;
-                               }
-                               try{
-                                 ScaffoldMessenger.of(context).showSnackBar(
-                                     const SnackBar(content: Text('Proccessing !')));
-                                 await postDetailsToFirestore();
-                                 setState(() {
-                                   loading=false;
-                                 });
-
-
-                               }on FirebaseException catch(e){
-                                 Fluttertoast.showToast(msg: e.toString());
-
-                               }
+                     StatefulBuilder(builder: (context, data) {
+                         data(()=>sellcontroller.postData.value);
 
 
 
-                             }
+                        return
+                           sellcontroller.postData.value.isEmpty ||sellcontroller.postData.value=='null'?
+
+                          Center(
+                            child: GestureDetector(
+                              onTap: () async {
+
+                                setState(() {
+                                  loading =true;
+                                });
+                                try{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Proccessing !')));
+                                  FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
 
 
-                           },
-                           child: Container(
-                             height: 40,
-                             width: 120,
-                             decoration: BoxDecoration(
-                               color: Colors.amber[300],
-                               borderRadius: BorderRadius.circular(10),
-                             ),
-                             child:  Center(
-                                 child:loading?Center(
-                                   child: SizedBox(
-                                       width: MediaQuery.of(context).size.width*0.1,
-                                       height: MediaQuery.of(context).size.width*0.1,
-                                       child: CircularProgressIndicator(color: Colors.black,)),
-                                 ): Text(
-                                   'Add Item',
-                                   style: TextStyle(
-                                     fontSize: 15,
-                                     fontWeight: FontWeight.bold,
-                                   ),
-                                 )),
-                           ),
-                         ),
-                       )
-                           :
-                       Center(
-                         child: GestureDetector(
-                           onTap: () async {
+                                  await FirebaseAuth.instance.
+                                  verifyPhoneNumber(
+                                      phoneNumber: changeNumber.text,
+                                      verificationCompleted: (PhoneAuthCredential credential) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      },
+                                      verificationFailed: (FirebaseAuthException e) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        switch (e.code) {
+                                          case "provider-already-linked":
+                                            print("The provider has already been linked to the user.");
+                                            break;
+                                          case "invalid-credential":
+                                            Fluttertoast.showToast(msg: 'The provider\'s credential is not valid');
+                                            break;
+                                          case "credential-already-in-use":
+                                            Fluttertoast.showToast(msg: 'already linked to a Firebase User');
+                                            break;
+                                        // See the API reference for the full list of error codes.
+                                          default:
+                                            Fluttertoast.showToast(msg: 'something went wrong');
+                                        }
 
-                             setState(() {
-                               loading =true;
-                             });
-                             try{
-                               ScaffoldMessenger.of(context).showSnackBar(
-                                   const SnackBar(content: Text('Proccessing !')));
-                               FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
+                                      },
+                                      codeSent: (String verificationId, int? token) async {
 
+                                        Fluttertoast.showToast(msg: "Code send");
+                                        await Navigator.push(context, MaterialPageRoute(builder: (_)=> LinkPhonePostOtp(
+                                          verificationId: verificationId, phone: changeNumber.text,
+                                          number:changeNumber.text,)
 
-                               await FirebaseAuth.instance.
-                               verifyPhoneNumber(
-                                   phoneNumber: changeNumber,
-                                   verificationCompleted: (PhoneAuthCredential credential) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                   },
-                                   verificationFailed: (FirebaseAuthException e) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                     switch (e.code) {
-                                       case "provider-already-linked":
-                                         print("The provider has already been linked to the user.");
-                                         break;
-                                       case "invalid-credential":
-                                         Fluttertoast.showToast(msg: 'The provider\'s credential is not valid');
-                                         break;
-                                       case "credential-already-in-use":
-                                         Fluttertoast.showToast(msg: 'already linked to a Firebase User');
-                                         break;
-                                     // See the API reference for the full list of error codes.
-                                       default:
-                                         Fluttertoast.showToast(msg: 'something went wrong');
-                                     }
+                                          ,),);
 
-                                   },
-                                   codeSent: (String verificationId, int? token) async {
-
-                                     Fluttertoast.showToast(msg: "Code send");
-                                     await Navigator.push(context, MaterialPageRoute(builder: (_)=> LinkPhonePostOtp(
-                                       verificationId: verificationId, phone: changeNumber!,
-                                       number:changeNumber!,)
-
-                                       ,),);
-
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                   },
-                                   codeAutoRetrievalTimeout: (e) {
-                                     setState(() {
-                                       loading = false;
-                                     });
-                                     print(e);
-                                   });
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      },
+                                      codeAutoRetrievalTimeout: (e) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        print(e);
+                                      });
 
 
 
 
-                             }on FirebaseException catch(e){
+                                }on FirebaseException catch(e){
 
 
 
-                             }
+                                }
 
 
 
 
-                           },
-                           child: Container(
-                             height: 40,
-                             width: 120,
-                             decoration: BoxDecoration(
-                               color: Colors.amber[300],
-                               borderRadius: BorderRadius.circular(10),
-                             ),
-                             child:  Center(
-                                 child:loading?Center(
-                                   child: SizedBox(
-                                       width: MediaQuery.of(context).size.width*0.1,
-                                       height: MediaQuery.of(context).size.width*0.1,
-                                       child: CircularProgressIndicator(color: Colors.black,)),
-                                 ): Text(
-                                   'Add Item',
-                                   style: TextStyle(
-                                     fontSize: 15,
-                                     fontWeight: FontWeight.bold,
-                                   ),
-                                 )),
-                           ),
-                         ),
-                       );
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.amber[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child:  Center(
+                                    child:loading?Center(
+                                      child: SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.1,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          child: CircularProgressIndicator(color: Colors.black,)),
+                                    ): Text(
+                                      'Add Item',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                              ),
+                            ),
+                          ) :Center(
+                            child: GestureDetector(
+                              onTap: () async {
+                                FocusScope.of(context).requestFocus(unitCodeCtrlFocusNode);
 
-                     },),
+                                if (_formKey.currentState!.validate()) {
+
+                                  setState(() {
+                                    loading=true;
+                                  });
+
+                                  if(imagefiles!.length<6){
+                                    Fluttertoast.showToast(msg: 'Select minimum 6 images');
+                                    return ;
+                                  }else if(imagefiles!.length==null && imagefiles!.isEmpty){
+                                    Fluttertoast.showToast(msg: 'First Select images');
+                                    return ;
+                                  }
+                                  if (selectedValue == null) {
+                                    Fluttertoast.showToast(msg: 'Select location');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if(selectedValue3 == null) {
+                                    Fluttertoast.showToast(msg: 'Select Brand');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (selectedValue4 == null) {
+                                    Fluttertoast.showToast(msg: 'Select Pta section');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (selectedValue6 == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Select condition ');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (selectedValue5 == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Select warranty ');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+
+                                  if (ramSelection == null) {
+                                    Fluttertoast.showToast(msg: 'Select ram');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (memorySelection == null) {
+                                    Fluttertoast.showToast(msg: 'Select memory');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (cameraSelection == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Select camera section');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (batterySelection == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Select battery section');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  if (colorSelection == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Select mobile color');
+                                    setState(() {
+                                      loading=false;
+                                    });
+                                    return;
+                                  }
+                                  try{
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Proccessing !')));
+                                    await postDetailsToFirestore();
+                                    setState(() {
+                                      loading=false;
+                                    });
+
+
+                                  }on FirebaseException catch(e){
+                                    Fluttertoast.showToast(msg: e.toString());
+
+                                  }
+
+
+
+                                }
+
+
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.amber[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child:  Center(
+                                    child:loading?Center(
+                                      child: SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.1,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          child: CircularProgressIndicator(color: Colors.black,)),
+                                    ): Text(
+                                      'Add Item',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                              ),
+                            ),
+                          );
+
+                       },),
                 ],
               ),
             ),
@@ -1755,8 +1841,8 @@ class _AddItemsState extends State<AddItems> {
     postModel.images=imageUrls;
     postModel.uid=uid;
     postModel.name =fullName!=null?fullName:changeName;
-    postModel.number=adPhone;
-    postModel.whatsAppSwitch =whatsAppSwitch;
+    postModel.number=sellcontroller.postData.value;
+    postModel.whatsAppSwitch =sellcontroller.pressedBool.value;
     postModel.searchText = titleController.text.toLowerCase();
     postModel.isShow=false;
     postModel.postUid = postUid.toString();
@@ -1793,19 +1879,22 @@ class _AddItemsState extends State<AddItems> {
     ).get().then((value) async{
       if(value.exists &&
 
-      value.get('phone')!=null &&
+      value.get('phone')!=null ||
       value.get('fullName')!=null
       ){
         setState(() {
-          adPhone =value.data()!['phone'];
+          sellcontroller.postData.value =value.data()!['phone'].toString();
           fullName =value.data()!['fullName'];
+
+
 
         });
       }
       else{
         setState(() {
+          sellcontroller.postData.value =value.data()!['phone'].toString();
           fullName =value.data()!['fullName'];
-          adPhone =value.data()!['phone'];
+
         });
       }
     });

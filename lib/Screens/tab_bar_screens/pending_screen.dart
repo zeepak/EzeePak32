@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobihub_2/Screens/tab_bar_screens/pending_update_screen.dart';
 import 'package:mobihub_2/services/consts.dart';
 import 'package:get/get.dart';
 
@@ -155,6 +157,99 @@ class _PendingPostScreenState extends State<PendingPostScreen> {
                                 ],
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  16.0, 12.0, 16.0, 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      width: 130,
+                                      height: 40,
+                                      child: TextButton(onPressed: (){
+                                        Get.to(()=>PendingUpdateScreen(
+                                          images:snapshot.data!.docs[index]['images'],
+                                          title:snapshot.data!.docs[index]['title'] ,
+                                          desc:snapshot.data!.docs[index]['desc'] ,
+                                          number:snapshot.data!.docs[index]['number'] ,
+                                          location:snapshot.data!.docs[index]['location'] ,
+                                          warranty:snapshot.data!.docs[index]['warranty'] ,
+                                          ram:snapshot.data!.docs[index]['ram'] ,
+                                          pta:snapshot.data!.docs[index]['pta'] ,
+                                          price:snapshot.data!.docs[index]['price'] ,
+                                          memory:snapshot.data!.docs[index]['memory'] ,
+                                          uid:snapshot.data!.docs[index]['uid'] ,
+                                          name:snapshot.data!.docs[index]['name'] ,
+                                          battery:snapshot.data!.docs[index]['battery'] ,
+                                          brand:snapshot.data!.docs[index]['brand'] ,
+                                          camera:snapshot.data!.docs[index]['camera'] ,
+                                          condtion:snapshot.data!.docs[index]['condtion'] ,
+                                          color:snapshot.data!.docs[index]['color'] ,
+                                          whatsAppSwitch:snapshot.data!.docs[index]['whatsAppSwitch'] ,
+                                          postUid:snapshot.data!.docs[index]['postUid'] ,));
+
+
+                                      },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor:Color(0xFFD9D9D9),
+                                        ), child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text('Edit',style: TextStyle(color: Colors.black87,),),
+                                            Icon(Icons.edit,color: Colors.black87,)
+                                          ],),),
+                                    ),
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      width: 130,
+                                      height: 40,
+                                      child: TextButton(onPressed: (){
+                                        showDialog(
+                                            barrierDismissible: false,
+                                            context: context, builder: (context){
+                                          return AlertDialog(
+                                            title: Text('Confirmation!'),
+                                            content: Text('Are you sure to delete?'),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  TextButton(onPressed: (){
+                                                    Navigator.pop(context);
+                                                  }, child: Text('No')),
+                                                  Container(),
+                                                  TextButton(onPressed: ()async{
+                                                    await FirebaseFirestore.instance.collection('Posts').doc(snapshot.data!.docs[index]['postUid']).delete();
+                                                    Navigator.pop(context);
+                                                    setState(() {
+
+                                                    });
+                                                  }, child: Text('Yes')),
+
+                                                ],
+                                              )
+
+                                            ],
+                                          );
+                                        });
+                                      },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor:Color(0xFFFFDC3D),
+                                        ), child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text('Delete',style: TextStyle(color: Colors.black87),),
+                                            Icon(CupertinoIcons.delete,color: Colors.black87,)
+                                          ],),),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
 
                           ],
                         ),
