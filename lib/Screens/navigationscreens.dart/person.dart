@@ -99,7 +99,7 @@ class _AccountState extends State<Account> {
                 Padding(
                     padding: const EdgeInsets.only(top: 18.0),
                     child:
-                    fullName == null?
+                    fullName == null|| fullName=='null'?
                     Text(
                         uid.toString(),
                         style: const TextStyle(

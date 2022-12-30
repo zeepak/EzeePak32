@@ -58,20 +58,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         slivers: <Widget>[
           SliverAppBar(
             automaticallyImplyLeading: false,
+            backgroundColor: const Color(0xFFFFDC3D),
             leading: IconButton(onPressed: (){
               Navigator.pop(context);
-            },icon: Icon(Icons.arrow_circle_left_outlined,color: Colors.white70,size: 25,),),
+            },icon: Icon(CupertinoIcons.arrow_left,color: Colors.black54,size: 25,),),
             snap: true,
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              title: Text("${widget.title}",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ) //TextStyle
-              ), //Text
+              //TextStyle
+               //Text
               background: Container(
                 child: Stack(
                   children: [
@@ -134,7 +131,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               ),
             ), //FlexibleSpaceBar
             expandedHeight: 230,
-            backgroundColor: Colors.greenAccent[400],
+            //backgroundColor: Colors.greenAccent[400],
 
           ), //SliverAppBar
 

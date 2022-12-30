@@ -1471,7 +1471,7 @@ class _AddItemsState extends State<AddItems> {
                     child: TextFormField(
 
 
-                      controller:TextEditingController(text: fullName ==null || fullName!.isEmpty?changeName:fullName.toString()),
+                      controller:TextEditingController(text: fullName =='null' || fullName!.isEmpty?changeName:fullName.toString()),
 
                       onChanged: (value){
                         TextSelection.collapsed(offset: changeName!.length);
